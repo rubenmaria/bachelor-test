@@ -1,31 +1,39 @@
 import os
+import json
 import numpy as np
 from numpy._typing import NDArray
 from sklearn.manifold import TSNE
 import clang.cindex
 from clang.cindex import Cursor
 from clang.cindex import SourceRange
-#from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
 GLIBC_PATH = "glibc"
 
 def main():
     src_files = get_src_files(GLIBC_PATH)
-    functions = get_n_functions(src_files, 100)
-    for x in get_function_names(functions[60:70]):
-        print(x)
-    """
-    embeddings = [function_to_embedding(functions[i]) for i in range(10)]
-    embeddings = make_same_dimensions(embeddings)
-    low_dimension_embeddings = embedding_to_low_dimension(np.array(embeddings))
-    print("after: ", low_dimension_embeddings.shape)
-    print(low_dimension_embeddings)
-    draw_2d_embeddings(low_dimension_embeddings, [x.split("\n")[0] for x in functions[:10]])
-    """
+    functions = get_n_functions(src_files, 10)
+    functions_and_chatgpt = functions + get_chaptgpt_text()
+    draw_2d_embeddings(
+            get_low_dimension_embeddings(functions_and_chatgpt),
+            get_function_names(functions)
+    )
+
+def get_chaptgpt_text() -> list[str]:
+    with open("chatgpt.json", "r") as file:
+        functions = json.load(file)["functions"]
+    return [x["value"] for x in functions]
+
+
+
+def get_low_dimension_embeddings(text: list[str]) -> NDArray:
+    embeddings = make_same_dimensions([function_to_embedding(t) for t in text])
+    return embedding_to_low_dimension(np.array(embeddings))
 
 
 def get_function_names(functions: list[str]) -> list[str]:
-    return [x.split("\n")[0] + " " + x.split("\n")[1] for x in functions]
+    names = [x.split("\n")[0] + " " + x.split("\n")[1] for x in functions]
+    return [x.strip("{") for x in names]
 
 
 def make_same_dimensions(embeddings: list[NDArray]) -> list[NDArray]:
@@ -43,8 +51,13 @@ def make_same_dimensions(embeddings: list[NDArray]) -> list[NDArray]:
 def draw_2d_embeddings(embedding: NDArray, names: list[str]):
     plt.figure(figsize=(6, 5))
     colors = 'r', 'g', 'b', 'c', 'm', 'y', 'k', 'grey', 'orange', 'purple'
+    colors = colors + colors
+    names  = names + names
     for i, c, n in zip(range(embedding.shape[0]), colors, names):
-        plt.scatter(embedding[i, 0], embedding[i, 1], c=c, label=n)
+        if i < 10:
+            plt.scatter(embedding[i, 0], embedding[i, 1], c=c, label=n)
+        else:
+            plt.scatter(embedding[i, 0], embedding[i, 1], c=c)
     plt.legend()
     plt.show()
 
