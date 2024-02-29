@@ -12,7 +12,7 @@ TOP_P: float = 0.9
 MAX_GEN_LENGTH: Optional[int] = None
 
 def main():
-    with open("function-definition-table.json") as file:
+    with open("data/function-definition-table.json") as file:
         definitions = json.load(file)
         llama_prompt = "Kannst du mir die Funktion erklären?\n"
         llama_generator = build_llama_generator()
@@ -23,7 +23,7 @@ def main():
             ))
 
 def dump_llama_function_explanation() -> None:
-    with open("function-definition-table.json") as file:
+    with open("data/function-definition-table.json") as file:
         definitions = json.load(file)
         llama_out = {}
         llama_prompt = "Kannst du mir die Funktion erklären?\n"
