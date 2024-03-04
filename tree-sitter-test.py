@@ -33,7 +33,9 @@ def debug_print(path: str) -> None:
     print(get_function_definitions(root_node))
     print("="*30)
 
+
 debug_print("glibc/io/read.c")
 debug_print("glibc/stdlib/random.c")
 debug_print("glibc/stdlib/exit.c")
 debug_print("glibc/stdlib/qsort.c")
+debug_print("glibc/sysdeps/ieee754/dbl-64/s_sin.c")
