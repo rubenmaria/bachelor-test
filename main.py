@@ -6,8 +6,14 @@ from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
 import plotly.express as px
 
+FUNCTION_COMMENT_EMBEDDINGS: str = "data/function-comment-embeddings.json"
+FUNCTION_SUMMARY_EMBEDDINGS: str = "data/function-summary-embeddings.json"
+
 def main():
-    embeddings = load_comment_embeddings()
+    scatter_plot_embbeding(FUNCTION_SUMMARY_EMBEDDINGS)
+
+def scatter_plot_embbeding(path: str):
+    embeddings = load_embeddings(path)
     scatter_plot_named_embeddings(embeddings)
 
 def scatter_plot_named_embeddings(embeddings: dict[str, NDArray]) -> None:
@@ -20,11 +26,25 @@ def scatter_plot_named_embeddings(embeddings: dict[str, NDArray]) -> None:
     )
     fig.show()
 
-def load_comment_embeddings() -> dict[str, NDArray]:
+
+def load_embeddings(path: str) -> dict[str, NDArray]:
     embeddings : dict[str, list[float]]= {}
-    with open("data/function-comment-embeddings.json") as f:
+    with open(path) as f:
         embeddings = json.load(f)
     return {key : np.array(value) for key, value in embeddings.items()}
+
+def dump_summary_embeddings():
+    summaries: dict[str,str] = {}
+    with open("data/function-summaries.json") as f:
+        summaries = json.load(f)
+    print(summaries)
+    embeddings = get_low_dimension_embeddings(list(summaries.values()))
+    summary_embeddings = {
+        list(summaries.keys())[i] : embeddings[i].tolist()
+        for i in range(len(summaries))
+    }
+    with open("summary-embeddings-raw.json", "w") as f:
+        json.dump(summary_embeddings, f)
 
 def dump_comment_embeddings():
     comments: dict[str,str] = {}
