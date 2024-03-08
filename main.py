@@ -5,14 +5,18 @@ from sklearn.manifold import TSNE
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
 import plotly.express as px
+import torch
+from transformers import AutoModel, AutoTokenizer
 
 FUNCTION_COMMENT_EMBEDDINGS: str = "data/function-comment-embeddings.json"
 FUNCTION_SUMMARY_EMBEDDINGS: str = "data/function-summary-embeddings.json"
+FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
+
 
 def main():
-    scatter_plot_embbeding(FUNCTION_SUMMARY_EMBEDDINGS)
+    scatter_plot_embeddings(FUNCTION_SUMMARY_CLAP_EBEDDINGS)
 
-def scatter_plot_embbeding(path: str):
+def scatter_plot_embbedings(path: str):
     embeddings = load_embeddings(path)
     scatter_plot_named_embeddings(embeddings)
 
@@ -45,6 +49,38 @@ def dump_summary_embeddings():
     }
     with open("summary-embeddings-raw.json", "w") as f:
         json.dump(summary_embeddings, f)
+
+def dump_summary_embeddings_clap():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    text_tokenizer = AutoTokenizer.from_pretrained(
+        "hustcw/clap-text",
+        trust_remote_code=True
+    )
+    text_encoder = AutoModel.from_pretrained(
+        "hustcw/clap-text",
+        trust_remote_code=True
+    ).to(device)
+
+    summaries: dict[str,str] = {}
+    with open("data/function-summaries.json") as f:
+        summaries = json.load(f)
+    text_embeddings = []
+    for chunk in chunks(list(summaries.values()), 100):
+        print(len(chunk))
+        text_input = text_tokenizer(
+            chunk,
+            return_tensors='pt',
+            padding=True
+        ).to(device)
+        text_embeddings += text_encoder(**text_input).tolist()
+    embeddings = embedding_to_low_dimension(np.array(text_embeddings))
+    summary_embeddings = {
+        list(summaries.keys())[i] : embeddings[i].tolist()
+        for i in range(len(summaries))
+    }
+    with open("summary-embeddings-raw-clap.json", "w") as f:
+        json.dump(summary_embeddings, f)
+    print(embeddings)
 
 def dump_comment_embeddings():
     comments: dict[str,str] = {}
@@ -102,6 +138,10 @@ def function_to_embedding(function: str) -> NDArray:
 
 def embedding_to_low_dimension(embedding: NDArray) -> NDArray:
     return TSNE(perplexity=5).fit_transform(embedding)
+
+def chunks(seq, size):
+    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
 
 if __name__ == '__main__':
     main()
