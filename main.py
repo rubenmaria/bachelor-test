@@ -2,8 +2,8 @@ import json
 import numpy as np
 from numpy._typing import NDArray
 from sklearn.manifold import TSNE
+from sklearn.cluster import DBSCAN
 from sentence_transformers import SentenceTransformer
-from matplotlib import pyplot as plt
 import plotly.express as px
 import torch
 from transformers import AutoModel, AutoTokenizer
@@ -11,23 +11,74 @@ from transformers import AutoModel, AutoTokenizer
 FUNCTION_COMMENT_EMBEDDINGS: str = "data/function-comment-embeddings.json"
 FUNCTION_SUMMARY_EMBEDDINGS: str = "data/function-summary-embeddings.json"
 FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
+FUNCTION_NAME_EMBEDDINGS: str = "data/name-embeddings.json"
 
 
 def main():
-    scatter_plot_embeddings(FUNCTION_SUMMARY_CLAP_EBEDDINGS)
-
-def scatter_plot_embbedings(path: str):
-    embeddings = load_embeddings(path)
-    scatter_plot_named_embeddings(embeddings)
-
-def scatter_plot_named_embeddings(embeddings: dict[str, NDArray]) -> None:
-    x_coordinate = np.array(list(embeddings.values()))[:,0]
-    y_coordinate = np.array(list(embeddings.values()))[:,1]
-    fig = px.scatter(
-        x=x_coordinate,
-        y=y_coordinate,
-        hover_name=list(embeddings.keys())
+    plot_embeddings_from_path(
+        FUNCTION_COMMENT_EMBEDDINGS,
+        ["lchmod", "seed48", "nrand48"],
+        "top right"
     )
+    #scatter_plot_clusters_from_path(FUNCTION_SUMMARY_CLAP_EMBEDDINGS)
+
+def scatter_plot_clusters_from_path(path: str):
+    embeddings = load_embeddings(path)
+    labels = cluster_embeddings(np.array(list(embeddings.values())))
+    scatter_plot_clusters(embeddings, labels)
+
+def scatter_plot_clusters(embeddings: dict[str, NDArray], labels: list[int]):
+    x_coordinates = np.array(list(embeddings.values()))[:,0]
+    y_coordinates = np.array(list(embeddings.values()))[:,1]
+    fig = px.scatter(
+        x=x_coordinates,
+        y=y_coordinates,
+        color=labels,
+        hover_name=list(embeddings.keys()),
+    )
+    fig.show()
+
+
+def cluster_embeddings(embeddings: NDArray) -> list[int]:
+    clustering = DBSCAN(eps=3, min_samples=5).fit(embeddings)
+    return clustering.labels_.tolist()
+
+def plot_embeddings_from_path(
+        path: str,
+        highlight: list[str],
+        text_position: str
+):
+    embeddings = load_embeddings(path)
+    highlight_color: list[str] = [
+        "#6495ED" if x in highlight else "#FF7F50" for x in embeddings.keys()
+    ]
+    highlight_text: list[str] = [
+            x if x in highlight else "" for x in embeddings.keys()
+    ]
+    scatter_plot_named_embeddings(
+        embeddings,
+        highlight_color,
+        highlight_text,
+        text_position
+    )
+
+def scatter_plot_named_embeddings(
+        embeddings: dict[str, NDArray],
+        highlight_color: list[str],
+        highlight_text: list[str],
+        text_position: str
+) -> None:
+    x_coordinates = np.array(list(embeddings.values()))[:,0]
+    y_coordinates = np.array(list(embeddings.values()))[:,1]
+    fig = px.scatter(
+        x=x_coordinates,
+        y=y_coordinates,
+        color=highlight_color,
+        hover_name=list(embeddings.keys()),
+        text=highlight_text,
+        opacity=0.7
+    )
+    fig.update_traces(textposition=text_position, textfont_size=18)
     fig.show()
 
 
@@ -36,6 +87,18 @@ def load_embeddings(path: str) -> dict[str, NDArray]:
     with open(path) as f:
         embeddings = json.load(f)
     return {key : np.array(value) for key, value in embeddings.items()}
+
+def dump_name_embeddings():
+    names: list[str] = []
+    with open("data/function-names.json") as f:
+        names = json.load(f)["functions"]
+    print(names)
+    embeddings = get_low_dimension_embeddings(names)
+    summary_embeddings = {
+        names[i] : embeddings[i].tolist() for i in range(len(names))
+    }
+    with open("name-embeddings-raw.json", "w") as f:
+        json.dump(summary_embeddings, f)
 
 def dump_summary_embeddings():
     summaries: dict[str,str] = {}
@@ -99,10 +162,6 @@ def get_low_dimension_embeddings(text: list[str]) -> NDArray:
     embeddings = make_same_dimensions([function_to_embedding(t) for t in text])
     return embedding_to_low_dimension(np.array(embeddings))
 
-def get_function_names(functions: list[str]) -> list[str]:
-    names = [x.split("\n")[0] + " " + x.split("\n")[1] for x in functions]
-    return [x.strip("{") for x in names]
-
 def make_same_dimensions(embeddings: list[NDArray]) -> list[NDArray]:
     max_dimension = max([e.shape[0] for e in embeddings])
     result = list()
@@ -113,19 +172,6 @@ def make_same_dimensions(embeddings: list[NDArray]) -> list[NDArray]:
         else:
             result.append(e)
     return result
-
-def draw_2d_embeddings(embedding: NDArray, names: list[str]):
-    plt.figure(figsize=(6, 5))
-    colors = 'r', 'g', 'b', 'c', 'm', 'y', 'k', 'grey', 'orange', 'purple'
-    colors = colors + colors
-    names  = names + names
-    for i, c, n in zip(range(embedding.shape[0]), colors, names):
-        if i < 10:
-            plt.scatter(embedding[i, 0], embedding[i, 1], c=c, label=n)
-        else:
-            plt.scatter(embedding[i, 0], embedding[i, 1], c=c)
-    plt.legend()
-    plt.show()
 
 def function_to_embedding(function: str) -> NDArray:
     model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -141,7 +187,6 @@ def embedding_to_low_dimension(embedding: NDArray) -> NDArray:
 
 def chunks(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
-
 
 if __name__ == '__main__':
     main()
