@@ -1,9 +1,10 @@
 import os
 import json
 import fire
+import tree_sitter_c as tsc
 from tree_sitter import Parser, Language, Node
 
-C_LANGUAGE = Language("grammar/c-grammar.so", "c")
+C_LANGUAGE = Language(tsc.language(), "c")
 SYMBOL_PATH = "data/libm-libc-symbols.json"
 
 def main():
@@ -19,7 +20,7 @@ def dump_function_definitions(glibc_path: str) -> None:
     symbols   = get_symbols(SYMBOL_PATH)
     functions = get_all_function_definitions(src_files, symbols)
     with open('function-defintion-table.json', 'w') as f:
-        json.dump(functions, f)
+        json.dump(functions, f, indent=2)
 
 def dump_function_names(glibc_path: str) -> None:
     print("Generating function-name-table.json...")
@@ -27,7 +28,7 @@ def dump_function_names(glibc_path: str) -> None:
     symbols   = get_symbols(SYMBOL_PATH)
     functions = get_all_function_names(src_files, symbols)
     with open('function-name-table.json', 'w') as f:
-        json.dump({"functions": functions}, f)
+        json.dump({name : name for name in functions}, f, indent=2)
 
 def dump_function_comments(glibc_path: str, deduction: bool) -> None:
     src_files = get_src_files(glibc_path)
@@ -41,7 +42,7 @@ def dump_function_comments(glibc_path: str, deduction: bool) -> None:
         dump_name = "function-comment-table.json"
     print(f"Generating {dump_name}...")
     with open(dump_name, 'w') as f:
-        json.dump(function_comments, f)
+        json.dump(function_comments, f, indent=2)
     
 
 def get_symbols(path: str) -> list[str]:
