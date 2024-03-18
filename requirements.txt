@@ -1,0 +1,11 @@
+fire
+tree_sitter_languages
+tree_sitter
+numpy
+scikit-learn
+sentence_transformers
+transformers
+plotly
+torch
+umap-learn
+pandas

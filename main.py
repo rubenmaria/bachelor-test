@@ -9,12 +9,6 @@ from transformers import AutoModel, AutoTokenizer
 import plotly.express as px
 import torch
 import random
-#import umap
-
-FUNCTION_COMMENT_EMBEDDINGS: str = "data/comment-embeddings.json"
-FUNCTION_SUMMARY_EMBEDDINGS: str = "data/summary-embeddings.json"
-FUNCTION_NAME_EMBEDDINGS: str = "data/name-embeddings.json"
-FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
 
 FUNCTION_COMMENTS: str = "data/comments-with-deduction.json"
 FUNCTION_SUMMARIES: str = "data/summaries.json"
@@ -24,23 +18,29 @@ FUNCTION_COMMENT_EMBEDDINGS_HIGH: str = "data/comment-embeddings-high.json"
 FUNCTION_SUMMARY_EMBEDDINGS_HIGH: str = "data/summary-embeddings-high.json"
 FUNCTION_NAME_EMBEDDINGS_HIGH: str = "data/name-embeddings-high.json"
 
-def main():
-    for perplexity in range(5, 100, 10):
-        generate_low_dimensional(
-            f"comment-embeddings-low-{perplexity}.json",
-            FUNCTION_COMMENT_EMBEDDINGS_HIGH,
-            TSNE(perplexity=perplexity)
-        )
-        plot_clusters_from_path(
-            f"comment-embeddings-low-{perplexity}.json",
-            title=f"comment-embeddings-low-{perplexity}",
-        )
+FUNCTION_COMMENT_EMBEDDINGS_LOW: str = "data/comment-embeddings-low.json"
+FUNCTION_SUMMARY_EMBEDDINGS_LOW: str = "data/summary-embeddings-low.json"
+FUNCTION_NAME_EMBEDDINGS_LOW: str = "data/name-embeddings-low.json"
 
-    
+FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
+
+def main():
+    plot_clusters_from_path(FUNCTION_NAME_EMBEDDINGS_LOW, "data/cluster.json", "hhaha")
+
+def generate_embedding_sample(output_path: str, path: str, n: int) -> None:
+    data: dict[str,list[float]] = {}
+    with open(path) as f:
+        data = json.load(f)
+    sample = random.sample(list(data.items()), n)
+    sample_embeddings = { k : v for (k,v) in sample }
+    with open(output_path, "w") as f:
+        json.dump(sample_embeddings, f, indent=2)
+
+
 def generate_low_dimensional(
         output_path: str,
         path: str,
-        transformer = TSNE(),
+        transformer,
     ) -> None:
     data: dict[str,list[float]] = {}
     embeddings: list[NDArray] = []
@@ -75,10 +75,36 @@ def generate_high_dimensional(
     with open(output_path, "w") as f:
         json.dump(named_embeddings, f, indent=1)
 
-def plot_clusters_from_path(path: str, title: str):
-    embeddings = load_embeddings(path)
-    labels = cluster_embeddings(np.array(list(embeddings.values())))
-    plot_clusters(embeddings, labels, title)
+def plot_clusters_from_path(path: str,  cluster_path: str, title: str):
+    cluster_data = load_cluster(cluster_path)
+    colors = cluster_data.pop("colors")
+    cluster_names = [name for names in cluster_data.values() for name in names]
+    embeddings = {k:v for k, v in load_embeddings(path).items() if k in cluster_names}
+    
+    labels: list[str] = []
+    for label_name in embeddings.keys():
+        for color_index, names in enumerate(cluster_data.values()):
+            if label_name in names:
+                labels.append(colors[color_index])
+                break
+
+    x_coordinates = np.array(list(embeddings.values()))[:,0]
+    y_coordinates = np.array(list(embeddings.values()))[:,1]
+    fig = px.scatter(
+        x=x_coordinates,
+        y=y_coordinates,
+        color=labels,
+        hover_name=list(embeddings.keys()),
+        title=title
+    )
+    fig.show()
+    
+
+
+def load_cluster(path: str) -> dict[str,list[str]]:
+    with open(path) as f:
+        return json.load(f)
+
 
 def plot_clusters(
     embeddings: dict[str, NDArray],
@@ -96,9 +122,29 @@ def plot_clusters(
     )
     fig.show()
 
-def cluster_embeddings(embeddings: NDArray, eps: int = 3, min_samples: int = 5) -> list[int]:
+def cluster_embeddings(
+    embeddings: NDArray,
+    eps: int = 3,
+    min_samples: int = 5
+    ) -> list[int]:
     clustering = DBSCAN(eps=eps, min_samples=min_samples).fit(embeddings)
     return clustering.labels_.tolist()
+
+def generate_cluster_from_path(output_path: str , input_path: str) -> None:
+    embeddings = load_embeddings(input_path)
+    names = list(embeddings.keys())
+    cluster = cluster_embeddings(np.array(list(embeddings.values())))
+    
+    named_cluster = []
+    for element in set(cluster):
+        named_cluster.append(
+            (
+                f"{element}", 
+                [names[i] for i, x in enumerate(cluster) if element == x]
+            )
+        )
+    with open(output_path, "w") as f:
+        json.dump(dict(named_cluster), f, indent=2)
 
 def plot_embeddings_from_path(
         path: str,
