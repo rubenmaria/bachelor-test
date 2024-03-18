@@ -1,10 +1,9 @@
 import os
 import json
 import fire
-import tree_sitter_c as tsc
-from tree_sitter import Parser, Language, Node
+from tree_sitter_languages import get_parser
+from tree_sitter import Parser, Node
 
-C_LANGUAGE = Language(tsc.language(), "c")
 SYMBOL_PATH = "data/libm-libc-symbols.json"
 
 def main():
@@ -61,8 +60,7 @@ def get_src_files(glibc_path: str) -> list[str]:
 
 def get_all_function_comments(src_files: list[str], symbols: list[str]) -> dict[str,list[str]]:
     comments = {}
-    parser = Parser()
-    parser.set_language(C_LANGUAGE)
+    parser = get_parser("c")
     for src_file in src_files:
         try:
             root_node = parse_src_file(parser, src_file)
@@ -76,8 +74,7 @@ def get_all_function_comments(src_files: list[str], symbols: list[str]) -> dict[
 
 def get_all_function_comments_deduction(src_files: list[str], symbols: list[str]) -> dict[str,list[str]]:
     comments = {}
-    parser = Parser()
-    parser.set_language(C_LANGUAGE)
+    parser = get_parser("c")
     for src_file in src_files:
         try: 
             root_node = parse_src_file(parser, src_file)
@@ -91,8 +88,7 @@ def get_all_function_comments_deduction(src_files: list[str], symbols: list[str]
 
 def get_all_function_names(src_files: list[str], symbols: list[str]) -> list[str]:
     functions = []
-    parser = Parser()
-    parser.set_language(C_LANGUAGE)
+    parser = get_parser("c")
     for src_file in src_files:
         root_node = parse_src_file(parser, src_file)
         name = get_function_definition_names(root_node)
@@ -101,8 +97,7 @@ def get_all_function_names(src_files: list[str], symbols: list[str]) -> list[str
 
 def get_all_function_definitions(src_files: list[str], symbols: list[str]) -> dict[str,str]:
     functions = {}
-    parser = Parser()
-    parser.set_language(C_LANGUAGE)
+    parser = get_parser("c")
     for src_file in src_files:
         root_node = parse_src_file(parser, src_file)
         functions = dict(
@@ -260,8 +255,7 @@ def marco_blocking_comment(node: Node) -> bool:
     return node.has_error and node.type != "function_definition"
 
 def get_root_node_from_path(path: str) -> Node:
-    parser = Parser()
-    parser.set_language(C_LANGUAGE)
+    parser = get_parser("c")
     src = str()
     with open(path) as f:
         src = f.read()
