@@ -25,7 +25,39 @@ FUNCTION_NAME_EMBEDDINGS_LOW: str = "data/name-embeddings-low.json"
 FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
 
 def main():
-    plot_clusters_from_path(FUNCTION_NAME_EMBEDDINGS_LOW, "data/cluster.json", "hhaha")
+    for path in [FUNCTION_SUMMARY_EMBEDDINGS_LOW, FUNCTION_COMMENT_EMBEDDINGS_LOW, FUNCTION_NAME_EMBEDDINGS_LOW]:
+        #plot_triplet_from_path(path, ("lchmod", "rand", "rand_r")) # negative example comments
+        plot_clusters_from_path(path, "data/cluster-10.json", path, True)
+
+
+
+def cluster_missing(path: str, output_path: str) -> None:
+    cluster_data = load_cluster(path)
+    cluster_data.pop("colors")
+    names_in_cluster = set([name for names in cluster_data.values() for name in names])
+    all_names = set(load_embeddings(FUNCTION_NAME_EMBEDDINGS_LOW).keys())
+    diffrence = list(all_names - names_in_cluster)
+    with open (output_path, "w+") as f:
+        json.dump({"functions: ": diffrence}, f, indent=2)
+
+
+def plot_triplet_from_path(path: str, triple_names: tuple[str,str,str], text_position: str = None) -> None:
+    named_embeddings = load_embeddings(path)
+    triplet = {k : v for k,v in named_embeddings.items() if k in triple_names}
+    size = 30
+    x_coordinates = np.array(list(triplet.values()))[:,0]
+    y_coordinates = np.array(list(triplet.values()))[:,1]
+    fig = px.scatter(
+        x=x_coordinates,
+        y=y_coordinates,
+        hover_name=(names := list(triplet.keys())),
+        text=names,
+        title=f"Triple: {names[0]}, {names[1]}, {names[2]}",
+        size=[size for _ in range(3)]
+    )
+    fig.update_traces(textposition=text_position or "top center", textfont_size=40)
+    fig.show()
+
 
 def generate_embedding_sample(output_path: str, path: str, n: int) -> None:
     data: dict[str,list[float]] = {}
@@ -75,17 +107,19 @@ def generate_high_dimensional(
     with open(output_path, "w") as f:
         json.dump(named_embeddings, f, indent=1)
 
-def plot_clusters_from_path(path: str,  cluster_path: str, title: str):
+def plot_clusters_from_path(path: str,  cluster_path: str, title: str, show_category: bool):
     cluster_data = load_cluster(cluster_path)
     colors = cluster_data.pop("colors")
     cluster_names = [name for names in cluster_data.values() for name in names]
     embeddings = {k:v for k, v in load_embeddings(path).items() if k in cluster_names}
     
     labels: list[str] = []
+    symbols: list[str] = []
     for label_name in embeddings.keys():
-        for color_index, names in enumerate(cluster_data.values()):
+        for color_index, (category, names) in enumerate(cluster_data.items()):
             if label_name in names:
                 labels.append(colors[color_index])
+                symbols.append(category)
                 break
 
     x_coordinates = np.array(list(embeddings.values()))[:,0]
@@ -94,9 +128,12 @@ def plot_clusters_from_path(path: str,  cluster_path: str, title: str):
         x=x_coordinates,
         y=y_coordinates,
         color=labels,
+        symbol=symbols if show_category else None,
         hover_name=list(embeddings.keys()),
         title=title
     )
+    output_path = path.removesuffix(".json").replace("/", "-") + ".html"
+    fig.write_html(output_path)
     fig.show()
     
 
@@ -174,7 +211,7 @@ def scatter_plot_named_embeddings(
         highlight_color: list[str],
         highlight_text: list[str],
         title: str,
-        text_position: str = "center top"
+        text_position: str = "top center"
 ) -> None:
     x_coordinates = np.array(list(embeddings.values()))[:,0]
     y_coordinates = np.array(list(embeddings.values()))[:,1]
