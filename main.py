@@ -27,7 +27,7 @@ FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
 def main():
     for path in [FUNCTION_SUMMARY_EMBEDDINGS_LOW, FUNCTION_COMMENT_EMBEDDINGS_LOW, FUNCTION_NAME_EMBEDDINGS_LOW]:
         #plot_triplet_from_path(path, ("lchmod", "rand", "rand_r")) # negative example comments
-        plot_clusters_from_path(path, "data/cluster-10.json", path, True)
+        plot_clusters_from_path(path, "data/cluster.json", path, True)
 
 
 
@@ -107,7 +107,12 @@ def generate_high_dimensional(
     with open(output_path, "w") as f:
         json.dump(named_embeddings, f, indent=1)
 
-def plot_clusters_from_path(path: str,  cluster_path: str, title: str, show_category: bool):
+def plot_clusters_from_path(
+    path: str,
+    cluster_path: str,
+    title: str,
+    show_category: bool,
+) -> None:
     cluster_data = load_cluster(cluster_path)
     colors = cluster_data.pop("colors")
     cluster_names = [name for names in cluster_data.values() for name in names]
@@ -124,9 +129,16 @@ def plot_clusters_from_path(path: str,  cluster_path: str, title: str, show_cate
 
     x_coordinates = np.array(list(embeddings.values()))[:,0]
     y_coordinates = np.array(list(embeddings.values()))[:,1]
+
+    assert len(labels) == x_coordinates.shape[0] 
+    assert len(labels) == y_coordinates.shape[0]
+    assert len(symbols) == x_coordinates.shape[0]
+    assert len(symbols) == y_coordinates.shape[0]
+
     fig = px.scatter(
         x=x_coordinates,
         y=y_coordinates,
+        color_discrete_sequence=colors,
         color=labels,
         symbol=symbols if show_category else None,
         hover_name=list(embeddings.keys()),
