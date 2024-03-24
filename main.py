@@ -27,7 +27,7 @@ FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
 def main():
     for path in [FUNCTION_SUMMARY_EMBEDDINGS_LOW, FUNCTION_COMMENT_EMBEDDINGS_LOW, FUNCTION_NAME_EMBEDDINGS_LOW]:
         #plot_triplet_from_path(path, ("lchmod", "rand", "rand_r")) # negative example comments
-        plot_clusters_from_path(path, "data/cluster.json", path, True)
+        plot_clusters_from_path(path, "data/cluster-10.json", path, True)
 
 
 
