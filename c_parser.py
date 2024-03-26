@@ -13,35 +13,45 @@ def main():
         "comment": dump_function_comments
     })
     
-def dump_function_definitions(glibc_path: str) -> None:
-    print("Generating function-defintion-table.json...")
-    src_files = get_src_files(glibc_path)
-    symbols   = get_symbols(SYMBOL_PATH)
-    functions = get_all_function_definitions(src_files, symbols)
-    with open('function-defintion-table.json', 'w') as f:
+def dump_function_definitions(
+    src_path: str,
+    filter_path: str,
+    ouput_path: str
+) -> None:
+    print(f"Generating {ouput_path}...")
+    src_files = get_src_files(src_path)
+    valid_symbols = get_symbols(filter_path)
+    functions = get_all_function_definitions(src_files, valid_symbols)
+    with open(ouput_path, 'w') as f:
         json.dump(functions, f, indent=2)
 
-def dump_function_names(glibc_path: str) -> None:
-    print("Generating function-name-table.json...")
-    src_files = get_src_files(glibc_path)
-    symbols   = get_symbols(SYMBOL_PATH)
-    functions = get_all_function_names(src_files, symbols)
-    with open('function-name-table.json', 'w') as f:
+def dump_function_names(
+    src_path: str,
+    filter_path: str,
+    output_path: str
+) -> None:
+    print(f"Generating {output_path}...")
+    src_files = get_src_files(src_path)
+    valid_symbols = get_symbols(filter_path)
+    functions = get_all_function_names(src_files, valid_symbols)
+    with open(output_path, 'w') as f:
         json.dump({name : name for name in functions}, f, indent=2)
 
-def dump_function_comments(glibc_path: str, deduction: bool) -> None:
-    src_files = get_src_files(glibc_path)
-    symbols   = get_symbols(SYMBOL_PATH)
-    dump_name = ""
-    if deduction:
-        function_comments = get_all_function_comments_deduction(src_files, symbols)
-        dump_name = "function-comment-deduction-table.json"
+def dump_function_comments(
+    src_path: str,
+    filter_path: str,
+    output_path: str,
+    deduction: bool = True
+) -> None:
+    print(f"Generating {output_path}...")
+    src_files = get_src_files(src_path)
+    valid_symbols = get_symbols(filter_path)
+    if not deduction:
+        comments = get_all_function_comments(src_files, valid_symbols)
     else:
-        function_comments = get_all_function_comments(src_files, symbols)
-        dump_name = "function-comment-table.json"
-    print(f"Generating {dump_name}...")
-    with open(dump_name, 'w') as f:
-        json.dump(function_comments, f, indent=2)
+        comments = get_all_function_comments_deduction(src_files, valid_symbols)
+    with open(output_path, 'w') as f:
+        json.dump(comments, f, indent=2)
     
 
 def get_symbols(path: str) -> list[str]:
@@ -49,9 +59,9 @@ def get_symbols(path: str) -> list[str]:
         symbols = json.load(fh)
         return symbols['symbols']
 
-def get_src_files(glibc_path: str) -> list[str]:
+def get_src_files(src_path: str) -> list[str]:
     src_files = list()
-    for root, _, files in os.walk(glibc_path):
+    for root, _, files in os.walk(src_path):
         for file in files:
             current_file_path = os.path.join(root, file)
             if current_file_path.endswith(".c"):

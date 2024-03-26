@@ -25,10 +25,10 @@ FUNCTION_NAME_EMBEDDINGS_LOW: str = "data/name-embeddings-low.json"
 FUNCTION_SUMMARY_CLAP_EMBEDDINGS: str = "data/summary-embeddings-clap.json"
 
 def main():
-    for path in [FUNCTION_SUMMARY_EMBEDDINGS_LOW, FUNCTION_COMMENT_EMBEDDINGS_LOW, FUNCTION_NAME_EMBEDDINGS_LOW]:
-        #plot_triplet_from_path(path, ("lchmod", "rand", "rand_r")) # negative example comments
-        plot_clusters_from_path(path, "data/cluster.json", path, True)
+    ...
 
+def generate_summaries():
+    ...
 
 
 def cluster_missing(path: str, output_path: str) -> None:
@@ -41,7 +41,11 @@ def cluster_missing(path: str, output_path: str) -> None:
         json.dump({"functions: ": diffrence}, f, indent=2)
 
 
-def plot_triplet_from_path(path: str, triple_names: tuple[str,str,str], text_position: str = None) -> None:
+def plot_triplet_from_path(
+    path: str,
+    triple_names: tuple[str,str,str],
+    text_position: str = "top center"
+) -> None:
     named_embeddings = load_embeddings(path)
     triplet = {k : v for k,v in named_embeddings.items() if k in triple_names}
     size = 30
@@ -55,7 +59,7 @@ def plot_triplet_from_path(path: str, triple_names: tuple[str,str,str], text_pos
         title=f"Triple: {names[0]}, {names[1]}, {names[2]}",
         size=[size for _ in range(3)]
     )
-    fig.update_traces(textposition=text_position or "top center", textfont_size=40)
+    fig.update_traces(textposition=text_position, textfont_size=40)
     fig.show()
 
 
@@ -111,7 +115,7 @@ def plot_clusters_from_path(
     path: str,
     cluster_path: str,
     title: str,
-    show_category: bool,
+    show_category: bool = True,
 ) -> None:
     cluster_data = load_cluster(cluster_path)
     colors = cluster_data.pop("colors")
@@ -147,7 +151,6 @@ def plot_clusters_from_path(
     output_path = path.removesuffix(".json").replace("/", "-") + ".html"
     fig.write_html(output_path)
     fig.show()
-    
 
 
 def load_cluster(path: str) -> dict[str,list[str]]:
