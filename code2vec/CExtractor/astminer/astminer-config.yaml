@@ -1,0 +1,15 @@
+inputDir: trainings-data/glibc/io
+outputDir: ../../TEMP
+parser:
+  name: fuzzy
+  languages:
+  - c
+filters:
+- name: by tree size
+  maxTreeSize: 1000
+label:
+  name: function name
+storage:
+  name: code2vec
+  maxPathLength: 8
+  maxPathWidth: 2
