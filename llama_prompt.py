@@ -1,5 +1,4 @@
 import json
-import time
 from typing import Optional
 from llama import Llama
 
@@ -12,13 +11,13 @@ TOP_P: float = 0.9
 MAX_GEN_LENGTH: Optional[int] = None
 
 def main():
-    dump_llama_function_explanation(
+    generate_summaries(
         "data/function-defintions.json",
         "data/prompt.txt",
         "function-definition-explanation.json"
     )
 
-def dump_llama_function_explanation(
+def generate_summaries(
     def_path: str,
     prompt_path: str,
     output_path: str

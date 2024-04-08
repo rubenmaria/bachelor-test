@@ -1,19 +1,17 @@
 import os
 import json
 import fire
-from tree_sitter_languages import get_parser
-from tree_sitter import Parser, Node
-
-SYMBOL_PATH = "data/libm-libc-symbols.json"
+import tree_sitter_c as tsc
+from tree_sitter import Parser, Node, Language
 
 def main():
     fire.Fire({
-        "definition" : dump_function_definitions,
-        "name": dump_function_names,
-        "comment": dump_function_comments
+        "definition" : generate_function_definitions,
+        "name": generate_function_names,
+        "comment": generate_function_comments
     })
     
-def dump_function_definitions(
+def generate_function_definitions(
     src_path: str,
     filter_path: str,
     ouput_path: str
@@ -25,7 +23,7 @@ def dump_function_definitions(
     with open(ouput_path, 'w') as f:
         json.dump(functions, f, indent=2)
 
-def dump_function_names(
+def generate_function_names(
     src_path: str,
     filter_path: str,
     output_path: str
@@ -37,7 +35,7 @@ def dump_function_names(
     with open(output_path, 'w') as f:
         json.dump({name : name for name in functions}, f, indent=2)
 
-def dump_function_comments(
+def generate_function_comments(
     src_path: str,
     filter_path: str,
     output_path: str,
@@ -56,8 +54,8 @@ def dump_function_comments(
 
 def get_symbols(path: str) -> list[str]:
     with open(path, 'r') as fh:
-        symbols = json.load(fh)
-        return symbols['symbols']
+        symbols: dict[str,str] = json.load(fh)
+        return list(symbols.values())
 
 def get_src_files(src_path: str) -> list[str]:
     src_files = list()
@@ -70,7 +68,7 @@ def get_src_files(src_path: str) -> list[str]:
 
 def get_all_function_comments(src_files: list[str], symbols: list[str]) -> dict[str,list[str]]:
     comments = {}
-    parser = get_parser("c")
+    parser = setup_parser()
     for src_file in src_files:
         try:
             root_node = parse_src_file(parser, src_file)
@@ -84,7 +82,7 @@ def get_all_function_comments(src_files: list[str], symbols: list[str]) -> dict[
 
 def get_all_function_comments_deduction(src_files: list[str], symbols: list[str]) -> dict[str,list[str]]:
     comments = {}
-    parser = get_parser("c")
+    parser = setup_parser()
     for src_file in src_files:
         try: 
             root_node = parse_src_file(parser, src_file)
@@ -98,7 +96,7 @@ def get_all_function_comments_deduction(src_files: list[str], symbols: list[str]
 
 def get_all_function_names(src_files: list[str], symbols: list[str]) -> list[str]:
     functions = []
-    parser = get_parser("c")
+    parser = setup_parser()
     for src_file in src_files:
         root_node = parse_src_file(parser, src_file)
         name = get_function_definition_names(root_node)
@@ -107,7 +105,7 @@ def get_all_function_names(src_files: list[str], symbols: list[str]) -> list[str
 
 def get_all_function_definitions(src_files: list[str], symbols: list[str]) -> dict[str,str]:
     functions = {}
-    parser = get_parser("c")
+    parser = setup_parser()
     for src_file in src_files:
         root_node = parse_src_file(parser, src_file)
         functions = dict(
@@ -265,7 +263,7 @@ def marco_blocking_comment(node: Node) -> bool:
     return node.has_error and node.type != "function_definition"
 
 def get_root_node_from_path(path: str) -> Node:
-    parser = get_parser("c")
+    parser = setup_parser()
     src = str()
     with open(path) as f:
         src = f.read()
@@ -281,6 +279,12 @@ def parse_src_file(parser: Parser, src_file: str) -> Node:
             print(f"Invalid chars in {src_file}")
     tree = parser.parse(src.encode("utf-8"))
     return tree.root_node
+
+def setup_parser() -> Parser:
+    parser = Parser()
+    C_LANGUAGE = Language(tsc.language(), "c")
+    parser.set_language(C_LANGUAGE)
+    return parser
 
 if __name__ == '__main__':
     main()

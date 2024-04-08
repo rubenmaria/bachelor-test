@@ -1,5 +1,5 @@
 fire
-tree_sitter_languages
+tree-sitter-c
 tree_sitter
 numpy
 scikit-learn
@@ -9,3 +9,4 @@ plotly
 torch
 umap-learn
 pandas
+angr
