@@ -1,14 +1,16 @@
 import json
+from c_parser import get_definition_at
 from typing import Optional
 from llama import Llama
 
 CHECKPOINT_DIR: str = "/mnt/ambrym1/llama-model/llama/llama-2-13b-chat/"
 TOKENIZER_PATH: str = "/mnt/ambrym1/llama-model/llama/tokenizer.model"
 MAX_SEQUENCE_LENGTH: int = 8192 * 2
-MAX_BATCH_SIZE: int  = 6
-TEMPERATURE: float  = 0.6
+MAX_BATCH_SIZE: int = 6
+TEMPERATURE: float = 0.6
 TOP_P: float = 0.9
 MAX_GEN_LENGTH: Optional[int] = None
+
 
 def main():
     generate_summaries(
@@ -16,6 +18,17 @@ def main():
         "data/prompt.txt",
         "function-definition-explanation.json"
     )
+
+
+def get_summary_at(path: str, name: str, prompt_path: str) -> str:
+    llama_generator = build_llama_generator()
+    definition = get_definition_at(path, name)
+    llama_prompt = load_prompt(prompt_path)
+    try:
+        return prompt_llama(llama_generator, llama_prompt + definition)
+    except Exception as err:
+        raise RuntimeError(err)
+
 
 def generate_summaries(
     def_path: str,
@@ -42,13 +55,16 @@ def generate_summaries(
     with open(output_path, "w") as f:
         json.dump(llama_out, f)
 
-def load_function_definitions(path: str) -> dict[str,str]:
+
+def load_function_definitions(path: str) -> dict[str, str]:
     with open(path) as f:
         return json.load(f)
+
 
 def load_prompt(path: str) -> str:
     with open(path) as f:
         return f.readline().strip("\n")
+
 
 def build_llama_generator():
     generator = Llama.build(
@@ -58,6 +74,7 @@ def build_llama_generator():
         max_batch_size=MAX_BATCH_SIZE,
     )
     return generator
+
 
 def prompt_llama(generator, msg: str) -> str:
 
@@ -73,8 +90,9 @@ def prompt_llama(generator, msg: str) -> str:
     )
     anwser: str = str()
     for _, result in zip(dialogs, results):
-            anwser += f"{result['generation']['content']}".strip() + "\n"
+        anwser += f"{result['generation']['content']}".strip() + "\n"
     return anwser
+
 
 if __name__ == "__main__":
     main()
