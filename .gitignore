@@ -13,3 +13,7 @@ glibc
 */output/
 */*.csv
 */log.txt
+astminer-config.yaml
+.classpath
+.project
+.settings

@@ -19,10 +19,27 @@ ASTMINER_RELATIVE_TO_CODE2VEC = "CExtractor/astminer"
 
 def main() -> None:
     parser = ArgumentParser()
-    parser.add_argument("-maxlen", "--max_path_length", dest="max_path_length", required=False, default=8)
-    parser.add_argument("-maxwidth", "--max_path_width", dest="max_path_width", required=False, default=2)
+    parser.add_argument(
+        "-maxlen",
+        "--max_path_length",
+        dest="max_path_length",
+        required=False,
+        default=8
+    )
+    parser.add_argument(
+        "-maxwidth",
+        "--max_path_width",
+        dest="max_path_width",
+        required=False,
+        default=2
+    )
+    parser.add_argument(
+        "-ofile_name",
+        "--ofile_name",
+        dest="ofile_name",
+        required=True
+    )
     parser.add_argument("-dir", "--dir", dest="dir", required=True)
-    parser.add_argument("-ofile_name", "--ofile_name", dest="ofile_name", required=True)
     args = parser.parse_args()
     generate_context_paths(
         args.dir,
@@ -40,8 +57,14 @@ def generate_context_paths(
 ) -> None:
     generate_astminer_config(input_dir, max_path_length, max_path_width)
     generate_context_paths_with_astminer(input_dir)
-    generate_raw_code2vec_context_paths(output_file, CONTEXTS_PATH, TOKENS_PATH)
-    shutil.rmtree(os.path.join(os.getcwd(), ASTMINER_TEMP_OUTPUT_DIR))
+    generate_code2vec_context_paths(output_file, CONTEXTS_PATH, TOKENS_PATH)
+    remove_tempory_dir()
+
+
+def remove_tempory_dir() -> None:
+    temp_dir = os.path.join(os.getcwd(), ASTMINER_TEMP_OUTPUT_DIR)
+    print(f"Removing temporary directory: '{temp_dir}'")
+    shutil.rmtree(temp_dir)
 
 
 def generate_context_paths_with_astminer(input_dir: str) -> None:
@@ -51,6 +74,7 @@ def generate_context_paths_with_astminer(input_dir: str) -> None:
 
 
 def run_astminer() -> None:
+    print(f"starting script: {ASTMINER_SCRIPT_NAME} {ASTMINER_CONFIG_NAME}")
     result = subprocess.run(
         ["sh", ASTMINER_SCRIPT_NAME, ASTMINER_CONFIG_NAME],
         stdout=subprocess.PIPE
@@ -59,17 +83,24 @@ def run_astminer() -> None:
 
 
 def setup_astminer(input_dir: str) -> None:
-    copy_tree(
-        os.path.join(os.getcwd(), input_dir),
-        os.path.join(os.getcwd(), ASTMINER_RELATIVE_TO_CODE2VEC, input_dir)
+    trainings_dir = os.path.join(os.getcwd(), input_dir)
+    astminer_dir = os.path.join(
+        os.getcwd(),
+        ASTMINER_RELATIVE_TO_CODE2VEC,
+        input_dir
     )
+    print(f"copying '{trainings_dir}' to '{astminer_dir}'")
+    copy_tree(trainings_dir, astminer_dir)
+    print(f"changing directory to '{ASTMINER_RELATIVE_TO_CODE2VEC}'")
     os.chdir(ASTMINER_RELATIVE_TO_CODE2VEC)
 
 
 def cleanup_astminer(input_dir: str):
-    full_path = os.path.join(os.getcwd(), input_dir)
-    rm_dir = get_directory_one_above(os.getcwd(), full_path)
-    shutil.rmtree(rm_dir)
+    trainings_dir_full = os.path.join(os.getcwd(), input_dir)
+    trainings_dir = get_directory_one_above(os.getcwd(), trainings_dir_full)
+    print(f"remove temporary trainings data: {trainings_dir}")
+    shutil.rmtree(trainings_dir)
+    print(f"changing directory to '{CODE2VEC_RELATIVE_TO_ASTMINER}'")
     os.chdir(CODE2VEC_RELATIVE_TO_ASTMINER)
 
 
@@ -103,6 +134,7 @@ def generate_astminer_config(
             'maxPathWidth': max_path_width
         }
     }
+    print(f"Generating astminer config: '{ASTMINER_CONFIG_PATH}' ...")
     with open(ASTMINER_CONFIG_PATH, 'w') as file:
         yaml.dump(
             astminer_config,
@@ -118,15 +150,14 @@ def print_data_dict(path: str) -> None:
         path_to_count = pickle.load(file)
         target_to_count = pickle.load(file)
         num_training_examples = pickle.load(file)
-    
     print(f"token counts: {word_to_count}")
     print(f"path context counts: {path_to_count}")
     print(f"target counts: {target_to_count}")
     print(f"training examples: {num_training_examples}")
 
 
-def get_token_table(token_file_path: str) -> dict[int,str]:
-    tokens: dict[int,str] = {}
+def get_token_table(token_file_path: str) -> dict[int, str]:
+    tokens: dict[int, str] = {}
     with open(token_file_path, "r") as f:
         lines = f.readlines()
         lines.pop(0)
@@ -136,34 +167,36 @@ def get_token_table(token_file_path: str) -> dict[int,str]:
     return tokens
 
 
-def parse_astimer_path_contexts(path: str) -> dict[str, list[tuple[int,int,int]]]:
-    context_paths: dict[str, list[tuple[int,int,int]]] = {}
+def parse_astimer_path_contexts(
+    path: str
+) -> dict[str, list[tuple[int, int, int]]]:
+    context_paths: dict[str, list[tuple[int, int, int]]] = {}
     with open(path, "r") as f:
         for context_path_raw in f:
             context_path = context_path_raw.split(" ")
             name = context_path.pop(0)
             context_paths[name] = [
-                (int((pth:=pths.split(","))[0]),int(pth[1]),int(pth[2])) 
-                for pths in context_path 
+                (int((pth := pths.split(","))[0]), int(pth[1]), int(pth[2]))
+                for pths in context_path
             ]
     return context_paths
 
 
 def replace_token_id_with_token(
-    astminer_paths: dict[str, list[tuple[int,int,int]]],
-    token_table: dict[int,str],
-) -> dict[str, list[tuple[str,int,str]]]:
-    context_paths: dict[str, list[tuple[str,int,str]]] = {}
-    for (name,paths) in astminer_paths.items():
+    astminer_paths: dict[str, list[tuple[int, int, int]]],
+    token_table: dict[int, str],
+) -> dict[str, list[tuple[str, int, str]]]:
+    context_paths: dict[str, list[tuple[str, int, str]]] = {}
+    for (name, paths) in astminer_paths.items():
         context_paths[name] = [
-            (token_table[pth[0]],pth[1],token_table[pth[2]]) for pth in paths
+            (token_table[pth[0]], pth[1], token_table[pth[2]]) for pth in paths
         ]
     return context_paths
 
 
 def dump_raw_code2vec_context_paths(
     output_path: str,
-    context_paths: dict[str, list[tuple[str,int,str]]]
+    context_paths: dict[str, list[tuple[str, int, str]]]
 ) -> None:
     context_paths_str = ""
     for name, context_path in context_paths.items():
@@ -176,18 +209,19 @@ def dump_raw_code2vec_context_paths(
         file.write(context_paths_str)
 
 
-def generate_raw_code2vec_context_paths(
+def generate_code2vec_context_paths(
     output_path: str,
     context_path: str,
-    token_path:str
+    token_path: str
 ) -> None:
+    print("converting astminer output to code2vec format...")
     token_table = get_token_table(token_path)
     astminer_context_paths = parse_astimer_path_contexts(context_path)
     code2vec_context_paths = replace_token_id_with_token(
         astminer_context_paths,
         token_table
     )
-    dump_raw_code2vec_context_paths(output_path,code2vec_context_paths)   
+    dump_raw_code2vec_context_paths(output_path, code2vec_context_paths)
 
 
 if __name__ == '__main__':

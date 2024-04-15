@@ -18,10 +18,10 @@
 #   recommended to use a multi-core machine for the preprocessing 
 #   step and set this value to the number of cores.
 # PYTHON - python3 interpreter alias.
-TRAIN_DIR=trainings-data/glibc/io
+TRAIN_DIR=trainings-data/glibc/math
 VAL_DIR=trainings-data/glibc/math
-TEST_DIR=trainings-data/glibc/inet
-DATASET_NAME=c-test
+TEST_DIR=trainings-data/glibc/math
+DATASET_NAME=glibc-math
 MAX_CONTEXTS=200
 WORD_VOCAB_SIZE=1301136
 PATH_VOCAB_SIZE=911417
