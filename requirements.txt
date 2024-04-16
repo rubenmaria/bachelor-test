@@ -10,3 +10,4 @@ torch
 umap-learn
 pandas
 angr
+tensorflow

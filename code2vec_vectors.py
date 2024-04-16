@@ -1,14 +1,19 @@
 import fire
 import os
 import subprocess
-import code2vec
-
+import sys
 
 CODE2VEC_RELATIVE_TO_C2VEC = "code2vec/"
 MODEL_PATH = "models/c2vec-lite/saved_model_iter6.release"
 TARGET_HISTOGRAM_FILE = "temp-target.histo.tgt.c2v"
 ORIGIN_HISTOGRAM_FILE = "temp-origin.histo.ori.c2v"
 PATH_HISTOGRAM_FILE = "temp-path.path.c2v"
+
+sys.path.append(os.path.join(os.getcwd(), CODE2VEC_RELATIVE_TO_C2VEC))
+
+import code2vec
+
+
 
 def main() -> None:
     fire.Fire({
