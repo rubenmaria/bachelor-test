@@ -22,7 +22,8 @@ class Token(val original: String?) {
     val normalized = run {
         if (original == null) return@run EMPTY_TOKEN
         val subTokens = splitToSubtokens(original)
-        if (subTokens.isEmpty()) EMPTY_TOKEN else subTokens.joinToString(TOKEN_DELIMITER)
+        val subTokensString = subTokens.joinToString(TOKEN_DELIMITER)
+        if (subTokens.isEmpty()) EMPTY_TOKEN else "$subTokensString $original"
     }
 
     /**

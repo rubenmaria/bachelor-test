@@ -5,6 +5,7 @@ import subprocess
 import pickle
 import os
 import shutil
+import re
 from distutils.dir_util import copy_tree
 
 ASTMINER_TEMP_OUTPUT_DIR = "TEMP"
@@ -39,13 +40,20 @@ def main() -> None:
         dest="ofile_name",
         required=True
     )
+    parser.add_argument(
+        "-ofile_name_names",
+        "--ofile_name_names",
+        dest="ofile_name_names",
+        required=True
+    )
     parser.add_argument("-dir", "--dir", dest="dir", required=True)
     args = parser.parse_args()
     generate_context_paths(
         args.dir,
         int(args.max_path_length),
         int(args.max_path_width),
-        args.ofile_name
+        args.ofile_name,
+        args.ofile_name_names
     )
 
 
@@ -53,11 +61,12 @@ def generate_context_paths(
     input_dir: str,
     max_path_length: int,
     max_path_width: int,
-    output_file: str
+    output_file: str,
+    output_file_names: str
 ) -> None:
     generate_astminer_config(input_dir, max_path_length, max_path_width)
     generate_context_paths_with_astminer(input_dir)
-    generate_code2vec_context_paths(output_file, CONTEXTS_PATH, TOKENS_PATH)
+    generate_code2vec_context_paths(output_file, output_file_names)
     remove_tempory_dir()
 
 
@@ -163,23 +172,45 @@ def get_token_table(token_file_path: str) -> dict[int, str]:
         lines.pop(0)
         for line in lines:
             token_tuple = line.split(",")
-            tokens[int(token_tuple[0])] = token_tuple[1].strip("\n")
+            current_token = token_tuple[1].strip("\n").split()[0]
+            current_token_id = int(token_tuple[0])
+            tokens[current_token_id] = current_token
     return tokens
 
 
 def parse_astimer_path_contexts(
     path: str
-) -> dict[str, list[tuple[int, int, int]]]:
+) -> tuple[dict[str, list[tuple[int, int, int]]],list[str]]:
     context_paths: dict[str, list[tuple[int, int, int]]] = {}
+    original_names: list[str] = []
     with open(path, "r") as f:
         for context_path_raw in f:
             context_path = context_path_raw.split(" ")
-            name = context_path.pop(0)
-            context_paths[name] = [
-                (int((pth := pths.split(","))[0]), int(pth[1]), int(pth[2]))
-                for pths in context_path
-            ]
-    return context_paths
+            normalized_name = context_path.pop(0)
+            original_name = context_path.pop(0)
+            if not normalized_name in context_paths.keys():
+                original_names.append(original_name)
+                context_paths[normalized_name] = [
+                    (int((pth := pths.split(","))[0]), int(pth[1]), int(pth[2]))
+                    for pths in context_path
+                ]
+    return (context_paths, original_names)
+
+
+def remove_orignal_name_path_contexts(
+        context_paths: dict[str, list[tuple[int, int, int]]]
+) -> tuple[dict[str, list[tuple[int, int, int]]],list[str]]:
+    new_context_paths: dict[str, list[tuple[int, int, int]]] = {}
+    original_names: list[str] = []
+    for name, value in context_paths.items():
+        if not (match := re.search("\\[(.+)\\]", name)):
+            continue
+        original_name = match.group(1)
+        new_name = re.sub("\\[.+\\]", "", name)
+        if new_name not in new_context_paths.keys():
+            new_context_paths[new_name] = value
+            original_names.append(original_name)
+    return (new_context_paths, original_names)
 
 
 def replace_token_id_with_token(
@@ -208,20 +239,31 @@ def dump_raw_code2vec_context_paths(
     with open(output_path, "w") as file:
         file.write(context_paths_str)
 
+def dump_original_name_list(
+    output_path: str,
+    names: list[str]
+) -> None:
+    with open(output_path, "w") as file:
+        for index,name in enumerate(names):
+            if index < len(names) - 1:
+                file.write(name + "\n")
+            else:
+                file.write(name)
+
 
 def generate_code2vec_context_paths(
-    output_path: str,
-    context_path: str,
-    token_path: str
+    output_path_paths: str,
+    output_path_names: str,
 ) -> None:
     print("converting astminer output to code2vec format...")
-    token_table = get_token_table(token_path)
-    astminer_context_paths = parse_astimer_path_contexts(context_path)
+    token_table = get_token_table(TOKENS_PATH)
+    astminer_context_paths, names = parse_astimer_path_contexts(CONTEXTS_PATH)
     code2vec_context_paths = replace_token_id_with_token(
         astminer_context_paths,
         token_table
     )
-    dump_raw_code2vec_context_paths(output_path, code2vec_context_paths)
+    dump_raw_code2vec_context_paths(output_path_paths, code2vec_context_paths)
+    dump_original_name_list(output_path_names, names)
 
 
 if __name__ == '__main__':

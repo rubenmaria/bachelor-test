@@ -34,18 +34,25 @@ PYTHON=python3
 TRAIN_DATA_FILE=${DATASET_NAME}.train.raw.txt
 VAL_DATA_FILE=${DATASET_NAME}.val.raw.txt
 TEST_DATA_FILE=${DATASET_NAME}.test.raw.txt
+NAME_DATA_FILE=${DATASET_NAME}.names.txt
 
 mkdir -p data
 mkdir -p data/${DATASET_NAME}
 
 echo "Extracting paths from validation set..."
-${PYTHON} CExtractor/extract.py --dir ${VAL_DIR} --max_path_length ${MAX_PATH_LENGTH} --max_path_width ${MAX_PATH_WIDTH}  --ofile_name ${VAL_DATA_FILE}
+${PYTHON} CExtractor/extract.py --dir ${VAL_DIR} \
+  --max_path_length ${MAX_PATH_LENGTH} --max_path_width ${MAX_PATH_WIDTH} \
+  --ofile_name ${VAL_DATA_FILE} --ofile_name_names ${NAME_DATA_FILE}
 echo "Finished extracting paths from validation set"
 echo "Extracting paths from test set..."
-${PYTHON} CExtractor/extract.py --dir ${TEST_DIR} --max_path_length ${MAX_PATH_LENGTH} --max_path_width ${MAX_PATH_WIDTH} --ofile_name ${TEST_DATA_FILE}
+${PYTHON} CExtractor/extract.py --dir ${TEST_DIR}\
+  --max_path_length ${MAX_PATH_LENGTH} --max_path_width ${MAX_PATH_WIDTH} \
+  --ofile_name ${TEST_DATA_FILE} --ofile_name_names ${NAME_DATA_FILE}
 echo "Finished extracting paths from test set"
 echo "Extracting paths from training set..."
-${PYTHON} CExtractor/extract.py --dir ${TRAIN_DIR} --max_path_length ${MAX_PATH_LENGTH} --max_path_width ${MAX_PATH_WIDTH} --ofile_name ${TRAIN_DATA_FILE}
+${PYTHON} CExtractor/extract.py --dir ${TRAIN_DIR} \
+  --max_path_length ${MAX_PATH_LENGTH} --max_path_width ${MAX_PATH_WIDTH} \
+  --ofile_name ${TRAIN_DATA_FILE} --ofile_name_names ${NAME_DATA_FILE}
 echo "Finished extracting paths from training set"
 echo "Shuffeling training data..."
 (rm -f ${TRAIN_DATA_FILE} && shuf > ${TRAIN_DATA_FILE}) < ${TRAIN_DATA_FILE}
@@ -56,17 +63,27 @@ ORIGIN_HISTOGRAM_FILE=data/${DATASET_NAME}/${DATASET_NAME}.histo.ori.c2v
 PATH_HISTOGRAM_FILE=data/${DATASET_NAME}/${DATASET_NAME}.histo.path.c2v
 
 echo "Creating histograms from the training data"
-cat ${TRAIN_DATA_FILE} | cut -d' ' -f1 | awk '{n[$0]++} END {for (i in n) print i,n[i]}' > ${TARGET_HISTOGRAM_FILE}
-cat ${TRAIN_DATA_FILE} | cut -d' ' -f2- | tr ' ' '\n' | cut -d',' -f1,3 | tr ',' '\n' | awk '{n[$0]++} END {for (i in n) print i,n[i]}' > ${ORIGIN_HISTOGRAM_FILE}
-cat ${TRAIN_DATA_FILE} | cut -d' ' -f2- | tr ' ' '\n' | cut -d',' -f2 | awk '{n[$0]++} END {for (i in n) print i,n[i]}' > ${PATH_HISTOGRAM_FILE}
+cat ${TRAIN_DATA_FILE} | cut -d' ' -f1 \
+  | awk '{n[$0]++} END {for (i in n) print i,n[i]}' > ${TARGET_HISTOGRAM_FILE}
+cat ${TRAIN_DATA_FILE} | cut -d' ' -f2- | tr ' ' '\n' | cut -d',' -f1,3 \
+  | tr ',' '\n' | awk '{n[$0]++} END {for (i in n) print i,n[i]}' \
+  > ${ORIGIN_HISTOGRAM_FILE}
+cat ${TRAIN_DATA_FILE} | cut -d' ' -f2- | tr ' ' '\n' | cut -d',' -f2 \
+  | awk '{n[$0]++} END {for (i in n) print i,n[i]}' > ${PATH_HISTOGRAM_FILE}
 
-${PYTHON} preprocess.py --train_data ${TRAIN_DATA_FILE} --test_data ${TEST_DATA_FILE} --val_data ${VAL_DATA_FILE} \
-  --max_contexts ${MAX_CONTEXTS} --word_vocab_size ${WORD_VOCAB_SIZE} --path_vocab_size ${PATH_VOCAB_SIZE} \
-  --target_vocab_size ${TARGET_VOCAB_SIZE} --word_histogram ${ORIGIN_HISTOGRAM_FILE} \
-  --path_histogram ${PATH_HISTOGRAM_FILE} --target_histogram ${TARGET_HISTOGRAM_FILE} --output_name data/${DATASET_NAME}/${DATASET_NAME}
+${PYTHON} preprocess.py --train_data ${TRAIN_DATA_FILE} \
+  --test_data ${TEST_DATA_FILE} --val_data ${VAL_DATA_FILE} \
+  --max_contexts ${MAX_CONTEXTS} --word_vocab_size ${WORD_VOCAB_SIZE} \
+  --path_vocab_size ${PATH_VOCAB_SIZE} --target_vocab_size ${TARGET_VOCAB_SIZE}\
+  --word_histogram ${ORIGIN_HISTOGRAM_FILE} \
+  --path_histogram ${PATH_HISTOGRAM_FILE} \
+  --target_histogram ${TARGET_HISTOGRAM_FILE} \
+  --output_name data/${DATASET_NAME}/${DATASET_NAME}
     
-# If all went well, the raw data files can be deleted, because preprocess.py creates new files 
+# If all went well, the raw data files can be deleted,
+# because preprocess.py creates new files 
 # with truncated and padded number of paths for each example.
-rm ${TRAIN_DATA_FILE} ${VAL_DATA_FILE} ${TEST_DATA_FILE} ${TARGET_HISTOGRAM_FILE} ${ORIGIN_HISTOGRAM_FILE} \
-  ${PATH_HISTOGRAM_FILE}
+rm ${TRAIN_DATA_FILE} ${VAL_DATA_FILE} ${TEST_DATA_FILE} \
+  ${TARGET_HISTOGRAM_FILE} ${ORIGIN_HISTOGRAM_FILE} ${PATH_HISTOGRAM_FILE} \
+  ${DATASET_NAME}.names.txt
 
