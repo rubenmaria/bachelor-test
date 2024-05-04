@@ -4,3 +4,4 @@
 **/.idea/**
 *.tar.gz
 **/log.txt
+models
