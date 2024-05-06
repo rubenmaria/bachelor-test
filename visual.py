@@ -17,6 +17,7 @@ def plot_clusters_from_path(
     cluster_path: str,
     title: str,
     show_category: bool = True,
+    save_file: bool = False
 ) -> None:
     cluster_data = load_cluster(cluster_path)
     colors = cluster_data.pop("colors")
@@ -49,8 +50,9 @@ def plot_clusters_from_path(
         hover_name=list(embeddings.keys()),
         title=title
     )
-    output_path = path.removesuffix(".json").replace("/", "-") + ".html"
-    fig.write_html(output_path)
+    if save_file:
+        output_path = path.removesuffix(".json").replace("/", "-") + ".html"
+        fig.write_html(output_path)
     fig.show()
 
 

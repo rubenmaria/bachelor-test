@@ -5,7 +5,7 @@ from random import sample
 import numpy as np
 from numpy._typing import NDArray
 from sklearn.manifold import TSNE
-from sklearn.metrics.pairwise import euclidean_distances
+from sklearn.metrics.pairwise import euclidean_distances, cosine_distances
 from sentence_transformers import SentenceTransformer
 from transformers import AutoModel, AutoTokenizer
 import torch
@@ -13,12 +13,14 @@ import random
 
 
 def generate_embeddings_TSNE(
-    output_path: str,
     input_path: str,
+    output_dir: str,
+    output_name: str,
     perplexity: int
 ) -> None:
+    output_path = os.path.join(output_dir, output_name)
     generate_low_dimensional(
-        f"{output_path}_low.json",
+        f"{output_path}.json",
         input_path,
         TSNE(perplexity=perplexity)
     )
@@ -145,16 +147,17 @@ def get_mean(distances: list[NDArray]) -> NDArray:
 
 def get_pairwise_distance_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
     distance_vectors: list[NDArray] = []
-    for i, vectors in enumerate(embeddings):
-        distances = euclidean_distances(vectors)
+    for vectors in embeddings:
+        distances = cosine_distances(vectors)
         distance_vectors.append(distances)
-        #print(f"distances from {i}: \n", distances)
     return distance_vectors
 
 def get_standard_deviation(distances: list[NDArray]) -> NDArray:
     distance_matrix = np.array(distances)
-    return np.std(distance_matrix, axis=1)
+    return np.std(distance_matrix, axis=0)
  
+def norm_vector(vector: NDArray) -> NDArray:
+    return 1 / np.linalg.norm(vector) * vector
 
 def load_embeddings_n(
     input_dir: str,

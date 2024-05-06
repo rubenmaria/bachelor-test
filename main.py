@@ -6,7 +6,7 @@ from c_parser import generate_function_names, generate_function_comments, genera
 from embeddings import calculate_standard_deviation_from_embeddings, generate_embeddings_TSNE, \
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, \
     calculate_standard_deviation_from_embeddings
-from code_vector import generate_vectors
+from code2vec_api import generate_vectors
 from visual import plot_clusters_from_path
 
 
