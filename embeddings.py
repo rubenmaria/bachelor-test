@@ -8,6 +8,7 @@ from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import euclidean_distances, cosine_distances
 from sentence_transformers import SentenceTransformer
 from transformers import AutoModel, AutoTokenizer
+from llm import get_summaries, PROMPT_PATH
 import torch
 import random
 
@@ -24,6 +25,10 @@ def generate_embeddings_TSNE(
         input_path,
         TSNE(perplexity=perplexity)
     )
+
+def dump_text_data(output_path: str, data: dict[str,str]) -> None:
+    with open(output_path, "w") as f:
+        json.dump(data, f, indent=2)
 
 
 def dump_embeddings(output_path: str, embeddings: dict[str, NDArray]) -> None:
@@ -67,15 +72,70 @@ def generate_low_dimensional(
     with open(output_path, "w") as f:
         json.dump(named_embeddings, f, indent=2)
 
+def calculate_standard_deviation_llm(
+    model_name: str,
+    output_dir: str,
+    output_name: str,
+    functions_path: str,
+    text_count: int,
+    n: int
+) -> None: 
+    generate_summaries_n(
+        model_name,
+        output_dir,
+        output_name,
+        functions_path,
+        text_count,
+        n
+    )
+    embed_summaries_n(output_dir, output_name, n)
+    (mean,dev) = get_standard_deviation_from_embeddings_n(output_dir, output_name, n)
+    dump_standard_deviation(dev, output_dir, output_name)
+    dump_mean(mean, output_dir, output_name)
+
+def generate_summaries_n(
+    model_name: str,
+    output_dir: str,
+    output_name: str,
+    definition_path: str,
+    defintion_count: int,
+    n: int
+    ) -> None:
+    definitions = dict(sample(list(
+        load_text_data(definition_path).items()), defintion_count)
+    )
+    for i in range(n):
+        output_path = get_summaries_path_n(output_dir, output_name, i)
+        print(f"generating: {output_path}...")
+        dump_text_data(
+            output_path,
+            get_summaries(definitions, PROMPT_PATH, model_name)
+        )
+
+def embed_summaries_n(
+    input_dir: str,
+    input_name: str,
+    n: int
+    ) -> None:
+    summaries = load_summaries_n(input_dir, input_name, n)
+    for i, summary in enumerate(summaries):
+        embedding_path = get_embeddings_path_n(input_dir, input_name, i)
+        print(f"generating: {embedding_path}...")
+        embedding = {
+            k : text_to_embedding(v) for (k,v) in summary.items()
+        }
+        dump_embeddings(embedding_path, embedding)
+
 
 def calculate_standard_deviation_sentence_transfomer(
     output_dir: str,
     output_name: str,
-    path: str,
+    text_data_path: str,
     text_count: int,
     n: int
 ) -> None: 
-    generate_high_dimensional_n(output_dir, output_name, path, text_count, n)
+    text_sample = dict(sample(list(load_text_data(text_data_path).items()), text_count))
+    generate_high_dimensional_n(output_dir, output_name, text_sample, n)
     (mean,dev) = get_standard_deviation_from_embeddings_n(output_dir, output_name, n)
     dump_standard_deviation(dev, output_dir, output_name)
     dump_mean(mean, output_dir, output_name)
@@ -110,25 +170,27 @@ def dump_mean(
 def generate_high_dimensional_n(
     output_dir: str,
     output_name: str,
-    path: str,
-    text_count: int,
+    text_to_embed: dict[str, str],
     n: int
 ) -> None:
-    embeddings = dict(sample(list(load_text_data(path).items()), text_count))
     for i in range(n):
         output_path = get_embeddings_path_n(output_dir, output_name, i)
         print(f"generating: {output_path}...")
         dump_embeddings(
             output_path, 
-            {k : text_to_embedding(v) for k,v in embeddings.items()}
+            {k : text_to_embedding(v) for k,v in text_to_embed.items()}
         )
     
+
 def load_text_data(path: str) -> dict[str,str]:
     with open(path, "r") as f:
         return json.load(f)
 
 def get_embeddings_path_n(dir_path: str, name: str, i: int) -> str:
     return os.path.join(dir_path, f"{name}-{i}.json")
+
+def get_summaries_path_n(dir_path: str, name: str, i: int) -> str:
+    return os.path.join(dir_path, f"{name}-summary-{i}.json")
 
 def get_standard_deviation_from_embeddings_n(
     input_dir: str,
@@ -170,6 +232,18 @@ def load_embeddings_n(
         named_embeddings = load_embeddings(embeddings_path)
         embeddings.append([v for v in named_embeddings.values()])
     return embeddings
+
+def load_summaries_n(
+    input_dir: str,
+    input_name: str,
+    n: int
+) -> list[dict[str,str]]:
+    summaries: list[dict[str,str]] = []
+    for i in range(n):
+        summary_path = get_summaries_path_n(input_dir, input_name, i)
+        named_summaries = load_text_data(summary_path)
+        summaries.append(named_summaries)
+    return summaries
 
 def generate_high_dimensional(
         output_path: str,

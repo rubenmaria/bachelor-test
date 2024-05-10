@@ -3,9 +3,10 @@ import fire
 from binary import generate_valid_symbols, get_functions_from_binary
 from c_parser import generate_function_names, generate_function_comments, generate_function_definitions
 #from llama_prompt import generate_summaries
-from embeddings import calculate_standard_deviation_from_embeddings, generate_embeddings_TSNE, \
+from embeddings import calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, generate_embeddings_TSNE, \
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, \
-    calculate_standard_deviation_from_embeddings
+    calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm
+
 from code2vec_api import generate_vectors
 from visual import plot_clusters_from_path
 
@@ -22,6 +23,7 @@ def main():
         "embeddings": generate_high_dimensional,
         "embeddings-low": generate_embeddings_TSNE,
         "deviation-st": calculate_standard_deviation_sentence_transfomer,
+        "deviation-llm": calculate_standard_deviation_llm,
         "deviation-embeddings": calculate_standard_deviation_from_embeddings
     })
 
