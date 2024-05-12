@@ -11,3 +11,4 @@ umap-learn
 pandas
 angr
 tensorflow
+ollama
