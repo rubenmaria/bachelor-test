@@ -29,8 +29,18 @@ def prompt_llm(llm_name: str, prompt: str) -> str:
     assert type(result) == dict
     return result["response"]
 
-
 def get_summary(
+    definition: str,
+    model_name: str,
+    prompt_path: str
+) -> str:
+    llama_prompt = load_prompt(prompt_path)
+    try:
+        return prompt_llm(model_name, llama_prompt + "\n" + definition)
+    except Exception as err:
+        raise RuntimeError(err)
+
+def get_summary_from_file(
     path: str,
     name: str,
     model_name: str,

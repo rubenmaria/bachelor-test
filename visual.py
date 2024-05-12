@@ -1,7 +1,9 @@
+from collections.abc import Generator
 import json
 import numpy as np
 from numpy._typing import NDArray
 from sklearn.cluster import DBSCAN
+from typing import Any
 import plotly.express as px
 
 
@@ -181,3 +183,35 @@ def plot_triplet_from_path(
     fig.update_traces(textposition=text_position, textfont_size=40)
     fig.show()
 
+
+def progress_bar(
+    iterable: Any,
+    prefix: str= '',
+    suffix: str = '',
+    decimals: float = 1,
+    length: int = 100,
+    fill: str = '█',
+    print_end: str = "\r"
+    ) -> Generator:
+    total = len(iterable)
+    print_progress_bar(0, prefix, suffix, decimals, length, fill, print_end, total)
+    for i, item in enumerate(iterable):
+        yield item
+        print_progress_bar(i + 1, prefix, suffix, decimals, length, fill, print_end, total)
+    print()
+
+
+def print_progress_bar (
+    iteration: Any, 
+    prefix: str,
+    suffix: str,
+    decimals: float,
+    length: int,
+    fill: str,
+    print_end: str,
+    total: int
+    ) -> None:
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = print_end)
