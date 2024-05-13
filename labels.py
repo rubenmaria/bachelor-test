@@ -23,7 +23,9 @@ def generate_labels(
     ) -> None:
     functions = load_function_data(function_data_path)
     embeddings: list[LabelData] = []
-    for function in progress_bar(functions, prefix="Generating embeddings"):
+    for function in progress_bar(functions, prefix="Generating embeddings", decimals=6):
+        if function.srccode is None:
+            continue
         embedding = get_embedding_from_function(function, model_name)
         embeddings.append(embedding)
     dump_labels(output_directory, output_name, embeddings)

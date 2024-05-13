@@ -188,7 +188,7 @@ def progress_bar(
     iterable: Any,
     prefix: str= '',
     suffix: str = '',
-    decimals: float = 1,
+    decimals: int = 1,
     length: int = 100,
     fill: str = '█',
     print_end: str = "\r"
@@ -205,7 +205,7 @@ def print_progress_bar (
     iteration: Any, 
     prefix: str,
     suffix: str,
-    decimals: float,
+    decimals: int,
     length: int,
     fill: str,
     print_end: str,

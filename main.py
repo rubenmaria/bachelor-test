@@ -8,7 +8,8 @@ from embeddings import calculate_standard_deviation_from_embeddings, calculate_s
     calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm
 from code2vec_api import generate_vectors
 from visual import plot_clusters_from_path
-from labels import generate_labels
+from labels import generate_labels, FuncData, LabelData
+
 
 
 def main():
