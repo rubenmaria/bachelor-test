@@ -4,9 +4,10 @@ from typing import Callable
 from random import sample
 import numpy as np
 from numpy._typing import NDArray
+from sentence_transformers import SentenceTransformer
 from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import euclidean_distances, cosine_distances
-from sentence_transformers import SentenceTransformer
+from text_transformer import TextTransformer
 from transformers import AutoModel, AutoTokenizer
 from llm import get_summaries, PROMPT_PATH
 import torch
@@ -307,12 +308,14 @@ def make_same_dimensions(embeddings: list[NDArray]) -> list[NDArray]:
     return result
 
 def text_to_embedding(function: str) -> NDArray:
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = TextTransformer()
+    assert type(model) == SentenceTransformer
     embedding = np.array(model.encode(function, convert_to_numpy=True))
     return embedding
 
 def sentences_to_embedding(function: str) -> NDArray:
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = TextTransformer()
+    assert type(model) == SentenceTransformer
     lines = function.split("\n")
     embedding_raw = np.array(model.encode(lines, convert_to_numpy=True))
     embedding = np.array(list())
