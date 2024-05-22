@@ -1,6 +1,8 @@
 import json
 from c_parser import get_definition_at
 from typing import Optional
+import numpy as np
+from numpy.typing import NDArray
 import ollama
 import os
 #from llama import Llama
@@ -50,6 +52,22 @@ def get_summary_from_file(
     llama_prompt = load_prompt(prompt_path)
     try:
         return prompt_llm(model_name, llama_prompt + definition)
+    except Exception as err:
+        raise RuntimeError(err)
+
+def get_embbeding_from_llama(
+    definition: str,
+    model_name: str,
+    prompt_path: str
+) -> NDArray:
+    llama_prompt = load_prompt(prompt_path)
+    try:
+        return np.array(
+            ollama.embeddings(
+                model=model_name,
+                prompt=llama_prompt + "\n" + definition
+            )
+        )
     except Exception as err:
         raise RuntimeError(err)
 

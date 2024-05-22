@@ -9,10 +9,24 @@ from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import euclidean_distances, cosine_distances
 from text_transformer import TextTransformer
 from transformers import AutoModel, AutoTokenizer
-from llm import get_summaries, PROMPT_PATH
+from llm import get_summaries, PROMPT_PATH, get_embbeding_from_llama
 import torch
 import random
 
+
+def generate_llm_TSNE(
+    definition_path: str,
+    model: str,
+    output_dir: str,
+    output_name: str
+) -> None:
+    output_path = os.path.join(output_dir, output_name + ".json")
+    definitions = load_text_data(definition_path)
+    embeddings = {
+        k : get_embbeding_from_llama(v, model, PROMPT_PATH)
+        for k,v in definitions.items()
+    }
+    dump_embeddings(output_path, embeddings)
 
 def generate_embeddings_TSNE(
     input_path: str,
