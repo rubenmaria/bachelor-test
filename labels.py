@@ -19,13 +19,11 @@ def generate_labels(
     model_name: str
     ) -> None:
     functions = load_function_data(function_data_path)
-    labels: list[LabelData] = []
     for function in progress_bar(functions, prefix="Generating embeddings", decimals=6):
         if function.srccode is None:
             continue
         label = get_label_from_function(function, model_name)
-        labels.append(label)
-    dump_labels(output_directory, output_name, label)
+        append_label(output_directory, output_name, label)
 
 
 def load_function_data(path: str) -> list[FuncData]:
@@ -43,3 +41,9 @@ def dump_labels(directory: str, name: str, labels: list[LabelData]) -> None:
     file_path = os.path.join(directory, name + ".pkl")
     with open(file_path, "wb") as file:
         pickle.dump(labels, file)
+
+
+def append_label(directory: str, name: str, label: LabelData) -> None:
+    file_path = os.path.join(directory, name + ".pkl")
+    with open(file_path, "ab") as file:
+        pickle.dump(label, file)

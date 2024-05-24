@@ -1,4 +1,4 @@
-FROM gemma:2b
+FROM codellama:7b
 
 TEMPLATE """<start_of_turn>user
 {{ if .System }}{{ .System }} {{ end }}{{ .Prompt }}<end_of_turn>

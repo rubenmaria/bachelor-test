@@ -5,6 +5,7 @@ import numpy as np
 from numpy.typing import NDArray
 import ollama
 import os
+import time
 #from llama import Llama
 
 CHECKPOINT_DIR: str = "/mnt/ambrym1/llama-model/llama/llama-2-13b-chat/"
@@ -27,7 +28,10 @@ def main():
 
 
 def prompt_llm(llm_name: str, prompt: str) -> str:
+    t = time.process_time()
     result = ollama.generate(model=llm_name, prompt=prompt)
+    elapsed_time = time.process_time() - t
+    print(f"Model generation took: {elapsed_time}s")
     assert type(result) == dict
     return result["response"]
 
