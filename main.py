@@ -5,7 +5,10 @@ from c_parser import generate_function_names, generate_function_comments, genera
 #from llama_prompt import generate_summaries
 from embeddings import calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, generate_embeddings_TSNE, \
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, \
-    calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm
+    calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, \
+    generate_llm_TSNE
+
+
 from code2vec_api import generate_vectors
 from visual import plot_clusters_from_path
 from labels import generate_labels, FuncData, LabelData
@@ -27,6 +30,7 @@ def main():
         "deviation-llm": calculate_standard_deviation_llm,
         "generate-labels": generate_labels,
         "deviation-embeddings": calculate_standard_deviation_from_embeddings
+        "generate-llm-tsne": generate_llm_TSNE
     })
 
 
