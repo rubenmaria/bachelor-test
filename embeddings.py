@@ -22,11 +22,13 @@ def generate_llm_TSNE(
 ) -> None:
     output_path = os.path.join(output_dir, output_name + ".json")
     definitions = load_text_data(definition_path)
-    embeddings = {
-        k : get_embbeding_from_llama(v, model, PROMPT_PATH)
-        for k,v in definitions.items()
-    }
-    dump_embeddings(output_path, embeddings)
+    embeddings = [
+        get_embbeding_from_llama(v, model, PROMPT_PATH)
+        for v in definitions.values()
+    ]
+    embeddings = transformer.fit_transform(np.array(embeddings)).tolist()
+    named_embeddings = {k:v for k,v in zip(definitions.keys(), embeddings)}
+    dump_embeddings(output_path, named_embeddings)
 
 def generate_embeddings_TSNE(
     input_path: str,

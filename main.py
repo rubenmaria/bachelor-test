@@ -29,7 +29,7 @@ def main():
         "deviation-st": calculate_standard_deviation_sentence_transfomer,
         "deviation-llm": calculate_standard_deviation_llm,
         "generate-labels": generate_labels,
-        "deviation-embeddings": calculate_standard_deviation_from_embeddings
+        "deviation-embeddings": calculate_standard_deviation_from_embeddings,
         "generate-llm-tsne": generate_llm_TSNE
     })
 

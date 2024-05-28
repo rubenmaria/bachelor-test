@@ -1,4 +1,4 @@
-FROM codellama:7b
+FROM codellama:70b
 
 TEMPLATE """<start_of_turn>user
 {{ if .System }}{{ .System }} {{ end }}{{ .Prompt }}<end_of_turn>

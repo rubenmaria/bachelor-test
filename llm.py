@@ -70,10 +70,11 @@ def get_embbeding_from_llama(
             ollama.embeddings(
                 model=model_name,
                 prompt=llama_prompt + "\n" + definition
-            )
+            )["embedding"]
         )
     except Exception as err:
-        raise RuntimeError(err)
+        print(err)
+        return np.array()
 
 
 def get_summaries_from_file(
