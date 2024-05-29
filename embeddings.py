@@ -10,8 +10,27 @@ from sklearn.metrics.pairwise import euclidean_distances, cosine_distances
 from text_transformer import TextTransformer
 from transformers import AutoModel, AutoTokenizer
 from llm import get_summaries, PROMPT_PATH, get_embbeding_from_llama
+from metric import compare_embedding_spaces_k, k_nearest_neighbor
+from collections import OrderedDict
 import torch
 import random
+
+def compare_embeddings_simple(k: int, path_x:str, path_y: str) -> float:
+    named_embeddings_x = load_embeddings(path_x)
+    named_embeddings_y = load_embeddings(path_y)
+    keys_in_both = named_embeddings_x.keys() & named_embeddings_y.keys()
+    named_embeddings_x = {
+        k:v for k,v in named_embeddings_x.items() if k in keys_in_both
+    }
+    named_embeddings_y = {
+        k:v for k,v in named_embeddings_y.items() if k in keys_in_both
+    }
+    named_embeddings_x = OrderedDict(sorted(named_embeddings_x.items()))
+    named_embeddings_y = OrderedDict(sorted(named_embeddings_y.items()))
+    X = np.array([x for (k,x) in named_embeddings_x.items() if k in keys_in_both])
+    Y = np.array([y for y in named_embeddings_y.values()])
+    print(X.shape, Y.shape)
+    return compare_embedding_spaces_k(k, X, Y, k_nearest_neighbor, np.mean)
 
 
 def generate_llm_TSNE(

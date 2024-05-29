@@ -6,7 +6,7 @@ from c_parser import generate_function_names, generate_function_comments, genera
 from embeddings import calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, generate_embeddings_TSNE, \
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, \
     calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, \
-    generate_llm_TSNE
+    generate_llm_TSNE, compare_embeddings_simple
 
 
 from code2vec_api import generate_vectors
@@ -21,7 +21,6 @@ def main():
         "name": generate_function_names,
         "comment": generate_function_comments,
         "definition": generate_function_definitions,
-        #"summaries": generate_summaries,
         "plot-clusters": plot_clusters_from_path,
         "generate_c2vec": generate_vectors,
         "embeddings": generate_high_dimensional,
@@ -30,7 +29,8 @@ def main():
         "deviation-llm": calculate_standard_deviation_llm,
         "generate-labels": generate_labels,
         "deviation-embeddings": calculate_standard_deviation_from_embeddings,
-        "generate-llm-tsne": generate_llm_TSNE
+        "generate-llm-tsne": generate_llm_TSNE,
+        "simple-compare":  compare_embeddings_simple
     })
 
 
