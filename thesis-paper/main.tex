@@ -1,25 +1,16 @@
-\documentclass[12pt,letterpaper]{article} % a. Set paper size to Letter, 8½ x 11. 
-
-% TODO: change author's name in settings
+\documentclass[12pt,letterpaper]{article}
 \input{settings}
 
 \begin{document}
 
-% TODO: decide on used language
-\selectlanguage{english}
-%\selectlanguage{german}
+\selectlanguage{german}
 
-% TODO: change thesis information
 
 \begin{center}\uppercase{Ludwig-Maximilians-Universität München}\end{center}
-\iflanguage{english}{
-\begin{center}\uppercase{Chair of Theoretical Computer Science and Theorem Proving}\end{center}
-}
-{}
-\iflanguage{german}{
-\begin{center}\uppercase{Lehr- und Forschungseinheit für Theoretische Informatik und Theorembeweisen}\end{center}
-}
-{}
+\begin{center}
+  \uppercase{Lehr- und Forschungseinheit für 
+      Theoretische Informatik und Theorembeweisen}
+\end{center}
 
 \vspace*{10mm}
 \begin{center}
@@ -27,39 +18,6 @@
 \end{center}
 \vspace*{10mm}
 
-% TODO: decide if english or german
-
-\iflanguage{english}{
-%%%Block Englisch:
-\title{Thesis Title}
-\date{\vspace{-3ex}}
-{\let\newpage\relax\maketitle}
-\thispagestyle{empty}
-
-\begin{center}
-\begin{large}
-\begin{Large}
-Thesis type (Bachelor's Thesis / Master's Thesis, \ldots)\\
-\end{Large}
-in course type (Computer Science, Computer Science plus Mathematics, \ldots) \\
-\end{large}
-\end{center}
-\vspace{1cm}
-\begin{center}
-\begin{large}
-Supervisor: Prof. Dr. Jasmin Blanchette\\
-\end{large}
-\end{center}
-\begin{center}
-\begin{large}
-Advisor: Advisor's name\\
-\end{large}
-\end{center}
-%%%Ende Block Englisch
-}{}
-
-\iflanguage{german}{
-%%%Block Deutsch:
 \title{Titel der Arbeit}
 \date{\vspace{-5ex}}
 {\let\newpage\relax\maketitle}
@@ -83,19 +41,11 @@ Betreuer: Prof. Jasmin Blanchette\\
 Mentor: Name des Mentors/der Mentorin\\
 \end{large}
 \end{center}
-%%%Ende Block Deutsch
-}{}
+
 
 \begin{center}
 \begin{large}
-\iflanguage{english}{
-Submission Date: \date{\today} \\
-}
-{}
-\iflanguage{german}{
 Ablieferungstermin: \date{\today} \\
-}
-{}
 \end{large}
 \end{center}
 
@@ -121,7 +71,6 @@ By commenting one of the commands $selectlanguage\{english\}$ or $selectlanguage
 
 \section{Notes on form}
 \subsection{Formatting} 
-
 This LaTeX template uses the following formatting:
 \begin{itemize}
 \setlength{\itemsep}{0pt}
@@ -197,7 +146,6 @@ The bibliography of this template includes the references of the \emph{language}
 
 \pagebreak
 
-% TODO: appendix chapter
 \input{pages/appendix}
 
 \pagebreak
@@ -212,14 +160,7 @@ The bibliography of this template includes the references of the \emph{language}
 
 \pagebreak
 
-\iflanguage{english}{
-\addcontentsline{toc}{section}{Bibliography}
-}
-{}
-\iflanguage{german}{
 \addcontentsline{toc}{section}{Literatur}
-}
-{}
 \pagestyle{fancy}
 
 \bibliographystyle{language-dt} %using language.bst
