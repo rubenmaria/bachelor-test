@@ -1,15 +1,20 @@
 from collections.abc import Generator
+from typing import Any
 import json
 import numpy as np
 from numpy._typing import NDArray
+import pandas
 from sklearn.cluster import DBSCAN
-from typing import Any
 import plotly.express as px
+from metric import k_nearest_neighbor, compare_embedding_spaces_k
+from embeddings import make_embedding_spaces_comparable
+
+
 
 
 def load_embeddings(path: str) -> dict[str, NDArray]:
     embeddings : dict[str, list[float]]= {}
-    with open(path) as f:
+    with open(path, "r", encoding="utf-8") as f:
         embeddings = json.load(f)
     return {key : np.array(value) for key, value in embeddings.items()}
 
@@ -59,7 +64,7 @@ def plot_clusters_from_path(
 
 
 def load_cluster(path: str) -> dict[str,list[str]]:
-    with open(path) as f:
+    with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -182,6 +187,53 @@ def plot_triplet_from_path(
     )
     fig.update_traces(textposition=text_position, textfont_size=40)
     fig.show()
+
+
+def plot_compare_embedding_over_k(
+    x: NDArray,
+    y: NDArray,
+    save_to_file: bool = False,
+    save_file_path: str = ""
+) -> None:
+    assert x.shape == y.shape
+    k_lower_limit = 2
+    k_upper_limit = x.shape[0]
+    x_axis = [k for k in range(k_lower_limit, k_upper_limit + 1)]
+    y_axis = [
+        compare_embedding_spaces_k(k, x, y, k_nearest_neighbor, np.mean)
+        for k in progress_bar(x_axis)
+    ]
+    data_dict = {"k": x_axis, "compare score": y_axis}
+    df = pandas.DataFrame(data=data_dict)
+    fig = px.line(df, x="k", y="compare score")
+    fig.show()
+
+    if save_to_file:
+        fig.write_html(save_file_path)
+
+
+def plot_compare_from_file(
+    path_x: str,
+    path_y: str,
+    save_to_file: bool
+) -> None:
+    named_embeddings_x = load_embeddings(path_x)
+    named_embeddings_y = load_embeddings(path_y)
+    x_name = path_x.removesuffix(".json").split("/")[-1]
+    y_name = path_y.removesuffix(".json").split("/")[-1]
+    output_file_path = f"data/{x_name}-{y_name}.html"
+    x, y = make_embedding_spaces_comparable(
+        named_embeddings_x,
+        named_embeddings_y,
+    )
+    plot_compare_embedding_over_k(x, y, save_to_file, output_file_path)
+
+
+def plot_compare_random(count: int, dimension: int, save_to_file: bool) -> None:
+    x = np.random.rand(count, dimension)
+    y = np.random.rand(count, dimension)
+    output_path = f"data/random-compare-plot-{count}x{dimension}.html"
+    plot_compare_embedding_over_k(x, y, save_to_file, output_path)
 
 
 def progress_bar(

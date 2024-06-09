@@ -15,22 +15,31 @@ from collections import OrderedDict
 import torch
 import random
 
-def compare_embeddings_simple(k: int, path_x:str, path_y: str) -> float:
-    named_embeddings_x = load_embeddings(path_x)
-    named_embeddings_y = load_embeddings(path_y)
-    keys_in_both = named_embeddings_x.keys() & named_embeddings_y.keys()
+def make_embedding_spaces_comparable(
+    x: dict[str, NDArray],
+    y: dict[str, NDArray]
+    ) -> tuple[NDArray, NDArray]:
+    keys_in_both = x.keys() & y.keys()
     named_embeddings_x = {
-        k:v for k,v in named_embeddings_x.items() if k in keys_in_both
+        k:v for k,v in x.items() if k in keys_in_both
     }
     named_embeddings_y = {
-        k:v for k,v in named_embeddings_y.items() if k in keys_in_both
+        k:v for k,v in y.items() if k in keys_in_both
     }
     named_embeddings_x = OrderedDict(sorted(named_embeddings_x.items()))
     named_embeddings_y = OrderedDict(sorted(named_embeddings_y.items()))
     X = np.array([x for (k,x) in named_embeddings_x.items() if k in keys_in_both])
     Y = np.array([y for y in named_embeddings_y.values()])
-    print(X.shape, Y.shape)
-    return compare_embedding_spaces_k(k, X, Y, k_nearest_neighbor, np.mean)
+    return X, Y
+
+def compare_embeddings_simple(k: int, path_x:str, path_y: str) -> float:
+    named_embeddings_x = load_embeddings(path_x)
+    named_embeddings_y = load_embeddings(path_y)
+    x, y = make_embedding_spaces_comparable(
+        named_embeddings_x,
+        named_embeddings_y
+    )
+    return compare_embedding_spaces_k(k, x, y, k_nearest_neighbor, np.mean)
 
 
 def generate_llm_TSNE(
