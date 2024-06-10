@@ -39,6 +39,7 @@ def compare_embeddings_simple(k: int, path_x:str, path_y: str) -> float:
         named_embeddings_x,
         named_embeddings_y
     )
+    print(x.shape)
     return compare_embedding_spaces_k(k, x, y, k_nearest_neighbor, np.mean)
 
 

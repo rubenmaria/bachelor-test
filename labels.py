@@ -23,6 +23,7 @@ def generate_labels(
         output_directory,
         output_name
     )
+    print(f"Amount of functions to process: {len(functions)}")
     for function in progress_bar(functions, prefix="Generating embeddings", decimals=6):
         if function.srccode is None:
             continue

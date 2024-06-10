@@ -74,7 +74,7 @@ def get_embbeding_from_llama(
         )
     except Exception as err:
         print(err)
-        return np.array()
+        return np.array([])
 
 
 def get_summaries_from_file(
