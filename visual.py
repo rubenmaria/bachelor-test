@@ -5,8 +5,9 @@ import numpy as np
 from numpy._typing import NDArray
 import pandas
 from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import normalize
 import plotly.express as px
-from metric import k_nearest_neighbor, compare_embedding_spaces_k
+from metric import k_nearest_neighbor_fast, compare_embedding_spaces_k
 from embeddings import make_embedding_spaces_comparable
 
 
@@ -200,7 +201,7 @@ def plot_compare_embedding_over_k(
     k_upper_limit = x.shape[0]
     x_axis = [k for k in range(k_lower_limit, k_upper_limit + 1)]
     y_axis = [
-        compare_embedding_spaces_k(k, x, y, k_nearest_neighbor, np.mean)
+        compare_embedding_spaces_k(k, x, y, k_nearest_neighbor_fast, np.mean)
         for k in progress_bar(x_axis)
     ]
     data_dict = {"k": x_axis, "compare score": y_axis}
@@ -229,11 +230,14 @@ def plot_compare_from_file(
     plot_compare_embedding_over_k(x, y, save_to_file, output_file_path)
 
 
-def plot_compare_random(count: int, dimension: int, save_to_file: bool) -> None:
-    x = np.random.rand(count, dimension)
-    y = np.random.rand(count, dimension)
+def plot_compare_random(path: str, save_to_file: bool) -> None:
+    named_embeddings = load_embeddings(path)
+    embeddings = np.array(named_embeddings.values())
+    count = len(list(named_embeddings.items()))
+    dimension = embeddings[0].shape[0]
+    x = np.array(normalize(np.random.normal(0, 1, (count, dimension))))
     output_path = f"data/random-compare-plot-{count}x{dimension}.html"
-    plot_compare_embedding_over_k(x, y, save_to_file, output_path)
+    plot_compare_embedding_over_k(x, embeddings, save_to_file, output_path)
 
 
 def progress_bar(

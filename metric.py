@@ -3,6 +3,7 @@ from numpy.typing import NDArray
 from typing import Callable
 from sklearn.metrics import ndcg_score
 from sklearn.neighbors import NearestNeighbors
+from pynndescent import NNDescent
 
 
 def ranking_score(
@@ -26,9 +27,15 @@ def ranking_diffrence(x: list[int], y: list[int]) -> float:
     return float(ndcg_score(relevance_score, true_relevance_score))
        
 
-def k_nearest_neighbor(k: int, point: NDArray, space: NDArray) -> list[int]:
-    neighbors = NearestNeighbors(n_neighbors=k, algorithm='ball_tree').fit(space)
+def k_nearest_neighbor_slow(k: int, point: NDArray, space: NDArray) -> list[int]:
+    neighbors = NearestNeighbors(n_neighbors=k, metric="cosine").fit(space)
     return neighbors.kneighbors([point], k, return_distance=False)[0].tolist()
+
+def k_nearest_neighbor_fast(k: int, point: NDArray, space: NDArray) -> list[int]:
+    nearest_neigbor = NearestNeighbor(space)
+    assert isinstance(nearest_neigbor, NNDescent)
+    return nearest_neigbor.query([point], k=k)[0][0].tolist()
+   
 
 def compare_embedding_spaces_k(
     k: int, 
@@ -47,3 +54,12 @@ def compare_embedding_spaces_k(
     return aggregate(ranking_diffrences)
 
 
+class NearestNeighbor:
+    __algorithm = None
+
+    def __new__(cls, space):
+        if cls.__algorithm is None:
+            cls.__algorithm = super(NearestNeighbor, cls).__new__(cls)
+            cls.__algorithm = NNDescent(space, metric="cosine")
+            cls.__algorithm.prepare()
+        return cls.__algorithm
