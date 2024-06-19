@@ -232,7 +232,7 @@ def plot_compare_from_file(
 
 def plot_compare_random(path: str, save_to_file: bool) -> None:
     named_embeddings = load_embeddings(path)
-    embeddings = np.array(named_embeddings.values())
+    embeddings = np.array(list(named_embeddings.values()))
     count = len(list(named_embeddings.items()))
     dimension = embeddings[0].shape[0]
     x = np.array(normalize(np.random.normal(0, 1, (count, dimension))))
