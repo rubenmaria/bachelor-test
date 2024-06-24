@@ -7,8 +7,7 @@ from embeddings import (calculate_standard_deviation_from_embeddings, calculate_
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, 
     calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, 
     generate_llm_TSNE, compare_embeddings_simple)
-
-
+from survey import generate_survey_csv
 from code2vec_api import generate_vectors
 from visual import (plot_clusters_from_path, plot_compare_random,
     plot_compare_from_file)
@@ -33,7 +32,8 @@ def main():
         "generate-llm-tsne": generate_llm_TSNE,
         "simple-compare":  compare_embeddings_simple,
         "plot-compare-file": plot_compare_from_file,
-        "plot-compare-random": plot_compare_random
+        "plot-compare-random": plot_compare_random,
+        "generate-survey": generate_survey_csv
     })
 
 

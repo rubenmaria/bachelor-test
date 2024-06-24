@@ -22,9 +22,11 @@ def ranking_score(
 def ranking_diffrence(x: list[int], y: list[int]) -> float:
     assert len(x) == len(y)
     k = len(x)
-    true_relevance_score = np.array([[ 1 for _ in range(k)]])
-    relevance_score = np.array([[ranking_score(x[i], i, y) for i in range(k)]])
-    return float(ndcg_score(relevance_score, true_relevance_score))
+    true_relevance_score = [1. for _ in range(k)]
+    relevance_score = [ranking_score(x[i], i, y) for i in range(k)]
+    score = (discounted_comulative_gain(relevance_score) 
+            / discounted_comulative_gain(true_relevance_score))
+    return score
        
 
 def k_nearest_neighbor_slow(k: int, point: NDArray, space: NDArray) -> list[int]:
@@ -52,6 +54,14 @@ def compare_embedding_spaces_k(
     ]
     ranking_diffrences = [ranking_diffrence(x, y) for x,y in all_neighbors]
     return aggregate(ranking_diffrences)
+
+def discounted_comulative_gain(scores: list[float]) -> float:
+    k = len(scores)
+    discounts = [np.log2(i+1) for i in range(1, k)]
+    sum_elements = np.array(
+        [relevance / discount for (relevance,discount) in zip(scores,discounts)]
+    )
+    return sum_elements.sum()
 
 
 class NearestNeighbor:

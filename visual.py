@@ -216,7 +216,8 @@ def plot_compare_embedding_over_k(
 def plot_compare_from_file(
     path_x: str,
     path_y: str,
-    save_to_file: bool
+    save_to_file: bool = False,
+    max_count: int = 0
 ) -> None:
     named_embeddings_x = load_embeddings(path_x)
     named_embeddings_y = load_embeddings(path_y)
@@ -227,15 +228,22 @@ def plot_compare_from_file(
         named_embeddings_x,
         named_embeddings_y,
     )
-    plot_compare_embedding_over_k(x, y, save_to_file, output_file_path)
+    count = x.shape[0] if max_count <= 0 else max_count
+    plot_compare_embedding_over_k(
+        x[:count],
+        y[:count],
+        save_to_file,
+        output_file_path
+    )
 
 
-def plot_compare_random(path: str, save_to_file: bool) -> None:
+def plot_compare_random(path: str,save_to_file: bool, max_count: int = 0) -> None:
     named_embeddings = load_embeddings(path)
-    embeddings = np.array(list(named_embeddings.values()))
-    count = len(list(named_embeddings.items()))
+    embeddings_count = len(list(named_embeddings.items()))
+    count = embeddings_count if max_count <= 0 else max_count
+    embeddings = np.array(list(named_embeddings.values())[:count])
     dimension = embeddings[0].shape[0]
-    x = np.array(normalize(np.random.normal(0, 1, (count, dimension))))
+    x = np.array(normalize(np.random.random((count, dimension))))
     output_path = f"data/random-compare-plot-{count}x{dimension}.html"
     plot_compare_embedding_over_k(x, embeddings, save_to_file, output_path)
 
