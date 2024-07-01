@@ -28,13 +28,14 @@ def generate_survey_csv(
         cluster_path,
         embeddings_path
     )
-    embeddings = list(named_embeddings.values())
-    sample = random.sample(embeddings, sample_size)
+    print(f"Population size: {len(named_embeddings)}")
+    sample = dict(random.sample(list(named_embeddings.items()), sample_size))
     named_neighbors = get_named_neigbors(
         neares_neigbor_count,
         named_embeddings,
-        sample
+        list(sample.values())
     )
+    named_neighbors = [n[::-1] for n in named_neighbors]
     write_dict_to_csv(named_neighbors, csv_path)
     
 
@@ -54,9 +55,6 @@ def get_k_nearst_neigbor_names(
     names      = list(named_embeddings.keys())
     neighbor_indecies = k_nearest_neighbor_slow(k, point, embeddings)
     return [names[index] for index in neighbor_indecies]
-
-
-
 
 
 def write_dict_to_csv(table: list[list[str]], csv_path: str) -> None:

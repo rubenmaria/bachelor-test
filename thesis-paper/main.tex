@@ -1,15 +1,15 @@
 \documentclass[12pt,letterpaper]{article}
 \input{settings}
+ \usepackage{mathtools}
 
 \begin{document}
-
+\newcommand{\nat}[0]{\mathbf{N}}
 \selectlanguage{german}
 
 
 \begin{center}\uppercase{Ludwig-Maximilians-Universität München}\end{center}
 \begin{center}
-  \uppercase{Lehr- und Forschungseinheit für 
-      Theoretische Informatik und Theorembeweisen}
+  \uppercase{Programming languages and artificial intelligence}
 \end{center}
 
 \vspace*{10mm}
@@ -25,20 +25,20 @@
 \begin{center}
 \begin{large}
 \begin{Large}
-Thesis type (Bachelor's Thesis / Master's Thesis, \ldots)\\
+Bachelorarbeit\\
 \end{Large}
-im Studiengang 'Studiengang (Informatik, Informatik plus Mathematik, \ldots)' \\
+im Studiengang 'Informatik plus Mathematik' \\
 \end{large}
 \end{center}
 \vspace{1cm}
 \begin{center}
 \begin{large}
-Betreuer: Prof. Jasmin Blanchette\\
+Betreuer: Prof. Dr. Johannes Kinder\\
 \end{large}
 \end{center}
 \begin{center}
 \begin{large}
-Mentor: Name des Mentors/der Mentorin\\
+Mentor: Moritz Dannehl, M.Sc.\\
 \end{large}
 \end{center}
 
@@ -64,10 +64,39 @@ Ablieferungstermin: \date{\today} \\
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt} %obere Trennlinie
 
+\section*{Abstract}
 \section{Introduction}
-This document serves as a template for bachelor or master theses in the 'Chair of Theoretical Computer Science and Theorem Proving' at \gls{lmu}. 
-By commenting one of the commands $selectlanguage\{english\}$ or $selectlanguage\{german\}$ the documents language is changed.
-\\The template follows the guidelines of the journal \emph{language} (\url{http://www.linguisticsociety.org/sites/default/files/style-sheet.pdf}).
+
+
+\section{Results: Comparing natural language supervised methods for creating Rich Binary Labels}
+\begin{itemize}
+  \item Stabilität von Sentence Transformer
+  \item Kommentare von Funktionen um Embeddings zu generieren
+  \item Funktionsnamen von Funktionen um Embeddings zu generieren
+  \item Code2Vec um Embeddings zu generieren
+  \item CodeLlama Erklärungen von Funktionen um Embeddings zu generieren
+  \item Evaluierung durch tSNE-Plots
+  \item Evaluierung durch Experten
+  \item Evaluierung durch Formel
+\end{itemize}
+$ I_{k}: \mathbf{N} \times \mathbf{N} \times \mathbf{N}^{k} \to [0,1]$
+\[ I_{k}(x,i,v) = \begin{cases*} 
+      1 & , $\exists j \in \mathbf{N}: x = v_j \land i = j$  \\
+      \frac{1}{2} & , $\exists j \in \mathbf{N}: x = v_j \land i \neq j$\\
+      0   & , \text{otherwise}
+                \end{cases*} \]
+$E_k: \nat^k \times \nat^k \to [0,1]$
+\[ E_k(u,v) = \frac{1}{G_k} \sum^{k}_{i=1} \frac{I_k(u_i,i,v_i)}{log_2(i+1)}\]
+wo $G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}$.\\\\
+$CMP_k: \mathbf{R}^{N\times l} \times \mathbf{R}^{N\times l} \times 
+\{ \mathbf{R}^l \times \mathbf{R}^{N\times l} \to \mathbf{N}^k \} 
+\times \{ \mathcal{P}([0,1]) \to [0,1] \} \to [0,1]$
+
+\[ CMP_k(X,Y,f_k,agg) = agg(\{E_k(f_k(X_{i,j},X),f_k(Y_{i,j},Y)) | j \in \{1,2,3, \dots N\}\})\]
+
+
+\section{Conclusion}
+
 
 \section{Notes on form}
 \subsection{Formatting} 
@@ -141,7 +170,7 @@ full author list. Since \emph{Language} does not require citations with full aut
 Authors of \emph{Language} articles would typically use \verb+\citet*+, \verb+\citep+, \verb+\citealt+ and \verb+\citeauthor*+, though they
 could use any of the above commands. There is no command for giving a full list of authors.
 
-\subsection{Bibliography}
+\section*{Bibliography}
 The bibliography of this template includes the references of the \emph{language} stylesheet as a sample bibliography.
 
 \pagebreak
