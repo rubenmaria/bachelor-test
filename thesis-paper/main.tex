@@ -61,7 +61,7 @@ Ablieferungstermin: \date{\today} \\
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt} %obere Trennlinie
 
-\section*{Zusammenfassung}
+\section*{Abstract}
 \section{Einführung}
 In den letzten Jahren gab es große Fortschritte in der natürlichen
 Sprachverarbeitung, besonders hervorzuheben sind Large Language Models
@@ -95,8 +95,68 @@ ist es die Funktionen von einen Large Language Modell in natürlicher Sprache
 beschreiben zu lassen. Als letztes habe ich noch ein bestehendes Modell
 Code2Vec verwendet und es für dieses Problem angepasst.
 
+\section{Grunlagen und Termini}
+\subsection{Maschienelles Lernen}
+%learning from statistics
+\subsection{Large Language Models}
+% Large language Model paper und ein wenig geschichte
+\subsection{Sentence Transformer}
+% Sentence Transformer Paper und ein wenig geschichte
+\subsection{Stand der Technik}
+% JTrans, Safe, PalmTree, Clap
 
+\section{Methodik}
+\subsection{Datensatz}
+% Warum Glibc? 
+% Gleicher standard mit gleicher semantik unterschiedlich implementierung
+\subsection{Datenpipeline}
+% Treesitter erklären
+% Source Code information in json datei speichern
+% Dann Source code information in Vector umwandeln
+% Modularität -> Vorteile dieses Designs 
+\subsection{Stabilität von SentenceTransformer}
+% Label prozess sollte stabil sein bzw. deterministisch, sonst
+% kann keine aussage über die Güte der Labels getätig werden
 
+\section{Funktionskommentare}
+\subsection{Motivation}
+% Warum könnten funktionskommentare dafür geignet sein die Semantik einer
+% Funktion zu beschreiben
+\subsection{Methodik} 
+% Probleme beim Parsen, wo sucht man nach kommentaren?
+% Unterschiedliche Code Base unterscheidliche Kommentar konventionen
+\section{Code2Vec}
+\subsection{Motivation} 
+% Warum könnte code2vec semantisch gute Vektoren produzieren
+\subsection{Methodik} 
+% code2vec erklären
+\subsection{Training}
+% Ganzes engeneering und pain hinter code2vec
+\section{Funktionsnamen}
+\subsection{Motivation}
+% Motivation warum es gute semantische Vektoren erzeugen konnte
+\subsection{Methodik}
+% Parsen
+\section{Coddelama-Erklärungen}
+\subsection{Motivation}
+\subsection{Codellama} 
+% Was ist Codellama und warum benutzten wir es?
+\subsection{Prompt Engeneering und Temperature}
+% Von Chatbot zu relativ deterministischen Modell
+\section{Evaluation}
+\subsection{Qualitative Evaluierung} 
+% t-SNE Plots
+\subsection{Evaluierung durch Experten}
+\subsubsection{Methodik}
+\subsubsection{Auswertung und Ergebnisse}
+\subsection{Quantitative Evaluierung} 
+% Formel um zwei Embedding spaces zu vergleichen
+% Formel erklären und rechtferigen
+\subsection{Zielerreichung}
+\section{Diskussion und Fazit}
+\subsection{Diskussion der Resultate}
+\subsection{Ausblick}
+\subsection{Fazit}
 
 
 
