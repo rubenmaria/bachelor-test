@@ -1,6 +1,7 @@
 \documentclass[12pt,letterpaper]{article}
 \input{settings}
- \usepackage{mathtools}
+\usepackage{mathtools}
+\usepackage{amssymb}
 
 \begin{document}
 \newcommand{\nat}[0]{\mathbf{N}}
@@ -60,7 +61,7 @@ Ablieferungstermin: \date{\today} \\
 \fancyhf{}
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt} %obere Trennlinie
-
+\newtheorem{definition}{Definition}
 \section*{Abstract}
 \section{Einführung}
 In den letzten Jahren gab es große Fortschritte in der natürlichen
@@ -94,41 +95,88 @@ verfasst sind, als Beschreibung der Funktion zu verwenden. Am viel versprechsten
 ist es die Funktionen von einen Large Language Modell in natürlicher Sprache
 beschreiben zu lassen. Als letztes habe ich noch ein bestehendes Modell
 Code2Vec verwendet und es für dieses Problem angepasst.
-
-\section{Grunlagen und Termini}
+\pagebreak
+\section{Grundlagen und Termini}
 \subsection{Maschienelles Lernen}
-%learning from statistics
-\subsection{Large Language Models}
-% Large language Model paper und ein wenig geschichte
-\subsection{Sentence Transformer}
-% Sentence Transformer Paper und ein wenig geschichte
-\subsection{Stand der Technik}
-% JTrans, Safe, PalmTree, Clap
+In diesen Abschnitt wird zunächst maschinelles lernen definiert und 
+dann darauf aufbauend grundlegende Trainingsarten vorgestellt.
+Heutzutage ist maschienelles Lernen weitverbreitet und wird nahezu in jeden
+Bereich der Informatik verwendet. Maschinelles Lernen wird überall eingesetzt
+wo eine anayltische Lösung eines Problems zu aufwendig oder gar überhauptnicht
+existiert. % Book: Learingin from data, page 1, row 6
+\subsubsection{Definition}
+Diese Lösung durch maschinelles Lernen versucht aus den Daten ein Muster
+abzuleiten. Bei einer endlichen Menge an Daten ist klar,
+dass das resultierende Modell nur eine approximation der gesuchten Lösung
+ist. Trotz des bekanntheitsgrades, gibt es den irreglauben, dass
+maschinelles lernen nur was mit Neuronalen Netzwerken zu tun
+hat, diese Anahme ist im allgemeinen falsch. Im folgenden wird eine 
+allgeimeine Defintion von maschinellen Lernen vorgestellt:
+\begin{definition}
+  Sei $X$ eine beliebige Input Menge, $Y$ eine beliebige Output Menge,
+  $f \in \{X \to Y\}$ die gesuchte Lösung des Problems, 
+  $\mathbb{D}$ eine beliebige Menge aus gegebenen Datenpunkten,\\
+  $H_1 \subset \{X \to Y\}$ ein Hypothesenraum, und 
+  $A_1: \mathcal{P}(\{X \to Y\}) \times 
+  \mathcal{P}(\mathbb{D}) \to \{ X \to Y \} $
+  ein Lernalgorithmus. Dann ist das ziel, bei gegebenen Daten,
+  den Hypothesenraum $H_1$ und den Lernalgorithmus $A_1$ so zu wählen,
+  sodass
+  \[
+    A_1(H_1, \mathbb{D}) \approx f.
+  \]
+\end{definition}
+Maschinelles lernen ist also die suche nach einen Lernalgorithmus und 
+Hypothesenraum, die dann in kombination mit gegebenen Daten, die optimale
+Lösung approximieren. Dabei ist hervorzuheben das der Datensatz das Herzstück
+jeder Problemstellung im Bereich des maschinellen Lernens ist. Ist der 
+Datensatz zu klein oder überhaupt nicht representativ für das gegebene
+Probelm, wird der Lernalgorithmus die falschen Muster erkennen und dadurch
+eine fehlerhafte approximation produzieren. % visualisierung.
+\\
 
+
+%learning from statistics
+%Grundlegende Begriffe
+\subsection{Sentence Transformer}
+% Sentence Transformer Paper und ein wenig Geschichte
+\subsection{Large Language Models}
+% Large language Model paper und ein wenig Geschichte
+\subsection{Code2Vec}
+%\subsection{Stand der Technik} in Introduction
+% Self supervised learning (JTrans, PalmTree)
+% Same Source policy (Safe)
+%  Clap
 \section{Methodik}
 \subsection{Datensatz}
+Im Maschinellen lernen hat der Datensatz bzw. die Trainingsdaten den
+größten Einfluss auf die güte des Modells.
+% Warum ist die Auswahl des Datensatzes wichtig
 % Warum Glibc? 
-% Gleicher standard mit gleicher semantik unterschiedlich implementierung
+% Gleicher Standard mit gleicher Semantik unterschiedlich Implementierung
 \subsection{Datenpipeline}
 % Treesitter erklären
 % Source Code information in json datei speichern
-% Dann Source code information in Vector umwandeln
+% Dann Source code information in Vektor umwandeln
 % Modularität -> Vorteile dieses Designs 
 \subsection{Stabilität von SentenceTransformer}
-% Label prozess sollte stabil sein bzw. deterministisch, sonst
+% Label Prozess sollte stabil sein bzw. deterministisch, sonst
 % kann keine aussage über die Güte der Labels getätig werden
+% Tabelle mit Ergebnissen der standardabweichungen
 
+\
 \section{Funktionskommentare}
 \subsection{Motivation}
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
 \subsection{Methodik} 
-% Probleme beim Parsen, wo sucht man nach kommentaren?
-% Unterschiedliche Code Base unterscheidliche Kommentar konventionen
+% Probleme beim Parsen, wo sucht man nach Kommentaren?
+% Keine einheitliche Konvention
+% -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
 \section{Code2Vec}
 \subsection{Motivation} 
 % Warum könnte code2vec semantisch gute Vektoren produzieren
-\subsection{Methodik} 
+\subsection{Adaption auf C} 
 % code2vec erklären
 \subsection{Training}
 % Ganzes engeneering und pain hinter code2vec
@@ -137,29 +185,49 @@ Code2Vec verwendet und es für dieses Problem angepasst.
 % Motivation warum es gute semantische Vektoren erzeugen konnte
 \subsection{Methodik}
 % Parsen
+% Eigentlich einfach aber wenn man in Zukunft 
+% Viele System nahe sprachen dazu nehmen will
+% wie Rust, C, Zig, usw. 
+% Ist es doch schwieriger
+% -> Treesitter
 \section{Coddelama-Erklärungen}
 \subsection{Motivation}
+%Warum LLM's gute Embeddings produzieren könnten.
+%Wir erzeugen uns eine zusammenfassung vom code
+% "optimale" Kommentare
 \subsection{Codellama} 
 % Was ist Codellama und warum benutzten wir es?
 \subsection{Prompt Engeneering und Temperature}
 % Von Chatbot zu relativ deterministischen Modell
-\section{Evaluation}
-\subsection{Qualitative Evaluierung} 
-% t-SNE Plots
+% Ergebnisse der Standardabweichung mit Temperatur 0
+\section{Ergebnisse}
 \subsection{Evaluierung durch Experten}
 \subsubsection{Methodik}
+% Aufbau des Fragebogens und
+% Stichproben Größe, vlt. Vorstellung der Experten
 \subsubsection{Auswertung und Ergebnisse}
+% Diskussion der Ergebnisse
+% Folgerungen das CodeLlamma "gute" Embeddings produziert 
+\subsection{Qualitative Evaluierung} 
+% t-SNE Plots
+% Vielleicht nochmal subsections mit Funktionsname, Funktionskommentare, 
+% Funktionserklärung, und Code2Vec Vektoren
+% Probleme des jeweiligen Ansatzes mit drei Vektoren
 \subsection{Quantitative Evaluierung} 
 % Formel um zwei Embedding spaces zu vergleichen
-% Formel erklären und rechtferigen
-\subsection{Zielerreichung}
-\section{Diskussion und Fazit}
-\subsection{Diskussion der Resultate}
-\subsection{Ausblick}
-\subsection{Fazit}
-
-
-
+% Formel erklären und rechtfertigen
+% Aus Umfrage rechtfertigen Codellama Summaries als gute
+% embeddings zu verwenden
+\section{Limitation}
+\section{Diskussion}
+%copy Evaluation
+% Zusammenfassung der jeweiligen Resultate
+% Funktionnamen -> Nicht geignet, da zu wenig informationen und abkürzungen
+% Funktionskommentare -> Je nach Projekt geignet, aber nicht allgemeingültig
+%     deswegen eher ungeignet
+% Code2Vec -> Kommt nur knapp an mit benutzuten Daten an Names ran also nicht 
+% geignet
+\section{Fazit}
 \section{Results: Comparing natural language supervised methods for creating Rich Binary Labels}
 \begin{itemize}
   \item Stabilität von Sentence Transformer

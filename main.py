@@ -7,17 +7,16 @@ from embeddings import (calculate_standard_deviation_from_embeddings, calculate_
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, 
     calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, 
     generate_llm_TSNE, compare_embeddings_simple)
-from survey import generate_survey_csv
+from survey import generate_survey_csv, generate_surveys_csv
 from code2vec_api import generate_vectors
 from visual import (plot_clusters_from_path, plot_compare_random,
     plot_compare_from_file)
 from labels import generate_labels, FuncData, LabelData
 
 
-
 def main():
     fire.Fire({
-        "symbols" : generate_valid_symbols,
+        "symbols": generate_valid_symbols,
         "name": generate_function_names,
         "comment": generate_function_comments,
         "definition": generate_function_definitions,
@@ -33,7 +32,8 @@ def main():
         "simple-compare":  compare_embeddings_simple,
         "plot-compare-file": plot_compare_from_file,
         "plot-compare-random": plot_compare_random,
-        "generate-survey": generate_survey_csv
+        "generate-survey": generate_survey_csv,
+        "generate-surveys": generate_surveys_csv
     })
 
 
