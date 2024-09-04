@@ -1,11 +1,29 @@
-\documentclass[12pt,letterpaper]{article}
+\documentclass[12pt,letterpaper,ngerman]{article}
 \input{settings}
+\usepackage{babel}
+\usepackage{csquotes}
+\MakeOuterQuote{"}
 \usepackage{mathtools}
 \usepackage{amssymb}
-
+\usepackage{tikz}
+\usepackage{chngcntr}
+\usepackage{float}
+\usetikzlibrary{
+  decorations.pathmorphing,
+  automata, positioning, arrows, matrix,
+  decorations.pathreplacing,
+  shapes.geometric, calc,shapes.misc,
+  arrows.meta,backgrounds,fit,petri
+}
+\pgfmathsetseed{\number\pdfrandomseed} % to ensure that it is randomized
 \begin{document}
+
+\newcommand{\rand}[2]{
+\pgfmathsetmacro{\thenum}{rand(0,1)}
+\thenum
+}
 \newcommand{\nat}[0]{\mathbf{N}}
-\selectlanguage{german}
+\newtheorem{example}{Beispiel}[section]
 
 
 \begin{center}\uppercase{Ludwig-Maximilians-Universität München}\end{center}
@@ -59,6 +77,7 @@ Ablieferungstermin: \date{\today} \\
 \setcounter{page}{1}
 \pagestyle{fancy}
 \fancyhf{}
+\counterwithin{figure}{section}
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt} %obere Trennlinie
 \newtheorem{definition}{Definition}
@@ -102,16 +121,17 @@ In diesen Abschnitt wird zunächst maschinelles lernen definiert und
 dann darauf aufbauend grundlegende Trainingsarten vorgestellt.
 Heutzutage ist maschienelles Lernen weitverbreitet und wird nahezu in jeden
 Bereich der Informatik verwendet. Maschinelles Lernen wird überall eingesetzt
-wo eine anayltische Lösung eines Problems zu aufwendig oder gar überhauptnicht
+wo eine anayltische Lösung eines Problems zu aufwendig oder gar überhaupt nicht
 existiert. % Book: Learingin from data, page 1, row 6
-\subsubsection{Definition}
 Diese Lösung durch maschinelles Lernen versucht aus den Daten ein Muster
-abzuleiten. Bei einer endlichen Menge an Daten ist klar,
-dass das resultierende Modell nur eine approximation der gesuchten Lösung
-ist. Trotz des bekanntheitsgrades, gibt es den irreglauben, dass
+abzuleiten. Bei einer endlichen Menge an Daten ist meist,
+das resultierende Modell nur eine approximation der gesuchten Lösung.
+\subsubsection{Definition}
+Trotz des bekanntheitsgrades, gibt es den irreglauben, dass
 maschinelles lernen nur was mit Neuronalen Netzwerken zu tun
-hat, diese Anahme ist im allgemeinen falsch. Im folgenden wird eine 
-allgeimeine Defintion von maschinellen Lernen vorgestellt:
+hat, diese Anahme ist im allgemeinen falsch. Generell kann
+ein Problem das mit maschinelles Lernen gelöst wird, wie folgt 
+formulliert werden:
 \begin{definition}
   Sei $X$ eine beliebige Input Menge, $Y$ eine beliebige Output Menge,
   $f \in \{X \to Y\}$ die gesuchte Lösung des Problems, 
@@ -133,16 +153,300 @@ jeder Problemstellung im Bereich des maschinellen Lernens ist. Ist der
 Datensatz zu klein oder überhaupt nicht representativ für das gegebene
 Probelm, wird der Lernalgorithmus die falschen Muster erkennen und dadurch
 eine fehlerhafte approximation produzieren. % visualisierung.
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+    [inner sep=2mm,
+     place/.style={circle,draw=blue!50,fill=blue!20,thick},
+     transition/.style={rectangle,draw=black!50,fill=black!20,thick}]
+    \node (F) at (-1,4) [transition] {Lösung  $f: X \to Y$};
+    \node (D) at (-1,2) [transition] {Datenpunkte $\mathbb{D}$};
+    \node (H) at (-1,0) [transition] {Hypothesenraum $H_1$};
+    \node (A) at (3,1) [place, label=Lernalgortihmus] {$A_1$};
+    \node (FH) at (6,1) [transition, label=Approximation] {$g \approx f$};
+    \draw [->] (H) .. controls +(up:8mm) and +(left:8mm)
+                         .. (A)
+               (D) .. controls +(down:8mm) and +(left:8mm)
+                         .. (A);
+    \draw[->] (A) -- (FH);
+      \draw [->,decorate,
+       decoration={snake,amplitude=.4mm,segment length=2mm,post length=1mm}]
+      (F) -- (D);
+    \end{tikzpicture}
+    \caption{Grundlegendes maschinelles Lernen Problem}
+  \end{center}
+\end{figure}
+\hfill
 \\
+In der Figur 2.1 ist die Problembeschreibung nochmal bildlich dargestellt,
+erwähnenswert ist das die Datenpunkte nicht immer in abhängigkeit mit $f: X \to Y$
+stehen. Beispielsweise können die Datenpunkte einfach nur aus den Eingabewerten
+bestehen: $\mathbb{D} = \{x_1,x_2,x_2, \dots, x_n\} \subset X$. Die Struktur
+des Datensatzes kann sehr unterschiedlich sein, dass hängt auch mit 
+unterschiedlichen Lernmehthoden zusammen.
+\subsubsection{Deep Learning}
+Bevor die Lernmethoden genauer betrachtet werden, wird kurz Deep Learning
+vorgestellt. Deep Learning ist ein Neuronales Netzwerk mit mehreren 
+Layern zwischen Input und Output Layer. Zunächst müssen wir jedoch
+Neuronale Netzwerke definieren. 
+\begin{definition}
+  Ein Neuronales Netzwerk (NN) ist eine Funtion $N: \mathbb{R}^q \to \mathbb{R}^p$,
+  wobei $q\in \mathbb{N}$ die Anzahl der Inputs und $p \in \mathbb{N}$ die
+  Anzahl der Outputs ist. Sei $(L_i)_{i \in \{ 1, \dots, n\}}$ die Layer,
+  $(K_i^l)_{l=1,\dots, n, i = 1,\dots r_l}$ die Konten im jeweiligen Layer 
+  $l \in \{1, \dots, n\}$ und $r_l \in \mathbb{N}$ die Anzahl der Knoten im
+  Layer $L_l$. Jeder Koten im Layer $L_l$ ist mit jedem Knoten im 
+  Layer $L_{l+1}$ verbunden, mit $l \in \{1,\dots, n-1\}$. Jede Verbindung
+  besitzt ein Gewicht $W_{i,j}^l$, wobei $l \in \{1,\dots, n-1\}$ und 
+  das Gewicht der Verbindung $K^l_i \to K^{l+1}_j$ zugeordnet ist.
+  Daraus ergibt sich eine Famillie von Matritzen 
+  $(W_l)_{l=1,\dots, n-1}$, wobei $ W_l\in \mathbb{R}^{r_l\times r_{l+1}}$.
+  Nun hat jeder Layer noch ein sogenannten Bias $(B_l)_{l = 2,\dots,n}$,
+  dieser ist ein Zeilenvektor $B_l \in \mathbb{R}^{r_l}$.
+  Als letztes braucht jeder Knoten eine Aktivierungsfunktion, dass heißt
+  für jeden Layer gibt es $r_l$ Funktionen:
+  $(F_l)_{l=1,\dots,n}$, mit $F_l \in \{\mathbb{R} \to \mathbb{R}\}^{r_l}$.
+  Es ist hilfreich die Funktionsanwendung auch für den Vektor $F_l$ zu definieren:
+  Sei $x \in \mathbb{R}^{r_l}$, dann setze
+  \[
+    F_l(x) := \begin{pmatrix} 
+        f_1(x_1) \\
+        \vdots\\
+        f_{r_l}(x_{r_l})
+    \end{pmatrix}.
+  \]
+  Dann ist die Funktion $N: \mathbb{R}^q \to \mathbb{R}^p$ wie folgt definiert:
+  %\[
+  % N(x) = F_n(W_nf_{n-1}(W_{n-1} \dots f_1(W_1) \dots ))
+  %\]
+  \[
+    N(x) = h_1(x)
+  \]
+  ,wobei
+  \[h_l: \mathbb{R}^{r_l} \to \mathbb{R}^{r_l+1}\]
+  \[
+    h_l(x) = 
+      \begin{cases}
+        h_{l+1}(F_{l+1}(W_lx + B_{l+1}))& ,  \text{if } l < n \\ 
+        x & , \text{sonst}\\
+      \end{cases}.
+  \]
+  Wir bezeichnen $L_1$ als Input-Layer, $L_n$ als Output-Layer und
+  $L_i$, mit $i \in \{2, \dots, n-1\}$, als Hidden-Layer.
+\end{definition}
+Also ist Deep Learning ein bestimmer Hypothesenraum, denn 
+alle Neuronale Netzwerke sind höher dimensionale reelwertige Funktionen. 
+Schließlich gilt für den Hypothesenraum:
+\[
+  H = \{\mathbb{R}^n \to \mathbb{R}^k\}, \text{ wobei } n,k \in \mathbb{N}
+\]
+Die Definition von einem Neuronalen Netzwerk erscheint zunächst länglich und unintuitiv, diese
+wird aber anschaulich anhand eines Beispiels.
+\begin{example}
+  Sei $N: \mathbb{R}^2 \to \mathbb{R}^2$, $(L_i)_{i=1,2,3}$ Layer.
+  Der Input-Layer besitzt zwei Knoten $r_1 = 2$, der erste
+  Hidden-Layer besitzt $r_2 = 3$, der zweite Hidden-Layer besitzt
+  $r_3 = 3$ Knoten und der Output-Layer besitzt $r_4 = 2$ Knoten.
+  Mit den Knoten $(K^l_i)_{l=1,2,3, i = 1, \dots, r_l}$ und zufälligen
+  Gewichten:
+  \[
+    W_1 = \begin{pmatrix} 0.2 & 0.7 & 0.4 \\ 0 & 0.7 & 0.8 \end{pmatrix} 
+    \in \mathbb{R}^{2 \times 3},
+    W_2 = \begin{pmatrix} 0.6 & 0 & 0.4 \\ 0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
+    \in \mathbb{R}^{3 \times 3},
+    W_3 = \begin{pmatrix} 0.2 & 0.45 \\ 0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
+    \in \mathbb{R}^{3 \times 2}.
+  \]
+  Für den Bias setzen wir:
+  \[
+    B_2 = \begin{pmatrix} 0.1 \\ 0.2 \\ 0.3\end{pmatrix} \in \mathbb{R}^3,
+    B_3 = \begin{pmatrix} 0.4 \\ 0.5 \\ 0.6\end{pmatrix} \in \mathbb{R}^3,
+    B_4 = \begin{pmatrix} 0.7 \\ 0.8 \end{pmatrix} \in \mathbb{R}^2,
+  \]
+  Außerdem setzen wir alle Aktivierungfunktionen:
+  \[
+    (F_{l})_i = \text{tanh}, \text{ wobei } l \in \{ 1, 2, 3\},
+      i \in \{1, \dots, r_l\}
+  \]
+  Dann gilt für das Neuronales Netzwerk $N: \mathbb{R}^2 \to \mathbb{R}^2$:
+  \[
+    N(x) = 
+    {\color{green}
+    \text{tanh}(\begin{pmatrix} 0.2 & 0.45 \\ 0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
+    }
+    {\color{blue}
+    \text{tanh}(\begin{pmatrix} 0.6 & 0 & 0.4 \\ 0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
+    }
+    {\color{red}
+    \text{tanh}(\begin{pmatrix} 0.2 & 0.7 & 0.4 \\ 0 & 0.7 & 0.8 \end{pmatrix}x
+      + \begin{pmatrix} 0.1 \\ 0.2 \\ 0.3\end{pmatrix})} 
+    {\color{blue}
+      + 
+    \begin{pmatrix} 0.4 \\ 0.5 \\ 0.6\end{pmatrix})}
+    { \color{green}
+    +
+    \begin{pmatrix} 0.7 \\ 0.8 \end{pmatrix})
+    }
+  \]
+  \begin{figure}[H]
+    \begin{center}
+      \begin{tikzpicture}
+      [inner sep=2mm,
+       place/.style={circle,draw=blue!50,fill=blue!20,thick},
+       transition/.style={rectangle,draw=black!50,fill=black!20,thick}]
+      \node (L11) at (-1,3) [place] {$K_1^1$};
+      \node (L12) at (-1,1) [place] {$K_2^1$};
 
+      \node (L21) at (2,4) [place] {$K_1^2$};
+      \node (L22) at (2,2) [place] {$K_2^2$};
+      \node (L23) at (2,0) [place] {$K_3^2$};
 
+      \node (L31) at (5,4) [place] {$K_1^3$};
+      \node (L32) at (5,2) [place] {$K_2^3$};
+      \node (L33) at (5,0) [place] {$K_3^3$};
+
+      \node (L41) at (8,3) [place] {$K_1^4$};
+      \node (L42) at (8,1) [place] {$K_2^4$};
+
+      \draw[->, red] (L11) -- (L21);
+      \draw[->, red] (L11) -- (L22);
+      \draw[->, red] (L11) -- (L23);
+      \draw[->, red] (L12) -- (L21);
+      \draw[->, red] (L12) -- (L22);
+      \draw[->, red] (L12) -- (L23);
+
+      \draw[->, blue] (L21) -- (L31);
+      \draw[->, blue] (L21) -- (L32);
+      \draw[->, blue] (L21) -- (L33);
+
+      \draw[->, blue] (L22) -- (L31);
+      \draw[->, blue] (L22) -- (L32);
+      \draw[->, blue] (L22) -- (L33);
+
+      \draw[->, blue] (L23) -- (L31);
+      \draw[->, blue] (L23) -- (L32);
+      \draw[->, blue] (L23) -- (L33);
+
+      \draw[->, green] (L31) -- (L41);
+      \draw[->, green] (L31) -- (L42);
+
+      \draw[->, green] (L32) -- (L41);
+      \draw[->, green] (L32) -- (L42);
+        
+      \draw[->, green] (L33) -- (L41);
+      \draw[->, green] (L33) -- (L42);
+      \end{tikzpicture}
+      \caption{ Neuronales Netzwerk bildlich als Graph dargestellt}
+    \end{center}
+  \end{figure}
+  Ein Gewicht zwischen zwei Knoten $K_1^1 \to K_1^2$ kann nun einfach nachgeschaut werden:
+  \[
+    (W_1)_{1,1} = 0.2
+  \]
+\end{example}
+Bei dem Beispiel oben handelt es sich um Deep Learning, da das Neuronale 
+Netzwerk zwei Hidden-Layer besitzt. Heutzutage haben Deep Learning Models
+zwei bis drei stellige Anzahl an Hidden-Layer. Diese Dimensionen sind aber
+für ein Beispiel eher ungeignet.
+\subsubsection{Überwachtes Lernen}
+%learning from data page 11 row 7
+Das überwachte Lernen ist die meist eingesetzte Trainingsmethode, deswegen
+auch die wichtigste. Bei diesem Ansatz liegt immer die korrekte Lösung
+für jeden Input bei, demtentsprechend ist der Datensatz ein Tuple aus Input und
+korrekten Output: 
+  \[\mathbb{D} = \{ (x_1,y_1), (x_2,y_2) (x_3,y_3), \dots ,(x_n,y_n)\} 
+  \subset X \times Y.\]
+Ein klasisches Beipiel für diesen Ansatz ist die Bilderkennung, hierbei 
+wäre ein möglicher input ein Vektor mit Grauwerten und der Output ein 
+Label bzw. die Bezeichung für das Bild.
+\begin{example}
+  Sei $X = \mathbb{R}^{4096}$ und
+   $Y = \{ \text{Katze}, \text{ Hund}, \text{ Auto}\}$, dann könnte der 
+   Datensatz wie folgt aussehen:
+   \[
+     \mathbb{D} = \{
+     (\begin{pmatrix} 0.2 \\ 0.9 \\ 0.5 \\ \vdots \end{pmatrix}, \text{Hund}),
+     (\begin{pmatrix} 0.1 \\ 0.1 \\ 0.6 \\ \vdots \end{pmatrix}, \text{Hund}),
+     (\begin{pmatrix} 0.6 \\ 0.7 \\ 0 \\ \vdots \end{pmatrix}, \text{Katze}),
+     \dots, 
+     (\begin{pmatrix} 0.4 \\ 0.3 \\ 0.9 \\ \vdots \end{pmatrix}, \text{Auto})
+    \}
+   \]
+\end{example}
+Der entscheidende Punkt ist also hier, dass wir das richtige verhalten
+unseres Modells kennen und deswegen direkt wissen wenn es Fehler macht.
+Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich 
+erscheint nicht so selbstverständlich.
+\subsubsection{Unüberwachtes Lernen}
+Unüberwachtes lernen ist der Extremfall, denn hier bekommt der Lernalgorithmus
+ausschließlich die Inputwerte: 
+$\mathbb{D} = (x_1, x_2, x_3, \dots, x_n) \subset X$.
+Der Lernalgorithmus erhält also keine hinweise darauf was ein 
+richtiger oder ein falscher Output ist. Unüberwachtes lernen 
+wird meist eingesetzt um in Daten, Strukturen und Muster zu 
+identifizieren. Ein Beispiel ist die Cluster-Analyse,
+hier bekommt der Lernalogrithmus eine Menge von Daten und 
+gruppiert diese in Teilmengen. In der Abbildung 2.2 ist ein Beispiel
+für das Resultat einer möglichen Cluster-Analyse dargestellt.
+\begin{figure}[H]
+  \centering
+  \rule{1cm}{1cm}% placeholder for graphic
+  \caption{Cluster Analyse angewendet auf 2-dimensionale Daten}
+\end{figure}
+
+\subsubsection{Reinforcement Learning}
+Das Reinforcement Learning ist nicht so extrem wie das unüberwachte Lernen,
+bei diesem Paradigma liegen dem Lernalgorithmus, zwar auch nicht die korrekten
+Outputwerte vor, aber der Lernalgorithmus kriegt für jeden vorhergesagten Wert
+eine Rückmeldung,\underline{wie erwünscht dieser Wert ist}. Hier ist ein Beispiel,
+ein Modell, mittels einen Lernalgorithmus, darauf zu trainieren ein Videospiel
+zu Gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Umgebung und gibt dem
+Spiel ein Input, welcher eine Aktion zufolge hat. Falls nun die Aktion dazu beiträgt, 
+den Spieler in eine gute position zu bringen oder gar das Spiel zu gewinnen, bekommt 
+die Aktion eine positive Bewertung, anderfalls eine negative. Intuitiv 
+könnte man dieses Paradigma auch als "learning by doing" bezeichnen, da
+der Lernalgorithmus nach ausreichendem Ausprobieren das gewünschte 
+Verhalten erlernt.\\\\
+Die Problemstellung im maschinellen Lernen ist allgemein gehalten und abstrakt.
+Aber genau aus diesem Grund kann maschinelles Lernen in so vielen unterschiedlichen
+Bereichen eingesetzt werden. In dieser Arbeit werden wir uns hauptsächlich 
+mit dem Bereich der linguistischen Datenverabeitung 
+(engl. Natural Language Processing) befassen, was uns zum nächsten Begriff
+führt.
 %learning from statistics
 %Grundlegende Begriffe
 \subsection{Sentence Transformer}
-% Sentence Transformer Paper und ein wenig Geschichte
-\subsection{Large Language Models}
+Das Ziel dieser Arbeit ist es, mittels Quellinformationen 
+funktionen in einen semantisches wertvollen Vektor zu kodieren.
+Semantische wertvoll heißt, dass semantisch ähnliche Funktionen
+,wie beispielsweise zwei Sortieralgorithmen, im projezierten 
+Vektorraum, mit einer gewählten Metrik, einen geringen abstand besitzen.
+Das Sentence-BERT (Reimers et al. 2019) Modell ist Stand der Technik,
+im semantischen kodieren von natürlicher Sprache in einem Vektorraum.
+Wenn man nun jeder Funktion, ein Text in natürlicher Sprache zuordnet, der
+die Funktion beschreibt, kann mithilfe von Sentence-BERT (SBERT)
+ein semantisch wertvoller Vektor für jede Funktion generiert werden.
+Die Autoren haben selber auch eine Implementierung bereit gestellt,
+unter den Namen Sentence-Transformer (\underline{LINK??}), die in dieser
+Arbeit verwendet wird. Sie haben das Ursprüngliche von Google entwickelte
+BERT (Devlin et. al 2018) Modell genommen und angepasst. BERT ist ein Modell
+welches mittels einer neuen Deep Learning Architektur, 
+zwei Textauszüge als Input bekommt und dann eine aussage über ihre
+semantische ähnlichkeit liefert. Die Hauptarbeit von Reimer und kollegen, 
+war nun das BERT Modell so anzupassen, dass nur ein Textauszug als Input
+bereitgestellt werden muss, um anschließend einen Vektor zu erhalten, 
+der die Semantik weitestgehend erhält.\\
+In dieser Arbeit werden verschieden Methodiken vorgestellt, einer Funktion
+einen semantische passenden Text zuzordnen. Ein Tool mit dem man aus
+Quellinformation ein Text produzieren kann ist das 
+Large Language Model (LLM).
+\subsection{Code-Llama}
+\subsubsection{Large Language Model}
+\subsubsection{Llama 2}
+\subsubsection{Code-llama}
 % Large language Model paper und ein wenig Geschichte
 \subsection{Code2Vec}
+\subsection{t-SNE}
 %\subsection{Stand der Technik} in Introduction
 % Self supervised learning (JTrans, PalmTree)
 % Same Source policy (Safe)
