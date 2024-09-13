@@ -673,7 +673,7 @@ vorhergesagt verdeckt (engl. Masked) werden.
 Das BERT Modell ist wieder ein großer Meilenstein im NLP Bereich und
 kann als einer der ersten Large Language Models betrachtet werden.
 Das Modell verbessert die Transformer Architektur indem es die
-Embeddings der Token verbessert, zwei neue Trainingsformen einführt
+Embeddings der Token verbessert, zwei neue Trainingsaufgaben einführt
 und aussschließlich Encoder verwendet.
 \begin{figure}[H]
   \begin{center}
@@ -683,7 +683,7 @@ und aussschließlich Encoder verwendet.
 \end{figure}
 In Abbildung 2.8 ist der Token Embedding Prozess abgebildet, der
 im folgenden näher beschrieben wird. Zunächst muss erläutert 
-werden was ein {\bf Token} ist. Ein Token ist in unsere Fall ein Wort,
+werden was ein  Token ist. Ein {\bf Token} ist in unsere Fall ein Wort,
 aber generell ist ein Token, eine kleinere Zeichenkette die aus
 einen Text gewonnen wird und einer Bedeutung zugewiesen wird
 oder in eine Zahl umgewandelt wird um die weiterverarbeitung
@@ -698,45 +698,42 @@ die Information welche Tokens strukturell zusammen gehören
 (Bspw. ein Satz). Das {\bf Position Embedding} kodiert
 die sequentielle Position im Input.\\
 Das wichtigste Puzzleteil sind die zwei unterschiedlichen
-Trainingsformen. Während der Transformer strikt die
+Trainingsaufgaben. Während der Transformer strikt die
 Token von links nach rechts vorhersagt, wird BERT darauf
 trainiert Wörter die auf beliebiger Position fehlen 
-vorherzusagen. Die Autoren bennenen diese Trainingsform
-{\bf Masked Language Model}, es werden $15\%$ der Input
+vorherzusagen, deswegen hat das Modell zugriff auf
+den Kontext der sich links und recht von dem zu verhersagenden
+Token befindet. Die Autoren bennenen diese Trainingsform
+{\bf Masked Language Modeling}, es werden $15\%$ der Input
 Tokens durch, entweder das \verb|[Mask]| Token oder mit einen
 zufälligen anderen Token ersetzt. Dabei bleiben 
-$10\%$ der Tokens die maskiert werden gleich, weitere
-$10\%$ davon werden durch ein zufälligen anderen Token
-ersetzt und $80\%$ davon werden durch das \verb|[Mask]|
-Token ersetzt.
-
-
+$10\%$ der Tokens die maskiert werden sollten doch gleicht,
+weitere $10\%$ davon werden durch ein zufälligen anderen Token
+ersetzt und die restlichen $80\%$ davon werden durch
+das \verb|[Mask]| Token ersetzt. Die zweite Traininsaufgabe
+ist {\bf Next Sentence Prediction} (NSP), bei dieser Aufgabe
+muss das BERT Modell bei der Eingabe von zwei Sätzen entscheiden,
+ob diese sequentiell nacheinander kommen oder nicht. Dabei sind
+$50\%$ der Daten, zwei Sätze die nacheinander kommen und
+bei den anderen $50\%$ wird zu einen gegebenen Satz aus den gesamten
+Daten ein zufälliger falscher Satz gewählt. \\ 
+Nachdem Training erhält man aus BERT einen Outputvektor der genauso
+lang ist wie der Inputvektor, dieser kann dann mit wenig aufwand
+weiter verwendet werden, um das Modell für bestimmte Probleme in NLP
+anzupassen (engl. fine-tuning).
 
 \subsubsection{Sentence Transformer}
-Das Ziel dieser Arbeit ist es, mittels Quellinformationen 
-funktionen in einen semantisches wertvollen Vektor zu kodieren.
-Semantische wertvoll heißt, dass semantisch ähnliche Funktionen
-,wie beispielsweise zwei Sortieralgorithmen, im projezierten 
-Vektorraum, mit einer gewählten Metrik, einen geringen abstand besitzen.
 Das Sentence-BERT (Reimers et al. 2019) Modell ist Stand der Technik,
 im semantischen kodieren von natürlicher Sprache in einem Vektorraum.
-Wenn man nun jeder Funktion, ein Text in natürlicher Sprache zuordnet, der
-die Funktion beschreibt, kann mithilfe von Sentence-BERT (SBERT)
-ein semantisch wertvoller Vektor für jede Funktion generiert werden.
-Die Autoren haben selber auch eine Implementierung bereit gestellt,
-unter den Namen Sentence-Transformer (\underline{LINK??}), die in dieser
-Arbeit verwendet wird. Sie haben das Ursprüngliche von Google entwickelte
-BERT (Devlin et. al 2018) Modell genommen und angepasst. BERT ist ein Modell
-welches mittels einer neuen Deep-Learning-Architektur, 
-zwei Textauszüge als Input bekommt und dann eine aussage über ihre
-semantische ähnlichkeit liefert. Die Hauptarbeit von Reimer und kollegen, 
-war nun das BERT Modell so anzupassen, dass nur ein Textauszug als Input
-bereitgestellt werden muss, um anschließend einen Vektor zu erhalten, 
-der die Semantik weitestgehend erhält.\\
-In dieser Arbeit werden verschieden Methodiken vorgestellt, einer Funktion
-einen semantische passenden Text zuzordnen. Ein Tool mit dem man aus
-Quellinformation ein Text produzieren kann ist das 
-Large Language Model (LLM).
+Die Implementierung ist unter den Namen Sentence-Transformer (\underline{LINK??})
+bekannt und wird in dieser Arbeit verwendet. Die Motivation hinter Sentence-BERT
+(SBERT) ist das effiziente semantische vergleichen von zwei Sätzen. Wenn man mit
+BERT herausfinden will, wie semantisch ähnlich zwei gegebene Sätze sind, dann muss 
+man beide als Input in das Modell eingeben. Dass heißt wenn man die Ähnlichkeit
+von allen $n$ Sätzen jeweils zueinander haben will, gibt es $\frac{n(n-1)}{2}$
+eingaben in das BERT Modell, die man tätigen muss. Mit SBERT kann nun jeder
+Satz in einen Vektorraum abgebildet werden, indem man einfach die Kosinus
+
 \subsection{Code-Llama}
 \subsubsection{Large Language Model}
 \subsubsection{Llama 2}
