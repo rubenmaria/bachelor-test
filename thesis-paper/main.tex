@@ -673,7 +673,7 @@ vorhergesagt verdeckt (engl. Masked) werden.
 Das BERT Modell ist wieder ein großer Meilenstein im NLP Bereich und
 kann als einer der ersten Large Language Models betrachtet werden.
 Das Modell verbessert die Transformer Architektur indem es die
-Embeddings der Token verbessert, zwei neue Trainingsformen benutzt
+Embeddings der Token verbessert, zwei neue Trainingsformen einführt
 und aussschließlich Encoder verwendet.
 \begin{figure}[H]
   \begin{center}
@@ -681,6 +681,37 @@ und aussschließlich Encoder verwendet.
   \end{center}
   \caption{Token Embedding Prozess entnommen aus dem BERT Paper.}
 \end{figure}
+In Abbildung 2.8 ist der Token Embedding Prozess abgebildet, der
+im folgenden näher beschrieben wird. Zunächst muss erläutert 
+werden was ein {\bf Token} ist. Ein Token ist in unsere Fall ein Wort,
+aber generell ist ein Token, eine kleinere Zeichenkette die aus
+einen Text gewonnen wird und einer Bedeutung zugewiesen wird
+oder in eine Zahl umgewandelt wird um die weiterverarbeitung
+zu vereinfachen.\\
+Das BERT Modell addiert drei unterschiedlich informationen
+in Vektorform auf, um noch bessere Token Embeddings zu
+generieren. BERT benutzt WordPiece %(Quelle)
+um die Token Embeddings zu bekommen, auf diesen wird
+nun noch ein Segement Embedding und schließlich Position
+Embedding darauf addiert. {\bf Segment Embedding} kodiert
+die Information welche Tokens strukturell zusammen gehören
+(Bspw. ein Satz). Das {\bf Position Embedding} kodiert
+die sequentielle Position im Input.\\
+Das wichtigste Puzzleteil sind die zwei unterschiedlichen
+Trainingsformen. Während der Transformer strikt die
+Token von links nach rechts vorhersagt, wird BERT darauf
+trainiert Wörter die auf beliebiger Position fehlen 
+vorherzusagen. Die Autoren bennenen diese Trainingsform
+{\bf Masked Language Model}, es werden $15\%$ der Input
+Tokens durch, entweder das \verb|[Mask]| Token oder mit einen
+zufälligen anderen Token ersetzt. Dabei bleiben 
+$10\%$ der Tokens die maskiert werden gleich, weitere
+$10\%$ davon werden durch ein zufälligen anderen Token
+ersetzt und $80\%$ davon werden durch das \verb|[Mask]|
+Token ersetzt.
+
+
+
 \subsubsection{Sentence Transformer}
 Das Ziel dieser Arbeit ist es, mittels Quellinformationen 
 funktionen in einen semantisches wertvollen Vektor zu kodieren.
