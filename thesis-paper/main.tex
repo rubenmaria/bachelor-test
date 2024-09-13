@@ -5,6 +5,7 @@
 \MakeOuterQuote{"}
 \usepackage{mathtools}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{chngcntr}
 \usepackage{float}
@@ -17,7 +18,8 @@
 }
 \pgfmathsetseed{\number\pdfrandomseed} % to ensure that it is randomized
 \begin{document}
-
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \newcommand{\rand}[2]{
 \pgfmathsetmacro{\thenum}{rand(0,1)}
 \thenum
@@ -117,15 +119,16 @@ Code2Vec verwendet und es für dieses Problem angepasst.
 \pagebreak
 \section{Grundlagen und Termini}
 \subsection{Maschienelles Lernen}
+Heutzutage ist maschienelles Lernen weitverbreitet und wird in nahezu jeden
+Bereich der Informatik verwendet.
 In diesen Abschnitt wird zunächst maschinelles lernen definiert und 
 dann darauf aufbauend grundlegende Trainingsarten vorgestellt.
-Heutzutage ist maschienelles Lernen weitverbreitet und wird nahezu in jeden
-Bereich der Informatik verwendet. Maschinelles Lernen wird überall eingesetzt
+Maschinelles Lernen wird überall dort eingesetzt
 wo eine anayltische Lösung eines Problems zu aufwendig oder gar überhaupt nicht
 existiert. % Book: Learingin from data, page 1, row 6
 Diese Lösung durch maschinelles Lernen versucht aus den Daten ein Muster
 abzuleiten. Bei einer endlichen Menge an Daten ist meist,
-das resultierende Modell nur eine approximation der gesuchten Lösung.
+das resultierende Modell nur eine Approximation der gesuchten Lösung.
 \subsubsection{Definition}
 Trotz des bekanntheitsgrades, gibt es den irreglauben, dass
 maschinelles lernen nur was mit Neuronalen Netzwerken zu tun
@@ -152,7 +155,7 @@ Lösung approximieren. Dabei ist hervorzuheben das der Datensatz das Herzstück
 jeder Problemstellung im Bereich des maschinellen Lernens ist. Ist der 
 Datensatz zu klein oder überhaupt nicht representativ für das gegebene
 Probelm, wird der Lernalgorithmus die falschen Muster erkennen und dadurch
-eine fehlerhafte approximation produzieren. % visualisierung.
+eine fehlerhafte Approximation produzieren. % visualisierung.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -179,14 +182,14 @@ eine fehlerhafte approximation produzieren. % visualisierung.
 \hfill
 \\
 In der Figur 2.1 ist die Problembeschreibung nochmal bildlich dargestellt,
-erwähnenswert ist das die Datenpunkte nicht immer in abhängigkeit mit $f: X \to Y$
+erwähnenswert ist, dass die Datenpunkte nicht immer in abhängigkeit mit $f: X \to Y$
 stehen. Beispielsweise können die Datenpunkte einfach nur aus den Eingabewerten
 bestehen: $\mathbb{D} = \{x_1,x_2,x_2, \dots, x_n\} \subset X$. Die Struktur
 des Datensatzes kann sehr unterschiedlich sein, dass hängt auch mit 
 unterschiedlichen Lernmehthoden zusammen.
-\subsubsection{Deep Learning}
-Bevor die Lernmethoden genauer betrachtet werden, wird kurz Deep Learning
-vorgestellt. Deep Learning ist ein Neuronales Netzwerk mit mehreren 
+\subsubsection{Deep-Learning}
+Bevor die Lernmethoden genauer betrachtet werden, wird kurz Deep-Learning
+vorgestellt. Deep-Learning ist ein Neuronales Netzwerk mit mehreren 
 Layern zwischen Input und Output Layer. Zunächst müssen wir jedoch
 Neuronale Netzwerke definieren. 
 \begin{definition}
@@ -234,7 +237,7 @@ Neuronale Netzwerke definieren.
   Wir bezeichnen $L_1$ als Input-Layer, $L_n$ als Output-Layer und
   $L_i$, mit $i \in \{2, \dots, n-1\}$, als Hidden-Layer.
 \end{definition}
-Also ist Deep Learning ein bestimmer Hypothesenraum, denn 
+Also ist Deep-Learning ein bestimmer Hypothesenraum, denn 
 alle Neuronale Netzwerke sind höher dimensionale reelwertige Funktionen. 
 Schließlich gilt für den Hypothesenraum:
 \[
@@ -344,8 +347,8 @@ wird aber anschaulich anhand eines Beispiels.
     (W_1)_{1,1} = 0.2
   \]
 \end{example}
-Bei dem Beispiel oben handelt es sich um Deep Learning, da das Neuronale 
-Netzwerk zwei Hidden-Layer besitzt. Heutzutage haben Deep Learning Models
+Bei dem Beispiel oben handelt es sich um Deep-Learning, da das Neuronale 
+Netzwerk zwei Hidden-Layer besitzt. Heutzutage haben Deep-Learning Models
 zwei bis drei stellige Anzahl an Hidden-Layer. Diese Dimensionen sind aber
 für ein Beispiel eher ungeignet.
 \subsubsection{Überwachtes Lernen}
@@ -376,7 +379,9 @@ Label bzw. die Bezeichung für das Bild.
 Der entscheidende Punkt ist also hier, dass wir das richtige verhalten
 unseres Modells kennen und deswegen direkt wissen wenn es Fehler macht.
 Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich 
-erscheint nicht so selbstverständlich.
+erscheint nicht so selbstverständlich. Beim {\bf selbst-überwachten Lernen}
+generiert der Lernalgorithmus die richtigen Lösungen und jeden Input
+aus gegeben Daten selber.
 \subsubsection{Unüberwachtes Lernen}
 Unüberwachtes lernen ist der Extremfall, denn hier bekommt der Lernalgorithmus
 ausschließlich die Inputwerte: 
@@ -412,10 +417,271 @@ Aber genau aus diesem Grund kann maschinelles Lernen in so vielen unterschiedlic
 Bereichen eingesetzt werden. In dieser Arbeit werden wir uns hauptsächlich 
 mit dem Bereich der linguistischen Datenverabeitung 
 (engl. Natural Language Processing) befassen, was uns zum nächsten Begriff
-führt.
-%learning from statistics
-%Grundlegende Begriffe
-\subsection{Sentence Transformer}
+führt. Liguistische Datenverarbeitung wird im folgenden mit NLP abgekürtzt.
+\subsection{Semantische Vekorräume}
+Das semantische kodieren von natürlicher Sprache in einen Vektorraum,
+ist ein bedeutsames Problem in NLP(Referenz). Der resultierende 
+Vektorraum kann, für verschieden Problemstellungen 
+(engl. downstream task) verwendet werden. Ein Beispiel
+ist das klassifizierten von Fake-News oder das zusammenfassen
+von längeren Texten(Quelle?). Semantischer Vektorraum heißt hier
+das ähnliche Wörter, also Wörter mit ähnlicher Bedeutung, im 
+projizierten Vektorraum einen geringen Abstand zu einander haben.
+Diese Vektoren werden wir im folgenden Embeddings nennen.
+In einem optimalen Vektorraum würde im Figur 2.3 gezeigte Beziehung
+gelten.
+\begin{figure}[H]
+  \begin{center}
+      \begin{tikzpicture}
+        \draw[thin,gray!40] (-3,-3) grid (3,3);
+        \draw[->] (-3,-3)--(3,-3) node[right]{$x_1$};
+        \draw[->] (-3,-3)--(-3,3) node[above]{$x_2$};
+        \draw[line width=2pt,red,-stealth](-2,-2)--(1,-2) 
+            node[midway, below]{weiblich};
+        \draw[line width=2pt,red,-stealth](-1,1)--(2,1) 
+          node[midway, above]{weiblich};
+        \draw[line width=2pt,blue,-stealth](-2,-2)--(-1,1) 
+            node[midway, left]{Geschichtsstudium};
+        \draw[line width=2pt,blue,-stealth](1,-2)--(2,1) 
+          node[midway, right]{Geschichtsstudium};
+        \filldraw (-2,-2) circle (2pt)
+        node[anchor=north east]{Mann};
+        \filldraw (1,-2) circle (2pt)
+        node[anchor=north west]{Frau};
+        \filldraw (-1,1) circle (2pt)
+        node[anchor=south east]{Taxifahrer};
+        \filldraw (2,1) circle (2pt)
+        node[anchor=south west]{Taxifahrerin};
+    \end{tikzpicture}
+  \end{center}
+  \caption{Optimaler fiktiver semantischer Vektorraum}
+\end{figure}
+\subsubsection{Bag of Words}
+Der naivste Ansatz ist es jedem Wort im vorliegenden Text eine 
+Zahl zu zuordnen. Daraus kann zum einen die Häufigkeit eines Wortes
+abgeleitet werden, aber auch die Sätze in denen ein bestimmtes Wort
+vor kommt, effizient gefunden werden. Die Bedeutung eines Wortes ist
+hier komplett unabhängig von der Wahl der zugewiesenen Zahl. Das führt
+dazu, dass sogar Synonyme einen hohen Abstand haben können.
+\begin{example}
+  Sei $T = \{\text{Input}, \text{Mann}, \text{Frau},
+   \text{Eingabe}\}$ eine Menge von Wörtern, dann ist die zuordnung
+  zu dem Vektorraum $\mathbb{N}^1$ wie folgt:
+  \[
+    \text{Input} \to 1, 
+    \text{Mann} \to 2, 
+    \text{Frau} \to 3,
+    \text{Eingabe} \to 4.
+  \]
+  Obwohl Eingabe und Input semantisch sehr ähnlich sind, haben sie hier
+  einen sehr unterschiedlichn Wert.
+\end{example}
+\subsubsection{Word2Vec}
+Im Jahr 2013 veröffentlichte Google ein Paper,
+indem sie zwei Modellarchitekturen vorstellen,
+mit denen ein neuronales Netzwerke effizient
+lernen kann, semantische embeddings zu produzieren.
+Das Neuronale Netzwerk hat in beiden Architekturen
+ein Hidden-Layer, die Gewichte des Hidden-Layers beinhalten nachdem
+Training die reelwertigen Vektor repräsentationen.
+Der Aufbau bei beiden Modellen ist in Figur 2.4 dargestellt.
+Zu beachten ist, dass der Hidden-Layer keine Aktivierungsfunktion
+besitzt, da er nur als lineare Transformation von einer
+One-Hot-Kodierung zu einem reelwertigen Vektor dient.
+One-Hot-Kodierung produziert für jedes aus
+n Wörten einen Vektor $v \in \{0,1\}^n$. Der Vektor besitzt immer
+nur eine eins und sonst überall eine null. Jede Position wo eine eins
+ist, gibt es jeweils nur einmal und kodiert so, mittels der Position,
+ein Wort. Der Output-Layer hat als Aktiverungsfunktion einen Softmax,
+der Sofmax gitbt Werte zwischen 0 und 1 zurück. Der Output ist also ein
+Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung ein
+Wort oder mehrere abgeleitet werden.
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+    [inner sep=2mm,
+     place/.style={circle,draw=blue!50,fill=blue!20,thick},
+     transition/.style={rectangle,draw=black!50,fill=black!20,thick}]
+    \node (i1) at (-3,4) {$1$};
+    \node (i2) at (-3,2) {$0$};
+    \node (dotsi1) at (-3,1) {$\vdots$};
+    \node (i3) at (-3,0) {$0$};
+    \node (L11) at (-1,4) [place] {$I_1$};
+    \node (L12) at (-1,2) [place] {$I_2$};
+    \node (dots1) at (-1,1) {$\vdots$};
+    \node (L13) at (-1,0) [place] {$I_n$};
+
+    \node (L21) at (2,4) [place] {$H_1$};
+    \node (L22) at (2,2) [place] {$H_2$};
+    \node (dots2) at (2,1) {$\vdots$};
+    \node (L23) at (2,0) [place] {$H_n$};
+
+    \node (L31) at (5,4) [place] {$O_1$};
+    \node (L32) at (5,2) [place] {$O_2$};
+    \node (dots3) at (5,1) {$\vdots$};
+    \node (L33) at (5,0) [place] {$O_n$};
+
+    \node (o1) at (7,4) {$0.1$};
+    \node (o2) at (7,2) {$0.3$};
+    \node (dotso1) at (7,1) {$\vdots$};
+    \node (o3) at (7,0) {$0.8$};
+
+    \draw[->] (i1) -- (L11);
+    \draw[->] (i2) -- (L12);
+    \draw[->] (i3) -- (L13);
+
+    \draw[->] (L11) -- (L21);
+    \draw[->] (L11) -- (L22);
+    \draw[->] (L11) -- (L23);
+    \draw[->] (L12) -- (L21);
+    \draw[->] (L12) -- (L22);
+    \draw[->] (L12) -- (L23);
+
+    \draw[->] (L13) -- (L21);
+    \draw[->] (L13) -- (L22);
+    \draw[->] (L13) -- (L23);
+
+    \draw[->] (L21) -- (L31);
+    \draw[->] (L21) -- (L32);
+    \draw[->] (L21) -- (L33);
+
+    \draw[->] (L22) -- (L31);
+    \draw[->] (L22) -- (L32);
+    \draw[->] (L22) -- (L33);
+
+    \draw[->] (L23) -- (L31);
+    \draw[->] (L23) -- (L32);
+    \draw[->] (L23) -- (L33);
+
+    \draw[->] (L31) -- (o1);
+    \draw[->] (L32) -- (o2);
+    \draw[->] (L33) -- (o3);
+    \end{tikzpicture}
+    \caption{ Neuronales Netzwerk von Word2Vec}
+  \end{center}
+\end{figure}
+Es gibt nun zwei unterschiedliche herangehensweisen, dieses
+Neuronales Netzwerk zu trainieren. Die erste ist Skip-gram, gegeben ein Wort
+muss das Modell die naheliegende Wörter vorhersagen. Dass heißt es muss
+aus einen Wort einen richtigen Kontext zu ordnen. Das Modell wird so lernen
+wörtern die ähnliche Kontexte haben ähnliche Embeddings zu zuordnen. Die
+zweite Methode ist Continous-Bag-Of-Words (CBOW), bei der ist es genaum
+umkegehrt, bei dieser sind Wörter nah an einen bestimmten gegeben und
+die aufgabe des Modells ist es dieses bestimmte Wort vorherzusagen.
+Hier ist also der Kontext gegeben und das Wort, welches
+in den gegeben Kontext benutzt wird muss hervogesagt werden. Da ähnliche
+Wörter ähnliche Kontexte haben, neigt das Modell ähnliche 
+Outputs für ähnliche Kontexte zu erlernen. Ähnliche Outputs 
+können dadurch erzeugt werden, das die Embeddings für die
+Kontextwörter ähnlich sind.\\
+Die Word2Vec Embeddings sind also dann ähnlich bzw. 
+im Vektorraum nah aneinander, wenn ihre Kontexte in denen sie
+verwendet werden ähnlich sind. Das Problem ist, dass die Kontexte
+limitiert sind auf eine feste größe, die am Anfang gewählt wird.
+Sei nun die Kontextgröße $k \in \mathbb{N}$ ungerade, dass bedeutet, das der Kontext
+eines Wortes alle Wörter sind die $\floor*{\frac{k}{2}}$ stellen vor dem Wort
+positioniert sind und $\floor*{\frac{k}{2}}$ nach dem Wort positioniert sind.
+Falls das $k \in \mathbb{N}$ zu klein gewählt wird könnte es passieren, dass
+nur inhaltslose Wörter wie z.B. Artikel oder Präpositionen, im
+Kontext enthalten sind und somit das Wort mit Inhaltslosen
+Wörtern assoziert wird. Wenn aber das $k \in \mathbb{N}$ zu breit
+gewählt ist, könnten verschieden Kontexte verschwimmen und so
+ungenau Ergebnisse enstehen. Die Kontextgröße ist also ein
+entscheidender Parameter, für den Erfolg des Modells. Google selber löst
+das Kontextproblem in ihrem Paper "Attention Is All You Need",
+mit ihrer Modellarchitektur namens Transformer.
+\subsubsection{Transformer}
+Das Paper "Attention Is All You Need" ist ein Meilenstein im NLP Bereich.
+Die vorgestellte Deep Learning-Architektur ist Grundlage für
+BERT, Sentence Transformer und Large Language Models (wie z.B. Chat-GPT).
+Das Modell wurde Ursprünglich entwickelt um bei gegebnen Satz, einen
+sinvollen neuen Satz zu generieren. Die verwendete donwstream task im
+Paper ist das übersetzen von englisch zu deutsch und englisch zu französisch.
+Der Transformer kann aber wieder dazu verwendet werden semantische 
+Embeddings zu produzieren, wie wir im Abschnitt zu dem Sentence Transformer
+sehen werden.
+Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6 zusehen
+sind. Der erste Block ist der Encoder, dieser ehält die Eingabe. Beim
+Übersetzen wäre das der zu übersetzende Text. Der Encoder kodiert den 
+Input in semantische embeddings und gibt den wichtigen Kontext für den
+Input aus, dass heißt er gibt aus wie wichtig jedes Wort in dem Satz ist
+für ein gegebenes Wort. Es gibt also keine Kontextgröße, sondern der
+gesmante Input ist der Kontext, aber der Encoder gibt vor, welche 
+wörter wichtig sind und welcher eher unwichtig sind, für ein gegebenes
+Wort. Der Decoder kriegt den von ihm selber produzierten Output und das
+Ergebnis des Encoders, um das nächste Wort zu generieren. Am Anfang bekommt
+der Decoder ein konstantes Start Embedding und um die generierung zu
+stoppen gibt er selber ein konstantes Stop Embedding aus. Zu beachten
+ist, dass man mehrere Encoder und Decoder hintereinander schalten 
+kann.
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      [inner sep=2mm,
+       place/.style={circle,draw=blue!50,fill=blue!20,thick},
+       transition/.style={rectangle,draw=black!50,fill=black!20,thick}]
+        \node (E) at (-2,0) [transition] {Encoder};
+        \node (D) at (2,0) [transition] {Decoder};
+        \node (I) at (-2,-2) {Input};
+        \node (O) at (2,2) {Output};
+        
+        \draw[->] (I) -- (E);
+        \draw[->] (E) -- (D);
+        \draw[->] (D) -- (O);
+        \draw[->] (O) -- (D);
+      \end{tikzpicture}
+  \end{center}
+  \caption{Transformer Architektur stark vereinfacht}
+\end{figure}
+In Abbildung 2.7 ist die Architektur genauer dargestellt. Im folgenden
+werden alle Bestandteile die in Abbildung vorkommen kurz erklärt. 
+{\bf Input Embedding} gibt dem Input der in Textform vorliegt eine 
+Vektor repräsentation. Danach wird auf dem Vektor ein
+{\bf Positional Encoding} darauf addiert. Der Transformer verarbeitet
+alle Wörter Parallel, deswegen geht die Positionsinformation verloren.
+Um diese Information trotzdem im vektor zu kodieren wird für jede
+position ein einzigartigen Vektor darauf addiert. Im Block {\bf Add \& Norm}
+werden zwei Inputs addiert und dann normalisiert, damit die Werte in dem
+Modell nicht zu groß werden. {\bf Feed Forward} ist einfach ein Neuronales 
+Netzwerk mit zwei Layern. Alle Wortembeddings werden nacheinander und 
+identische in das Netzwerk ein gegeben. Der erste Input-Layer hat
+als Aktiverugnsfunktion ein Softmax und der zweite hat die Identitätsfuntion.
+Dann gilt für das Netzwerk:
+\[
+  FFN(x) =\text{max}(0, xW_1 + b_1)W_2 + b_2.
+\]
+Der {\bf Linear } Block ist wieder ein Neuronales Netzwerk, mit allen
+Aktivierungsfunktionen: \\$ f_{i,j}(x) = x $. Nun fehlt noch der wohl 
+wichtigste Bestandteil der Architektur das {\bf Multi-Head Attention}
+Modul. Dieses gibt die Korrelation zwischen ein Wort un allen restlichen
+im Input aus. Hier wird also der ganze Input als Kontext genommen, aber
+das Modell lernt auf welche Wörter es im Kontext viel oder wenig
+aufmerksamkeit schenken sollte. Das {\bf Masked Multi-Head Attention}
+Modul ist nur beim trainieren anders als das Multi-Head Attention Modul.
+Beim trainieren ist der Input des Decoders schon der Satz der von dem Modell
+vorhergesagt werden soll, deswegen müssen alle wörter die es noch nicht 
+vorhergesagt verdeckt (engl. Masked) werden.
+
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.4]{transformer-figure.png}
+  \end{center}
+  \caption{entommen aus "Attention Is All You Need"}
+\end{figure}
+\subsubsection{BERT}
+Das BERT Modell ist wieder ein großer Meilenstein im NLP Bereich und
+kann als einer der ersten Large Language Models betrachtet werden.
+Das Modell verbessert die Transformer Architektur indem es die
+Embeddings der Token verbessert, zwei neue Trainingsformen benutzt
+und aussschließlich Encoder verwendet.
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.5]{BERT-Tokens.png}
+  \end{center}
+  \caption{Token Embedding Prozess entnommen aus dem BERT Paper.}
+\end{figure}
+\subsubsection{Sentence Transformer}
 Das Ziel dieser Arbeit ist es, mittels Quellinformationen 
 funktionen in einen semantisches wertvollen Vektor zu kodieren.
 Semantische wertvoll heißt, dass semantisch ähnliche Funktionen
@@ -430,7 +696,7 @@ Die Autoren haben selber auch eine Implementierung bereit gestellt,
 unter den Namen Sentence-Transformer (\underline{LINK??}), die in dieser
 Arbeit verwendet wird. Sie haben das Ursprüngliche von Google entwickelte
 BERT (Devlin et. al 2018) Modell genommen und angepasst. BERT ist ein Modell
-welches mittels einer neuen Deep Learning Architektur, 
+welches mittels einer neuen Deep-Learning-Architektur, 
 zwei Textauszüge als Input bekommt und dann eine aussage über ihre
 semantische ähnlichkeit liefert. Die Hauptarbeit von Reimer und kollegen, 
 war nun das BERT Modell so anzupassen, dass nur ein Textauszug als Input
