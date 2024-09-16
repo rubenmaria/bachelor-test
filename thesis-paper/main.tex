@@ -653,14 +653,14 @@ Dann gilt für das Netzwerk:
 Der {\bf Linear } Block ist wieder ein Neuronales Netzwerk, mit allen
 Aktivierungsfunktionen: \\$ f_{i,j}(x) = x $. Nun fehlt noch der wohl 
 wichtigste Bestandteil der Architektur das {\bf Multi-Head Attention}
-Modul. Dieses gibt die Korrelation zwischen ein Wort un allen restlichen
+Modul. Dieses gibt die Korrelation zwischen ein Wort und allen restlichen
 im Input aus. Hier wird also der ganze Input als Kontext genommen, aber
 das Modell lernt auf welche Wörter es im Kontext viel oder wenig
 aufmerksamkeit schenken sollte. Das {\bf Masked Multi-Head Attention}
-Modul ist nur beim trainieren anders als das Multi-Head Attention Modul.
+Modul ist nur beim trainieren anders, als das Multi-Head Attention Modul.
 Beim trainieren ist der Input des Decoders schon der Satz der von dem Modell
 vorhergesagt werden soll, deswegen müssen alle wörter die es noch nicht 
-vorhergesagt verdeckt (engl. Masked) werden.
+vorhergesagt hat verdeckt (engl. Masked) werden.
 
 
 \begin{figure}[H]
@@ -716,23 +716,64 @@ muss das BERT Modell bei der Eingabe von zwei Sätzen entscheiden,
 ob diese sequentiell nacheinander kommen oder nicht. Dabei sind
 $50\%$ der Daten, zwei Sätze die nacheinander kommen und
 bei den anderen $50\%$ wird zu einen gegebenen Satz aus den gesamten
-Daten ein zufälliger falscher Satz gewählt. \\ 
-Nachdem Training erhält man aus BERT einen Outputvektor der genauso
-lang ist wie der Inputvektor, dieser kann dann mit wenig aufwand
-weiter verwendet werden, um das Modell für bestimmte Probleme in NLP
+Daten ein zufälliger nicht sequentieller Satz gewählt. Um eine vorhersage zu
+treffen,
+ob die Sätze nacheinander kommen oder nicht wird das konstante \verb|[cls]|
+Token Embedding verwendet, welches immer an erster stelle steht.
+Der erster Outputvektor korrespondiert dann mit dem \verb|[cls]| Token und
+wird verwendet um den Output \verb|isNext| oder \verb|notNext| zu produzieren.\\ 
+Nachdem Training erhält man aus BERT die Outputvektoren welche genau gleich viele
+sind wie der Inputvektoren, diese kann man dann mit wenig aufwand
+weiter verwenden, um das Modell für bestimmte Probleme in NLP
 anzupassen (engl. fine-tuning).
 
 \subsubsection{Sentence Transformer}
 Das Sentence-BERT (Reimers et al. 2019) Modell ist Stand der Technik,
 im semantischen kodieren von natürlicher Sprache in einem Vektorraum.
-Die Implementierung ist unter den Namen Sentence-Transformer (\underline{LINK??})
+Die Implementierung der Autoren ist unter den Namen Sentence-Transformer 
+(\underline{LINK??})
 bekannt und wird in dieser Arbeit verwendet. Die Motivation hinter Sentence-BERT
 (SBERT) ist das effiziente semantische vergleichen von zwei Sätzen. Wenn man mit
 BERT herausfinden will, wie semantisch ähnlich zwei gegebene Sätze sind, dann muss 
 man beide als Input in das Modell eingeben. Dass heißt wenn man die Ähnlichkeit
 von allen $n$ Sätzen jeweils zueinander haben will, gibt es $\frac{n(n-1)}{2}$
-eingaben in das BERT Modell, die man tätigen muss. Mit SBERT kann nun jeder
-Satz in einen Vektorraum abgebildet werden, indem man einfach die Kosinus
+eingaben in das BERT Modell, die man tätigen müsste. Bei SBERT allerdings kann 
+nun jeder Satz einzeln eigegeben werden, der resultierende Ouput ist dann 
+ein semantischer Vektorraum, indem jeder Satz ein semantischen Vektor besitzt.
+Um jetzt die semantische ähnlichkeit zwischen zwei Vektoren zu erhalten, müssen
+beide Vektoren nur in eine zu wählende Metrik eingesetzt werden. In den Paper
+wird die Kosinus-Ähnilichkeit verwendet: Sei $u,v \in \mathbb{R}^n$, dann setze
+\[
+  Kos(u,v) := cos(\phi) = \frac{u \cdot v}{\|u\|\|v\|} 
+  = \frac
+  {
+    \sum_{i=1}^n u_iv_i
+  }
+  {
+    \sqrt{\sum_{i=1}^n u_i^2} \sqrt{\sum_{i=1}^n v_i^2}
+  }.
+\]
+Damit kann dann effizient die semantsiche Ähnlichkeit zwischen zwei Vektoren
+berechnet werden. Die Modellarchitektur von SBERT wird als {\bf Siamese Neural Network }
+bezeichnet, da scheinbar zwei unterschiedliche BERT Modelle verwendet werden
+um beide Sätze in einen Vektor umzuwandeln, aber beide Modell teilen sich 
+die Gewichte. 
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.3]{SBERT.png}
+  \end{center}
+  \caption{SBERT Architektur entnommen aus dem SBERT Paper.}
+\end{figure}
+In Abbildung 2.9 ist die SBERT Sieamese Neural Network Architektur abgebildet,
+das heißt dass sich beide BERT Modelle die selben Geweicht teilen. Danach
+geht der Output von BERT in ein pooling Modul. {\bf Pooling} ist das transformieren
+von BERT's Output in einen semantischen Vektor. In dem Paper werden drei 
+verschiedene pooling Strategien vorgestellt. Die erste ist den ersten Ouputvektor
+zu nehmen der zum \verb|[cls]| Token korrespondiert und zum klassifizieren 
+bestimmter aussagen über den Input genutzt wird. Die zweite ist den Mittelwert
+aller Outputvektoren zu nehmen und die letzt ist 
+
+
 
 \subsection{Code-Llama}
 \subsubsection{Large Language Model}
