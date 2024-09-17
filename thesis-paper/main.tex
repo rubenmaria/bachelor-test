@@ -798,8 +798,9 @@ auszeichnen, natürliche Sprache gernerieren zu können oder in der Lage sind
 andere schwierige NLP aufgaben zu lösen.
 Meta AI Optimiert das vorangegangene Llama2 Modell, auf programmiersprachen 
 spezifischen Aufgaben. Das LLama2 Model wird um zum resultierenden Code-llama
-zu kommen, auf einen Datensatz der aus drei verschieden kategorien von Daten
-besteht trainiert. Der größte Teil im Datensatz mit $85\%$, ist der mit
+zu kommen, erneut auf einen neuen Datensatz trainiert. Dieser besteht aus
+drei verschieden kategorien von Daten. Der größte Teil im Datensatz mit
+$85\%$, ist der mit
 Programmiersprachen spezifischen aufgaben, indem wird das Modell darauf 
 trainiert fehlende Programmzeilen in einer vorgebenen Lücke zu füllen.
 Dabei kann es sich um Befehle, aber auch um Kommentare handeln. Der zweit 
@@ -809,10 +810,32 @@ es um programmcode geht. Dieser Teil beimhaltet diskussion über Programmcode
 Teil im Datensatz mit $7\%$ besteht aus belibiger natürlicher Sprache, damit
 das Modell seine alten fähigkeiten erhält. \\
 Das LLama2 Modell ist eine Verbesserung des Llama1 Modells. Dieses wurde auf
-neuren Daten Trainiert und verwendet $40\%$ mehr mögliche Tokens.
-Deweiteren wurde die {\bf context lenght} verdoppelt, welche die maximale
-Anzahl der zu verabeitende Token beschreibt. Außerdem gab es eine große
-veränderung in der Architektur, 
+neuren Daten Trainiert und verwendet einen $40\%$ größeren Datensatz.
+Deweiteren wurde die {\bf context length} verdoppelt, welche die maximale
+Anzahl der gleichzeitig zu verabeitende Token beschreibt. Außerdem gab es
+eine veränderung in der Llama1 Transformer Architektur. In den Attention 
+Modulen werden zwei Werte die normalerweise jedesmal wieder berechnet
+werden geteilt, d.h. jedes Attention Modul hat Zugriff auf die gleichen
+Werte. Das führt zu etwas schlechteren Ergebnissen, aber einer deutlichen
+Leistungs steigerung.\\
+Das Llama1 Modell wiederum besteht aus einer Decoder-Only Transformer
+Architektur. Der {\bf Decoder-Only Transformer} besteht wie der Name es schon
+vermuten lässt, nur aus Decoder Transformer Blöcken. Bei dieser Architektur
+ist der anfängliche Input des Decoders, die Einabe des Nutzers. Auf diese
+Eingabe wird dann immer wieder das neu generierte Token konkatiniert. Auf diese
+weise wird die Eingabe nicht explizit von dem bereits generierten getrennt
+sondern beides wird als bereits generierter Kontext verwendet. Das besondere
+an Llama1 ist das es nur auf frei verfügbaren Daten trainiert wurde und 
+dass das Modell Open Source ist. Der Datensatz besteht aus {\bf English 
+Common Crawl [$67\%$]}, {\bf C4 [$15\%$]}, {\bf Github [$4.5\%$]},
+{\bf Wikipedia [$4.5\%$]}, {\bf Gutenberg and Books3 [$4.5\%$]}, 
+{\bf ArXiv [$2.5\%$]}, und {\bf Stack Exchange [$2\%$]}.\\
+Code Llama ist Open-Source und schneidet unter allen öffentlich verfügbaren
+Modellen am besten in multilinugal Benchmarks ab. Mit multilingual ist hier die
+verwendung von mehreren Programmiersprachen gemeint. Diese 
+Eigenschaften machen es sehr geignet für diese Arbeit.
+
+
 
 
 \subsection{Code2Vec}
