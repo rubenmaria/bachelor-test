@@ -767,19 +767,54 @@ die Gewichte.
 In Abbildung 2.9 ist die SBERT Sieamese Neural Network Architektur abgebildet,
 das heißt dass sich beide BERT Modelle die selben Geweicht teilen. Danach
 geht der Output von BERT in ein pooling Modul. {\bf Pooling} ist das transformieren
-von BERT's Output in einen semantischen Vektor. In dem Paper werden drei 
-verschiedene pooling Strategien vorgestellt. Die erste ist den ersten Ouputvektor
-zu nehmen der zum \verb|[cls]| Token korrespondiert und zum klassifizieren 
-bestimmter aussagen über den Input genutzt wird. Die zweite ist den Mittelwert
-aller Outputvektoren zu nehmen und die letzt ist 
-
-
-
+von BERT's Output in einen semantischen Vektor. Das in dem Paper verwendete
+defualt pooling ist der Mittelwert, d.h. auf alle Ouputvektoren von BERT,
+wird komponentenweise das arithmetische Mittel angewendet. Desweiteren wird
+das BERT Modell noch einwenig, auf die spezielle aufgabe, zwei Vektoren
+semantisch zu vergleichen, angepasst. Dafür wird der SNLI Datensatz verwendet,
+dieser beinhaltet immer zwei sätze und eins von drei möglichen Label:
+\verb|contradiction|, \verb|neutral|, und \verb|entailment|. Also muss SBERT
+für zwei sätze vorhersagen ob sie sich inhaltlich wiedersrpechen, neutral
+zueinander sind, oder der eine Satz eine Fortsetzung des anderen ist. Daraus
+lernt das Modell ein semantisches verständis für Sätze zu erlangen. Beim Training
+wird um die label Vorhersage zubekommen, wie in Abbilding 2.9 dargestellt,
+die jeweiligen Vektoren und ihre Differenz konkatiniert. Anschließend werden
+diese mit einen lernbaren Gewicht multipliziert, sodass ein Vektor mit 
+drei Dimensionen herauskommt, dann wird der Softmax angewendet.
+Die Position in dem Vektor mit dem höchsten Wert wird schließlich dem zugehörigen
+Label zugeordnet. Mathematisch: \\Sei $W \in \mathbb{R}^{n\times 3}$
+das lernbare Gewicht und $v \in \mathbb{R}^n$ Outputvektor von pooling, dann
+\[
+  o = \text{softmax}(Wv).
+\]
+Nachdem Training, bei der Inferenz wird der Vektor nachdem pooling als 
+ouputvektor ausgeben.\\
+SBERT liefert uns also ein Tool, um Sätze semantisch in einen Vektorraum
+abzubilden, welches sich in späteren Kapitelen als sehr hilfreich herausstellt.
 \subsection{Code-Llama}
-\subsubsection{Large Language Model}
-\subsubsection{Llama 2}
-\subsubsection{Code-llama}
-% Large language Model paper und ein wenig Geschichte
+Die Code-Llama famillie an Large Language Models, wurde von Meta AI im Jahre
+2024 entwickelt. Large Language Models sind Modelle welche sich daraus
+auszeichnen, natürliche Sprache gernerieren zu können oder in der Lage sind
+andere schwierige NLP aufgaben zu lösen.
+Meta AI Optimiert das vorangegangene Llama2 Modell, auf programmiersprachen 
+spezifischen Aufgaben. Das LLama2 Model wird um zum resultierenden Code-llama
+zu kommen, auf einen Datensatz der aus drei verschieden kategorien von Daten
+besteht trainiert. Der größte Teil im Datensatz mit $85\%$, ist der mit
+Programmiersprachen spezifischen aufgaben, indem wird das Modell darauf 
+trainiert fehlende Programmzeilen in einer vorgebenen Lücke zu füllen.
+Dabei kann es sich um Befehle, aber auch um Kommentare handeln. Der zweit 
+größte Teil im Datensatz mit $8\%$, besteht aus natürlicher Sprache in der 
+es um programmcode geht. Dieser Teil beimhaltet diskussion über Programmcode
+,sowie Fragen und Antworten welche sich auf Programmcode beziehen. Der kleinste
+Teil im Datensatz mit $7\%$ besteht aus belibiger natürlicher Sprache, damit
+das Modell seine alten fähigkeiten erhält. \\
+Das LLama2 Modell ist eine Verbesserung des Llama1 Modells. Dieses wurde auf
+neuren Daten Trainiert und verwendet $40\%$ mehr mögliche Tokens.
+Deweiteren wurde die {\bf context lenght} verdoppelt, welche die maximale
+Anzahl der zu verabeitende Token beschreibt. Außerdem gab es eine große
+veränderung in der Architektur, 
+
+
 \subsection{Code2Vec}
 \subsection{t-SNE}
 %\subsection{Stand der Technik} in Introduction
