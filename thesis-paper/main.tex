@@ -875,6 +875,35 @@ Die Trainingsart ist demnach Überwachteslernen, was eine aufbereitung der
 Daten benötigt. Das Modell kann deswegen auch nur Label vorhersagen in der
 Inferenz, die es vorher im Training gesehen hat.
 \subsection{t-SNE}
+{\bf t}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding ({\bf t-SNE})
+ist ein Algorithmus, welcher zum visualisieren von hochdimensionalen Daten 
+eingesetzt wird. Um das zu ermöglichen reduziert t-SNE die Dimension von 
+$n \in \mathbb{N}$ zu einer niedrigeren Dimension wie zwei oder drei, inder
+der Mensch die Datenpunkte leicht interpretieren kann, ohne die 
+Nachbarschaftsverhältnisse der Datenpunkte in mitleidenschaft zu ziehen.\\
+Im folgende wird der Algorithmus skizziert und danach wird auf die potentiellen
+gefahren von t-SNE eingegangen. Die hochdimensionalen Datenpunkte werden mit
+$\mathbf{H}$ und die niedrigdimensionale Datenpukte mit $\mathbf{N}$ bezeichnet.
+Der erste schritt des Algorithmuses ist es 
+jedem Datenpunktpaar im Datensatz $\mathbf{H}$ ein Ähnlichkeitsscore zu zuweisen.
+Dieser wird berechnet indem man zuerst die euklidische Distanz von jeden Datenpaar
+berechnet und dann das Ergebnis in eine Wahrscheinlichkeitsverteilung eingibt,
+dadurch wird der Wert unter anderen Normalisiert. Das Ergebis ist dann eine 
+Tabelle mit einen Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$. Als
+nächstes werden die Datenpunkte zufällig in der niedrigen Dimension 
+$\mathbf{N}$ angeordnet. Die nachfolgenden zwei schritte werden $T\in \mathbb{N}$
+mal wiederholt, wobei $T$ ein Parameter ist der verändert werden kann.
+\begin{enumerate}
+  \item Berechne Ähnlichkeitsscore von $\mathbf{N}$, diesmal wird die aber die
+      studentische t-Verteilung als wahrscheinlichkeitsverteilung genommen. 
+  \item Verschiebe die Datenpunkte von $\mathbf{N}$ um ein kleinen Wert in
+    die Richtung, die den Unterschied von den Ähnlichkeitsscore von $\mathbf{H}$
+    und $\mathbf{N}$ minimiert.
+\end{enumerate}
+Nach $T$ wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und $\mathbf{H}$
+nahe bei einander, d.h. die Nachbarschaftsverhältniss von $\mathbf{N}$ und 
+$\mathbf{H}$ sind nun ähnlich.\\
+
 %\subsection{Stand der Technik} in Introduction
 % Self supervised learning (JTrans, PalmTree)
 % Same Source policy (Safe)
