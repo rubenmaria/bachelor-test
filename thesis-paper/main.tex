@@ -881,10 +881,10 @@ eingesetzt wird. Um das zu ermöglichen reduziert t-SNE die Dimension von
 $n \in \mathbb{N}$ zu einer niedrigeren Dimension wie zwei oder drei, inder
 der Mensch die Datenpunkte leicht interpretieren kann, ohne die 
 Nachbarschaftsverhältnisse der Datenpunkte in mitleidenschaft zu ziehen.\\
-Im folgende wird der Algorithmus skizziert und danach wird auf die potentiellen
-gefahren von t-SNE eingegangen. Die hochdimensionalen Datenpunkte werden mit
-$\mathbf{H}$ und die niedrigdimensionale Datenpukte mit $\mathbf{N}$ bezeichnet.
-Der erste schritt des Algorithmuses ist es 
+Im folgende wird der Algorithmus skizziert und danach wird aufgezeigt was bei 
+der effektiven verwendung von t-SNE zu beachten ist. Die hochdimensionalen 
+Datenpunkte werden mit $\mathbf{H}$ und die niedrigdimensionale Datenpukte mit
+$\mathbf{N}$ bezeichnet. Der erste schritt des Algorithmuses ist es 
 jedem Datenpunktpaar im Datensatz $\mathbf{H}$ ein Ähnlichkeitsscore zu zuweisen.
 Dieser wird berechnet indem man zuerst die euklidische Distanz von jeden Datenpaar
 berechnet und dann das Ergebnis in eine Wahrscheinlichkeitsverteilung eingibt,
@@ -892,17 +892,49 @@ dadurch wird der Wert unter anderen Normalisiert. Das Ergebis ist dann eine
 Tabelle mit einen Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$. Als
 nächstes werden die Datenpunkte zufällig in der niedrigen Dimension 
 $\mathbf{N}$ angeordnet. Die nachfolgenden zwei schritte werden $T\in \mathbb{N}$
-mal wiederholt, wobei $T$ ein Parameter ist der verändert werden kann.
+mal wiederholt, wobei $T$ ein Parameter ist der wählbar ist.
 \begin{enumerate}
-  \item Berechne Ähnlichkeitsscore von $\mathbf{N}$, diesmal wird die aber die
+  \item Berechne Ähnlichkeitsscore von $\mathbf{N}$, diesmal wird aber die
       studentische t-Verteilung als wahrscheinlichkeitsverteilung genommen. 
   \item Verschiebe die Datenpunkte von $\mathbf{N}$ um ein kleinen Wert in
-    die Richtung, die den Unterschied von den Ähnlichkeitsscore von $\mathbf{H}$
+    die Richtung, die den Ähnlichkeitsscore von $\mathbf{H}$
     und $\mathbf{N}$ minimiert.
 \end{enumerate}
 Nach $T$ wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und $\mathbf{H}$
 nahe bei einander, d.h. die Nachbarschaftsverhältniss von $\mathbf{N}$ und 
 $\mathbf{H}$ sind nun ähnlich.\\
+Mitarbeiter von Google haben untersucht, wie man t-SNE sinvoll anwendet und
+welche schlüsse man aus der visualisierung ziehen kann. Sie fanden heraus,
+dass die wahl der Parameter für das Ergebnis eine wichtige Rolle spielen.
+Die wichtigsten Parameter sind die Iterationen $T\in \mathbb{N}$ und die
+Perplexity $P \in \mathbb{N}$. Die {\bf Perplexity} kann intuitiv als schätzung 
+für die Anzahl an nahen Nachbarn die jeder Datenpunt hat gesehen werden.
+Eine geignete Iteration $T$ kann relative einfach durch ausprobieren 
+herausgefunden werden: Falls sich die Datenwolke bei erhöhung von $T$
+nicht mehr wirklich verändert, ist die Anzahl der Iteration $T$ gefunden
+worden. Eine geeignete Perplexity zu finden ist schwieriger, da wir die
+hochdimensionalen Nachbarschaftsbeziehungen meistens nicht keinne. Die Autoren
+des t-SNE Paper empfehlen eine Perplexity $P \in \{5,6, \dots, 50\}$. Außerhalb
+dieses Bereiches können verschieden ungewollte Phänomene auftreten. Bei $P=2$
+haben die Google Mitarbeiter herausgefunden das t-SNE bei einer zufällig generierten
+Datenwolke, fälschlicher weise kleine Gruppierungen (Cluster) bildet. Falls
+$P$ größer ist als die Anzahl der Datenpunkte, ist das Ergebnis überhaupt nicht
+interpretierbar. Es ist also immer Sinvoll, mehere Werte für $P$ aus zuprobieren,
+um sicher zu gehen das t-SNE keine falschen Nachbarschaftsbeziehungen darstellt.
+Die Mitarbeiter von Google fanden ausßerdem heraus, dass sowie die Information 
+der Breite eines Clusters, als auch der Abstände von einen Cluster zu einen anderen 
+durch t-SNE komplett verloren gehen. Es kann also nach betrachten der
+t-SNE Ausgabe keine Aussage über den Durchmesser eines Clusters, die Position
+des Cluster und die Lagebeziehungen zwischen Clustern getroffen werden. \\
+Der t-SNE Algorithums ist ein wichtiges Tool um qualitative Aussagen über 
+Daten zu treffen. Allerdings sollten immer mehrere Parameter ausprobiert werden.
+Es kann nur eine Aussage über die existenz von Cluster getroffen werden und 
+nicht über ihre geometrischen gegebenheiten. Wenn diese Rahmenbedingungen 
+beachtet werden ist t-SNE ein sehr mächtiges visualisierung Tool um eine 
+intuition von der Anordnung der Datenpunkte zu erhalten.
+% effective use paper: 
+% https://distill.pub/2016/misread-tsne/?_ga=2.135835192.888864733.1531353600-1779571267.1531353600
+
 
 %\subsection{Stand der Technik} in Introduction
 % Self supervised learning (JTrans, PalmTree)
