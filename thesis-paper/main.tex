@@ -9,6 +9,7 @@
 \usepackage{tikz}
 \usepackage{chngcntr}
 \usepackage{float}
+\usepackage{svg}
 \usetikzlibrary{
   decorations.pathmorphing,
   automata, positioning, arrows, matrix,
@@ -35,7 +36,7 @@
 
 \vspace*{10mm}
 \begin{center}
-\includegraphics[height=40mm]{sigillum.png}
+\includegraphics[height=40mm]{abb/sigillum.png}
 \end{center}
 \vspace*{10mm}
 
@@ -665,7 +666,7 @@ vorhergesagt hat verdeckt (engl. Masked) werden.
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=0.4]{transformer-figure.png}
+    \includegraphics[scale=0.4]{abb/transformer-figure.png}
   \end{center}
   \caption{entommen aus "Attention Is All You Need"}
 \end{figure}
@@ -677,7 +678,7 @@ Embeddings der Token verbessert, zwei neue Trainingsaufgaben einführt
 und aussschließlich Encoder verwendet.
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=0.5]{BERT-Tokens.png}
+    \includegraphics[scale=0.5]{abb/BERT-Tokens.png}
   \end{center}
   \caption{Token Embedding Prozess entnommen aus dem BERT Paper.}
 \end{figure}
@@ -760,7 +761,7 @@ um beide Sätze in einen Vektor umzuwandeln, aber beide Modell teilen sich
 die Gewichte. 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=0.3]{SBERT.png}
+    \includegraphics[scale=0.3]{abb/SBERT.png}
   \end{center}
   \caption{SBERT Architektur entnommen aus dem SBERT Paper.}
 \end{figure}
@@ -849,7 +850,7 @@ vorherzusagen. Im folgende wird die Architektur die in Abbilding 2.10 zusehen
 ist erklärt. 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=0.3]{code2vec.png}
+    \includegraphics[scale=0.3]{abb/code2vec.png}
   \end{center}
   \caption{Code2Vec Architektur entnommen aus dem Code2Vec Paper}
 \end{figure}
@@ -897,7 +898,7 @@ mal wiederholt, wobei $T$ ein Parameter ist der wählbar ist.
   \item Berechne Ähnlichkeitsscore von $\mathbf{N}$, diesmal wird aber die
       studentische t-Verteilung als wahrscheinlichkeitsverteilung genommen. 
   \item Verschiebe die Datenpunkte von $\mathbf{N}$ um ein kleinen Wert in
-    die Richtung, die den Ähnlichkeitsscore von $\mathbf{H}$
+    die Richtung, die den Unterschied der Ähnlichkeitsscores von $\mathbf{H}$
     und $\mathbf{N}$ minimiert.
 \end{enumerate}
 Nach $T$ wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und $\mathbf{H}$
@@ -913,7 +914,7 @@ Eine geignete Iteration $T$ kann relative einfach durch ausprobieren
 herausgefunden werden: Falls sich die Datenwolke bei erhöhung von $T$
 nicht mehr wirklich verändert, ist die Anzahl der Iteration $T$ gefunden
 worden. Eine geeignete Perplexity zu finden ist schwieriger, da wir die
-hochdimensionalen Nachbarschaftsbeziehungen meistens nicht keinne. Die Autoren
+hochdimensionalen Nachbarschaftsbeziehungen meistens nicht kennen. Die Autoren
 des t-SNE Paper empfehlen eine Perplexity $P \in \{5,6, \dots, 50\}$. Außerhalb
 dieses Bereiches können verschieden ungewollte Phänomene auftreten. Bei $P=2$
 haben die Google Mitarbeiter herausgefunden das t-SNE bei einer zufällig generierten
@@ -948,11 +949,59 @@ größten Einfluss auf die güte des Modells.
 % Warum Glibc? 
 % Gleicher Standard mit gleicher Semantik unterschiedlich Implementierung
 \subsection{Datenpipeline}
+Die große praktische Arbeit der Bachelorarbeit war es, eine große Menge
+von Daten in verschiedensten Darstellungen immer wieder umzuwandeln. Dabei 
+wurde jeder Zwischenschritt gespeichert, damit nicht jede Darstellung immer
+wieder generiert werden muss. Im folgenden wird die generelle Architektur 
+wie Daten verabeitet werden vorgestellt (engl. Pipeline), um ein Überblick
+über den praktischen Teil dieser Arbeit zu geben.
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.8]{abb/data-pipeline.pdf}
+  \end{center}
+  \caption{Datenpipeline}
+\end{figure}
+In der Abbildung 3.1 ist die Datenpipeline dargestellt, dabei sind Vierecke 
+mit runden Ecken Tools die Daten in eine andere Darstellung umwandeln und
+Vierecke mit spitzen Ecken repräsentieren Darstellungen von Daten. Die erste
+Darstellung sind die Rohdaten, das entspricht den unverarbeiteten C Quellcode
+aus der GNU Standard C Bibliothek. Nun brauche wir aber nicht alle Teile des
+Quellcode sondern nur bestimmeteile, zum Beispiel arbeiten wir nur mit Funktionen
+d.h. alle Datenstrukturen die in dem Quellcode definiert werden, wollen wir
+aus dem Quellcode entfernen. Die Zerlegung und Umwandlung des Inputs 
+in sinvolle Teile wird parsing genannt. In dieser Arbeit wurde {\bf Tree-sitter}
+als Parser verwendet, welcher alle populären Programmiersprachen in Syntaxbäume
+umwandeln kann. Ursprünglich wurde Tree-sitter für den Texteditor Atom entwickelt
+und wird heute noch in vielen Texteditoren für bspw. Syntaxhighliting verwendet.
+Generell kann Tree-sitter jedoch für alles das Quellcode verarbeiten will 
+verwendet werden. Aus dem Syntaxbaum kann dann jeglich gewünschte Information 
+entnommen werden. Diese Quellinformationen werden dann estmal zwischen gespeichert,
+damit von nun an, die verabeitung hier angesetzt werden kann. Die Quellinforamtionen
+beziehen sich immer auf eine Funktion, also ist das Format eine Tabelle die
+für jede Funktion in den Rohdaten die gewünschten Quellinforamtionen enthält.
+Danach gibt es eine Abzweigung, entweder werden die Quellinformationen Code Llama
+nochmal erklärt und dann in den SentenceTransformer gegeben oder die 
+Quellinformation wird direkt in den SentenceTransformer gegeben. Schließlich 
+erhält man wieder eine Tabelle die gespeichert wird, die für jede Funktion
+das zugewisene Semantische Embedding enthält. Bei dieser Architektur kann
+mühelos jedes Tool ausgewechselt werden solange die Ausgabeformate eingehalten
+werden.
 % Treesitter erklären
 % Source Code information in json datei speichern
 % Dann Source code information in Vektor umwandeln
 % Modularität -> Vorteile dieses Designs 
 \subsection{Stabilität von SentenceTransformer}
+In dem vorherigen unterkapitel haben wir gesehen das der finale schritt 
+für alle Daten der SentenceTransformer ist, deswegen ist er das Herzstück
+der Datenpipeline. In dieser Arbeit sollen verschiedene semantische 
+beschreibungen des Quellcodes in natürlicher Sprache verglichen werden.
+Um ein hier sinvoll zu messen müssen , wie bei einem physikilischen Experiment,
+alle anderen Elemente in der Datenpipeline konstante Ergebnisse liefern und 
+nicht schwanken. Aus diesen Gründen wird im folgenden Untersucht, wie stabil
+sich der SentenceTransformer bei selber Eingabe verhält. Im optimafall sollte
+der SentenceTransfomer bei selben Input selbes Ergebnis liefern. 
+
+
 % Label Prozess sollte stabil sein bzw. deterministisch, sonst
 % kann keine aussage über die Güte der Labels getätig werden
 % Tabelle mit Ergebnissen der standardabweichungen
