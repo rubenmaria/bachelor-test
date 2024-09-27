@@ -1009,9 +1009,40 @@ der SentenceTransfomer bei selben Input selbes Ergebnis liefern.
 \
 \section{Funktionskommentare}
 \subsection{Motivation}
+Bevor ein Programm kompelliert wird und nur noch die nötigsten Informationen
+für den Computer bestehen bleiben, gibt es eine Menge an Informationen die 
+die Semantik der Funktion in natürlicher Sprache beschreiben. Eine offensichtliche
+Quellcodeinformation die im optimalfall die Semantik der Funktion in natürlicher
+Sprache beschreibt ist der Kommentar. Ein gelungener Kommentar für eine Funktion
+beschreibt präzise die kernfunktion der Prozedur, d.h. der Input, den Output
+und wie diese umwandlung erfolgt. Dieser könnte man dann mit dem 
+SentenceTransformer in einen Semantischen Vektoraum abbilden, was in einen
+Semantischen Quellcode Vektor resultiert.
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
 \subsection{Methodik} 
+Das parsen der Kommentare wurde wie in dem Unterkapitel Datenpipeline erwähnt 
+mit Tree-sitter realisiert. Dabei gab es zwei große Designentscheidungen zu treffen.
+Zum einen welche Kommentare in einer Funktion berücksichtigt werden sollen und
+zweitens was macht man mit Funktionen die eine leicht Variationen von einer
+anderen Funktion sind und deswegen keine Kommentare besitzten. Ein gutes Beispiel
+für das zweite Problem ist \verb|exit| und \verb|__run_exit_handlers|, wenn
+\verb|exit| aufgerufen wir, ruft diese Funktion einfach 
+\verb|__run_exit_handlers| mit speziellen Parametern auf. Dabei ist \verb|exit|
+nicht kommentiert, aber \verb|__run_exit_handlers| ist kommentiert.\\
+{\color{red} Bei der ersten Designentscheidung welche Kommentare ich berücksichtige,
+habe ich mich ausschließlich für den Kommentar direkt über der Funktion 
+entschieden, da die einzeiligen Kommentare in der Funktion meistens keinen
+großen Semantischen Wert haben, sondern auf gefahren oder Designentscheidungen
+hinweisen.} Für das zweite Problem habe ich mich für folgende Lösung entschieden.
+Falls eine Funktion keinen Kommentar besitzt, dann werden die Kommentare von
+allen Funktionen die in den Funktionskörper aufgerufen werden konkatiniert und
+als eigenen Kommentar übernommen. Dardurch hat \verb|exit| dann einen Kommentar
+und zwar exakt den selben wir \verb|__run_exit_handlers|.\\
+Hierbei muss man aufpassen das der Prozess des parsens nicht zu speziell an
+den vorliegenden Daten angepasst wird, sonst verliert er seine Allgemeingültigkeit.
+Deswegen habe ich mich nicht auf weitere Optimierungen die ein wenig mehr Kommentare
+erbrignen könnten eingelassen, sondern es bei den oben beschriebenen belassen.
 % Probleme beim Parsen, wo sucht man nach Kommentaren?
 % Keine einheitliche Konvention
 % -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
