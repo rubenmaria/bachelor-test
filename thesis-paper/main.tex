@@ -935,7 +935,7 @@ beachtet werden ist t-SNE ein sehr mächtiges visualisierung Tool um eine
 intuition von der Anordnung der Datenpunkte zu erhalten.
 % effective use paper: 
 % https://distill.pub/2016/misread-tsne/?_ga=2.135835192.888864733.1531353600-1779571267.1531353600
-
+%pgf plots
 
 %\subsection{Stand der Technik} in Introduction
 % Self supervised learning (JTrans, PalmTree)
@@ -1034,7 +1034,7 @@ nicht kommentiert, aber \verb|__run_exit_handlers| ist kommentiert.\\
 habe ich mich ausschließlich für den Kommentar direkt über der Funktion 
 entschieden, da die einzeiligen Kommentare in der Funktion meistens keinen
 großen Semantischen Wert haben, sondern auf gefahren oder Designentscheidungen
-hinweisen.} Für das zweite Problem habe ich mich für folgende Lösung entschieden.
+ hinweisen. (Beleg maybe: A survey on Reasearh of code comment)} Für das zweite Problem habe ich mich für folgende Lösung entschieden.
 Falls eine Funktion keinen Kommentar besitzt, dann werden die Kommentare von
 allen Funktionen die in den Funktionskörper aufgerufen werden konkatiniert und
 als eigenen Kommentar übernommen. Dardurch hat \verb|exit| dann einen Kommentar
@@ -1048,8 +1048,29 @@ erbrignen könnten eingelassen, sondern es bei den oben beschriebenen belassen.
 % -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
 \section{Code2Vec}
 \subsection{Motivation} 
+Das besondere an Code2Vec ist, dass es den Quellcode in eine abstrakten
+Syntaxbaum kodiert. Damit nutzt Code2Vec alle Quellcodeinformationen die
+in dem Quellcode vorhanden sind. Danach wird das Modell darauf trainiert
+eine Eigenschaft in natürlicher Sprache über den Quellcode vorherzusagen.
+Bei dieser herangehensweise wird also kein SentenceTransformer verwendent
+sondern der Semantische Vektroraum wird durch Training des Code2Vec Modells
+als Nebenprodukt erzeugt. Wie in den Paper wird auch hier Code2Vec
+darauf trainiert Funktionsnamen vorherzusagen. Leider wurde das Code2Vec
+Modell nur auf Java trainiert, deswegen gab es einige anpassungen die 
+die angwendet werden mussten. Da das Code2Vec Modell
+auf überwachtes Lernen basiert, muss der Datensatz vor dem Training
+erstmal aus den ursprünlgichen Quellcode aufbereitet werden.
 % Warum könnte code2vec semantisch gute Vektoren produzieren
-\subsection{Adaption auf C} 
+\subsection{Adaption auf C}
+Um das Cod2Vec Modell Trainineren zu können muss aus den rohen Funktionen
+jeweils ein abstrakter Syntaxbaum und den Funktionsnamen extrahiert werden.
+Glücklicherweise hat JetBrains ein Tool entwickelt namens astminer. Das Tool
+{\bf astminer}  wurde von dem JetBrains Research Team entwickelt, 
+um Quellcode in abstrakte Syntaxbäume zu kodieren, für maschinelles Lernen
+Modelle.
+
+
+
 % code2vec erklären
 \subsection{Training}
 % Ganzes engeneering und pain hinter code2vec
