@@ -1055,22 +1055,43 @@ eine Eigenschaft in natürlicher Sprache über den Quellcode vorherzusagen.
 Bei dieser herangehensweise wird also kein SentenceTransformer verwendent
 sondern der Semantische Vektroraum wird durch Training des Code2Vec Modells
 als Nebenprodukt erzeugt. Wie in den Paper wird auch hier Code2Vec
-darauf trainiert Funktionsnamen vorherzusagen. Leider wurde das Code2Vec
-Modell nur auf Java trainiert, deswegen gab es einige anpassungen die 
-die angwendet werden mussten. Da das Code2Vec Modell
-auf überwachtes Lernen basiert, muss der Datensatz vor dem Training
-erstmal aus den ursprünlgichen Quellcode aufbereitet werden.
+darauf trainiert Funktionsnamen vorherzusagen. Die Implementierung des Code2Vec
+Modells wurde von den Autorn nur auf Java trainiert, deswegen gab es
+einige anpassungen nötig, um Code2Vec auf C Quellcode trainieren zu können.
+Da das Code2Vec Modell auf überwachtes Lernen basiert, muss der Datensatz 
+vor dem Training erstmal aus den ursprünlgichen Quellcode aufbereitet werden.
 % Warum könnte code2vec semantisch gute Vektoren produzieren
 \subsection{Adaption auf C}
-Um das Cod2Vec Modell Trainineren zu können muss aus den rohen Funktionen
-jeweils ein abstrakter Syntaxbaum und den Funktionsnamen extrahiert werden.
-Glücklicherweise hat JetBrains ein Tool entwickelt namens astminer. Das Tool
-{\bf astminer}  wurde von dem JetBrains Research Team entwickelt, 
-um Quellcode in abstrakte Syntaxbäume zu kodieren, für maschinelles Lernen
-Modelle.
-
-
-
+Um das Cod2Vec Modell Trainineren zu können muss aus den rohen Quellcode einer
+Funktion jeweils ein abstrakter Syntaxbaum und den Funktionsnamen extrahiert 
+werden. Die Autoren des Papers stellen ein Tool für Java zu verfügung, welches
+die Extrahierung von abstrakten Syntaxbaum und Funktionsnamen aus Java Quellcode
+ermöglicht.\\
+Der \textit{astminer} von JetBrains stellt genau die Funktion zu verfügung
+aus C-Quellcode abstrakte Syntaxbäume und Funktionsnamen zu extrahieren. Das
+Tool wurde von dem JetBrains Research Team entwickelt, 
+um Quellcode in abstrakte Syntaxbäume (AST) zu kodieren, 
+welche sich als Inputformat für maschinelle Lernen Modelle eignen. \\
+Das Cod2Vec
+Modell braucht ein bestimmtes Format der Label. Ein Label besteht jeweils aus
+einen Funktionsnamen und einer Liste von Kontexten, welche
+den AST repräsnetieren sollen. Ein Kontext besteht aus einen Token gefolgt von
+einer Pfadbeschreibung zu einen anderen Token, welches danach folgt.
+Dieses Code2Vec Format kann durch eine zusätzlich Option in der Konfiguration
+des astminers generiert werden. Trotz dieser Option die mit "code2vec" betitelt
+ist, ist der Output von dem \textit{astminer} nicht direkt von Code2vec
+verwendbar. Das Tool gibt nämlich jeden Token eine einzigartige Zahl, was zwar
+den Speicheraufwand stark reduziert, aber von Code2vec nicht als valide Eingabe
+akzeptiert wird. Demnach mussten noch die Nummern wieder zu der passenden Token
+umgewandelt werden.
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.2]{abb/ast-extraction-example.drawio.png}
+  \end{center}
+  \caption{Extrahierung eines Kontexts}
+\end{figure}
+% Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
+% da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % code2vec erklären
 \subsection{Training}
 % Ganzes engeneering und pain hinter code2vec
