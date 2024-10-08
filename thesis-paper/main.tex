@@ -1065,24 +1065,25 @@ vor dem Training erstmal aus den ursprünlgichen Quellcode aufbereitet werden.
 Um das Cod2Vec Modell Trainineren zu können muss aus den rohen Quellcode einer
 Funktion jeweils ein abstrakter Syntaxbaum und den Funktionsnamen extrahiert 
 werden. Die Autoren des Papers stellen ein Tool für Java zu verfügung, welches
-die Extrahierung von abstrakten Syntaxbaum und Funktionsnamen aus Java Quellcode
+die Extrahierung von abstrakten Syntaxbäumen und Funktionsnamen aus Java Quellcode
 ermöglicht.\\
-Der \textit{astminer} von JetBrains stellt genau die Funktion zu verfügung
-aus C-Quellcode abstrakte Syntaxbäume und Funktionsnamen zu extrahieren. Das
+Der \textit{astminer} von JetBrains stellt ermöglicht es aus C-Quellcode 
+abstrakte Syntaxbäume und Funktionsnamen zu extrahieren. Das
 Tool wurde von dem JetBrains Research Team entwickelt, 
 um Quellcode in abstrakte Syntaxbäume (AST) zu kodieren, 
 welche sich als Inputformat für maschinelle Lernen Modelle eignen. \\
-Das Cod2Vec
-Modell braucht ein bestimmtes Format der Label. Ein Label besteht jeweils aus
-einen Funktionsnamen und einer Liste von Kontexten, welche
+Das Cod2Vec Modell braucht ein bestimmtes Format indem der Datensatz vorliegen
+muss. Ein Trainingsbeispiel besteht jeweils aus einen Funktionsnamen, dem
+Label und einer Liste von Kontexten, welche
 den AST repräsnetieren sollen. Ein Kontext besteht aus einen Token gefolgt von
 einer Pfadbeschreibung zu einen anderen Token, welches danach folgt.
 Dieses Code2Vec Format kann durch eine zusätzlich Option in der Konfiguration
 des astminers generiert werden. Trotz dieser Option die mit "code2vec" betitelt
 ist, ist der Output von dem \textit{astminer} nicht direkt von Code2vec
-verwendbar. Das Tool gibt nämlich jeden Token eine einzigartige Zahl, was zwar
-den Speicheraufwand stark reduziert, aber von Code2vec nicht als valide Eingabe
-akzeptiert wird. Demnach mussten noch die Nummern wieder zu der passenden Token
+verwendbar. Das Tool weist nämlich jeden Token eine einzigartige Zahl zu und
+verwendet dann in Datensatz nur noch die Zahl. Dieses Format reduziert zwar
+den Speicheraufwand stark, aber es wird von Code2vec nicht als valide Eingabe
+akzeptiert. Demnach mussten noch die Nummern wieder zu der passenden Token
 umgewandelt werden.
 \begin{figure}[H]
   \begin{center}
@@ -1112,9 +1113,9 @@ vergleichen zu können, müssen die normalisierten Namen wieder zu den
 ursprünglichen Namen zurückgeführt werden. Aufgrund dessen mussten im
 Quellcode von astminer änderungen vorgenommen werden, so dass zu jeder 
 Position eines Trainingsbeispiels im Datensatz den ursprünglichen 
-Funktionsnamen zugeordnet werden kann. \\
+Funktionsnamen zugeordnet werden konnte. \\
 Mit diesen Anpassungen die noch zusammen gefügt werden mussten konnte nun
-Trainiert werden und nach Abschluss des Trainings konnten die semantischen
+Trainiert werden und nach Abschlusses des Trainings konnten die semantischen
 Vektoren, durch diese Anpassungen verglichen und ausgewertet werden.
 
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
@@ -1122,7 +1123,7 @@ Vektoren, durch diese Anpassungen verglichen und ausgewertet werden.
 % code2vec erklären
 \subsection{Training}
 Das Ziel beim Training war es die selbe Qualität wie im Paper zu erhalten.
-Also die selben Ergebnisse für Java auch für C-Quellcode zu produzieren.
+Also die selben Ergebnisse für Java auch für C-Quellcode zu replizieren.
 Für den Anwendungszweck einen Datensatz zu erstellen der für eine Funktion
 in Assemblersprache einen semantischen Vektor als Label zuordnet, können
 bestimmte problemstellungen beim generellen trainieren von Modellen 
@@ -1130,11 +1131,24 @@ ignoriert werden. Eine Problemstellung bei Modellen ist es inwiefern
 das Modell generalisiert, also wie Leistungsfähig das Modell auf
 neuen Daten im gegensatz zu den Trainingsdaten ist. Diese Problemstellung
 muss nicht beachtet werden, da das Ergebnis kein fähiges Modell ist, sondern
-semantische Vektoren. Auch der kleine Datensatz mit $n = ?$ Datenpunkten,
+semantische Vektoren. Auch der kleine Datensatz mit $n = 5155$ Datenpunkten,
 ist zwar für die Güte des Modells problematisch, jedoch nicht für die
 resultierenden semantischen Vektoren. Selbst wenn das Modell nur die 
 passenden Funktionsnamen auswendig lernt, enstehen dabei Vektoren die
-gewisse Inforamtionen des Namens wiederspiegeln.
+gewisse Inforamtionen des Namens wiederspiegeln. Nachdem das Trainingsszeneario
+genau das selbe wie im Paper ist, wurden alle Trainingsparameter gleich gelassen.
+Die Ergebnisse nach der 84 Epoche sind: {\bf Precision: $65.6$, F1: $65.1$, 
+Recall: $64.7$}. Diese Werte sind etwas über den Werten von den Code2Vec 
+Autoren, sie kamen beim Full Test Set auf : {\bf Precision: $63.1$, F1: $58.4$, 
+Recall: $54.4$}. Dabei ist hervorzuheben das unser Test und Trainings Datensatz
+der selbe ist, im gegensatz zu dem Test Datensatz von Code2Vec. Die vorgehensweise
+ist normalerweise ein grober Fehler, da wir nicht die Generalisierung des 
+Modells messen. In diesem speziellen Anwedungszweck ist jedoch die Güte des
+Modell nicht von bedeutung, sondern nur die die güte der Erzeugten Vektoren.
+Diese werden von der Verwendung des gleichen Datensatzes beim Testen nicht in
+mitleidenschaft gezogen. \\
+Damit haben wir ähnliche Ergebnisse wie aus dem Paper und können diese mit
+den anderen vorgestellten Ansätzen vergleichen.
 %Parameterwahl und Ergebnisse
 % Ganzes engeneering und pain hinter code2vec
 \section{Funktionsnamen}
