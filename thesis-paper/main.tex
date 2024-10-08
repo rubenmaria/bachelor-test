@@ -1090,15 +1090,67 @@ umgewandelt werden.
   \end{center}
   \caption{Extrahierung eines Kontexts}
 \end{figure}
+Da es unterschiedliche Koventionen für Funktionsnamen gibt, wie Bspw. Camelcase und
+Snakecase, normalisert der \textit{astminer} die Funktionsnamen. Dadurch sind
+die Trainingsdaten unabhängig von den spezifischen Quellcodekonventionen.
+\begin{example}
+  \hfill
+  \begin{center}
+    Snakecase: \verb|funktions_name| $\to$ {\bf funktions\text{\textbar}name } \\
+    Camelcase: \verb|funktionsName| $\to$ {\bf funktions\text{\textbar}name}
+  \end{center}
+\end{example}
+Code2Vec kann nach dem Training für jede Funktion einen Hochdimensionalen
+Vektor ausgeben, der die Semantik der Funktion beschreiben soll. Damit Code2Vec
+diesen Vektor generiert, muss der abstrakte Syntaxbaum eingegeben werden. Die
+abstrakten Syntaxbäume können nur durch ihren normalisierten Namen identifiziert
+werden, da sie als Tupel in dieser Form im Datensatz vorliegen.
+Die normalisierten Namen können aber nicht mehr eindeutig dem initialen
+Namen zugeordnet werden,da bei der Normalisierung Informationen verloren
+gehen. Um jedoch Cod2Vec mit anderen Ansätzen wie Funktionskommentaren 
+vergleichen zu können, müssen die normalisierten Namen wieder zu den
+ursprünglichen Namen zurückgeführt werden. Aufgrund dessen mussten im
+Quellcode von astminer änderungen vorgenommen werden, so dass zu jeder 
+Position eines Trainingsbeispiels im Datensatz den ursprünglichen 
+Funktionsnamen zugeordnet werden kann. \\
+Mit diesen Anpassungen die noch zusammen gefügt werden mussten konnte nun
+Trainiert werden und nach Abschluss des Trainings konnten die semantischen
+Vektoren, durch diese Anpassungen verglichen und ausgewertet werden.
+
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % code2vec erklären
 \subsection{Training}
+Das Ziel beim Training war es die selbe Qualität wie im Paper zu erhalten.
+Also die selben Ergebnisse für Java auch für C-Quellcode zu produzieren.
+Für den Anwendungszweck einen Datensatz zu erstellen der für eine Funktion
+in Assemblersprache einen semantischen Vektor als Label zuordnet, können
+bestimmte problemstellungen beim generellen trainieren von Modellen 
+ignoriert werden. Eine Problemstellung bei Modellen ist es inwiefern
+das Modell generalisiert, also wie Leistungsfähig das Modell auf
+neuen Daten im gegensatz zu den Trainingsdaten ist. Diese Problemstellung
+muss nicht beachtet werden, da das Ergebnis kein fähiges Modell ist, sondern
+semantische Vektoren. Auch der kleine Datensatz mit $n = ?$ Datenpunkten,
+ist zwar für die Güte des Modells problematisch, jedoch nicht für die
+resultierenden semantischen Vektoren. Selbst wenn das Modell nur die 
+passenden Funktionsnamen auswendig lernt, enstehen dabei Vektoren die
+gewisse Inforamtionen des Namens wiederspiegeln.
+%Parameterwahl und Ergebnisse
 % Ganzes engeneering und pain hinter code2vec
 \section{Funktionsnamen}
-\subsection{Motivation}
+Eine andere Quellinformation, die in jedem Quellcode enthalten ist,
+sind die Funktionsnamen. 
+Funktionsnamen sollen in wenigen Wörtern den Kerninhalt der Funktion
+wiederspiegeln. %function names.pdf
+Dadurch eignen sich Funktionsnamen um die Semantik einer Funktion 
+zu beschreiben. Außerdem ist die Extrahierung der Funktionsnamen
+keine schwierige Aufgabe. Hierfür wäre Tree-sitter nicht unbedingt
+nötig, aber falls ein Datensatz für eine andere Sprache wie Rust
+erstellt werden sollte, müsste der Parser jedes mal angepasst werden.
+Deswegen wurde hier für die einfache Erweiterung des Programms,
+Tree-sitter verwendet. Tree-sitter bietet nämlich Parser für eine
+große Anzahl an Sprachen an.
 % Motivation warum es gute semantische Vektoren erzeugen konnte
-\subsection{Methodik}
 % Parsen
 % Eigentlich einfach aber wenn man in Zukunft 
 % Viele System nahe sprachen dazu nehmen will
