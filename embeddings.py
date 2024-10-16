@@ -186,7 +186,26 @@ def calculate_standard_deviation_sentence_transfomer(
     dump_standard_deviation(dev, output_dir, output_name)
     dump_mean(mean, output_dir, output_name)
 
-    
+
+def calculate_max_deviation_sentence_transfomer(
+    output_dir: str,
+    output_name: str,
+    text_data_path: str,
+    text_count: int,
+    n: int
+) -> None:
+    text_sample = dict(sample(list(load_text_data(text_data_path).items()), text_count))
+    generate_high_dimensional_n(output_dir, output_name, text_sample, n)
+    max_deviation = get_max_deviation_from_embeddings_n(output_dir, output_name, n)
+    dump_max_deviation(max_deviation, output_dir, output_name)
+
+
+def dump_max_deviation(max_deviation: float, output_dir: str, output_name: str) -> None:
+    path = os.path.join(output_dir, f"{output_name}-max.json")
+    with open(path, "w") as f:
+        json.dump({"max-deviation" : max_deviation}, f, indent=2)
+
+
 def calculate_standard_deviation_from_embeddings(output_dir: str, output_name: str, n: int):
     (mean, dev) =  get_standard_deviation_from_embeddings_n(output_dir, output_name, n)
     dump_standard_deviation(dev, output_dir, output_name)
@@ -238,6 +257,17 @@ def get_embeddings_path_n(dir_path: str, name: str, i: int) -> str:
 def get_summaries_path_n(dir_path: str, name: str, i: int) -> str:
     return os.path.join(dir_path, f"{name}-summary-{i}.json")
 
+
+def get_max_deviation_from_embeddings_n(
+    input_dir: str,
+    input_name: str,
+    n: int
+) -> float:
+    embeddings = load_embeddings_n(input_dir, input_name, n)
+    distances = get_pairwise_distance_n(embeddings)
+    max_deviation = get_max_deviation(distances)
+    return max_deviation
+
 def get_standard_deviation_from_embeddings_n(
     input_dir: str,
     input_name: str,
@@ -260,10 +290,26 @@ def get_pairwise_distance_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
         distance_vectors.append(distances)
     return distance_vectors
 
+def get_pairwise_distance_same_text_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
+    # Currently calculating distance in one file 
+    # should calculate distance over one text in diffrent files
+    distance_vectors: list[NDArray] = []
+    for vectors in embeddings:
+        distances = cosine_distances(vectors)
+        distance_vectors.append(distances)
+    return distance_vectors
+
+def get_max_deviation(distances: list[NDArray]) -> float:
+    distance_matrix = np.array(distances)
+    max_deviations = np.max(distance_matrix, axis=0)
+    print(max_deviations)
+    return np.max(max_deviations)
+
 def get_standard_deviation(distances: list[NDArray]) -> NDArray:
     distance_matrix = np.array(distances)
     return np.std(distance_matrix, axis=0)
- 
+
+
 def norm_vector(vector: NDArray) -> NDArray:
     return 1 / np.linalg.norm(vector) * vector
 

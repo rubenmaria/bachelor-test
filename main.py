@@ -6,7 +6,7 @@ from c_parser import generate_function_names, generate_function_comments, genera
 from embeddings import (calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, generate_embeddings_TSNE, 
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, 
     calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, 
-    generate_llm_TSNE, compare_embeddings_simple)
+    generate_llm_TSNE, compare_embeddings_simple, calculate_max_deviation_sentence_transfomer)
 from survey import generate_survey_csv, generate_surveys_csv
 from code2vec_api import generate_vectors
 from visual import (plot_clusters_from_path, plot_compare_random,
@@ -33,7 +33,8 @@ def main():
         "plot-compare-file": plot_compare_from_file,
         "plot-compare-random": plot_compare_random,
         "generate-survey": generate_survey_csv,
-        "generate-surveys": generate_surveys_csv
+        "generate-surveys": generate_surveys_csv,
+        "max-deviation-st": calculate_max_deviation_sentence_transfomer
     })
 
 

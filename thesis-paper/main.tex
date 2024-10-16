@@ -87,36 +87,73 @@ Ablieferungstermin: \date{\today} \\
 \section*{Abstract}
 \section{Einführung}
 In den letzten Jahren gab es große Fortschritte in der natürlichen
-Sprachverarbeitung, besonders hervorzuheben sind Large Language Models
-die sich mittlerweile in vielen Bereichen der Informatik in die Lösungsansätze
-für Problemen in jeweiligen Bereichen eingeschlichen haben. Diese Arbeit
-untersucht nun, ob diese Fortschritte in der natürlichen Sprachverarbeitung
-eine Hilfestellung leisten können um Source Code Funktionen semantisch sinvoll
-in einen Vektor mit reelwertigen Zahlen zu codieren. Diese Vektoren können dann
-später als Label verwendet werden um ein Modell zu trainieren was Binary Code 
-als Input nimmt und diesen ebenfalls in einen semantischen Vektor mit reelwertigen
-Zahlen codiert. Das resultierende Modell kann hinterher verwendet werden um Reverse 
-Engeneering zu erleichtern. Ein einfaches Beispiel ist folgendes: Man stelle
-sich vor, dass man eine Funktion die in Binary Code vorliegt, mühsehlig manuell
-verstanden was für eine Aufgabe die Funktion in der Code Base hat. Nun kann man
-diese Funktion codieren und über die Gesamte Code Base einen Nearest Neighbor
-Search durchführen und all ähnlichen Funktionen ausgeben lassen.
-Das spart zeit, denn nun hat man eine Idee was diese anderen
-Funktionen für eine Aufgabe in der Code Base erfüllen könnten.\\
-Das oben berschriebene Problem Source Code Vektoren in sinvoll semantische 
-reelwertige Vektoren zu codieren ist sehr ähnlich zu einen Problem 
-in der natürlichen Sprachverarbeitung und dort bereits gelöst. Die rede ist
-von dem Problem einen gegebenen Satz in einen semantisch sinvollen Vektor
-abzubilden. Es ist nageliegend zu versuchen dieses Ergebnis der natürlichen
-Sprachverarbeitung zu benuzten um eine Lösung für unser Problem zu konstruieren.
-Die intuivste Idee ist es einfach die Funktionsnamen, die in natürlicher Sprache
-verfasst sind als beschreibung der Funktion zu verwenden. Diese Beschreibunf können
-wir nun mühelos codieren, da sie in natürlicher Sprache vorliegt.
-Eine zweite Idee ist, die Kommentare der Funktionen, die in natürlicher Sprache
-verfasst sind, als Beschreibung der Funktion zu verwenden. Am viel versprechsten
-ist es die Funktionen von einen Large Language Modell in natürlicher Sprache
-beschreiben zu lassen. Als letztes habe ich noch ein bestehendes Modell
-Code2Vec verwendet und es für dieses Problem angepasst.
+Sprachverarbeitung, besonders wichtig war es natürliche Sprache 
+in reel wertige Vektoren abzubilden (word2vec). Diese hochdimensionale
+Vekoren kodieren die semantik von den ursprügnlichen Wörtern oder Sätzen.
+Mit diesen Vektoren können dann Neuronale Netzwerke auf verschiedenste
+Anwendungen Trainiert werden.\\
+Diese Fortschritte dienen als Motivation, Assembler
+Quellcode auf einen Vektor abzubilden der die Semantik des Quellcodes
+kodiert. Die resultierenden Vektoren können dann wieder benutzt werden
+um Neuronale Netzwerke auf verschiedene Anwendungen zu trainieren, wie
+bspw. function boundary detection, function type inference oder neares
+neigbor search in stripped binaries. Diese Anwendungen erleichtern
+Reverse Engeneering und das klassifizieren von Maleware in Maschienensprache.
+Um ein Modell mittels Supervised Learning zu trainieren welches Assembler 
+Quellcode in Semantsiche Vektoren abbildet, werden für jede Assembler 
+Funktion ein Vektor benötigt der die Semantik der Funktion kodiert.
+Diese Vektoren können aus komplierbaren höhren Programmiersprachen
+gewonnen werden.\\
+
+\textit{Ziel}: Das Ziel dieser Arbeit ist es, verschiedene Methoden zu vergleichen
+aus C Quellcode Vektoren zu generieren die die Semantik von dem ursprünglichen
+Quellcode kodieren, mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung.\\
+
+\textit{Motviation}: Der Prozess des kompelierens entfernt für den Computer
+alle unötigen Informationen einer Funktion, wie Funktionsnamen, 
+Variablennamen, Kommentare etc. Diese enfernten Quellcodeinformationen
+haben einen großen Semantischen Wert, sie geben Aufschluss auf die
+Funktionsweise und Anwendungzweck der Funktion. Diese Information
+könnten also dazu beitragen eine bessere semantische Kodierung
+von Quellcode zu erhalten. Diese Informationen sind in den meisten
+fällen in natürlicher Sprache. Insofern ist es sinvoll bewährte 
+Werkzeuge aus der natürlichen Sprachverarbeitung genutzt werden,
+um diese Informationen in semantische Vektoren zu kodieren. Aus
+den resultierenden Vektoren kann schließlich ein Datensatz erzeugt
+werden, der ein Neuronales Netzwerk darauf trainiert Assembler Quellcode
+auf hochdimensionale reelwertige Vektoren abzubilden, welcher die 
+Semantik des Quellcodes kodiert.
+\pagebreak
+\subsection{Leistungen der Arbeit}
+Die hauptsächlichen Leistungen dieser Arbeit sind:
+\begin{itemize}
+  \item Ein Tool welches einen Datensatz mit Assembler Quellcode und
+    Semantischen Vektoren aus C Quellcode generiert.
+  \item Qualitative Ausertung durch t-SNE, welche die Verwendung von 
+    Funktionskommentaren, Funktionsnamen,  
+    Codellama Erklärungen und Code2Vec vergleicht.
+  \item Quantitative Auswertung durch Experten, welche die Verwendung von 
+    Funktionsnamen,  Codellama Erklärungen und Code2Vec vergleicht.
+  \item Quantitative Auswertung durch eine Formel, welche die Verwendung
+    von Funktionsnamen, Codellama Erklärungen und Code2Vec vergleicht.
+\end{itemize}
+\subsection{Stand der Technik}
+\subsection{Aufbau der Arbeit}
+Kapitel 2 führt anfangs grundlegende Konzepte und Begriffe des Maschinellen
+lernens ein. Danach werden semantische Vektorräume in Bezug auf natürlicher
+Sprache und die größten Fortschritte der letzten Jahren dargestellt. Am Ende
+werden noch Code-Llama, Code2Vec und t-SNE vorgestellt, welche eine wichtige
+Rolle in dieser Arbeit spielen.\\
+
+Die Generelle Umsetzung und Designentscheidungen werden im Kapitel
+3 beschrieben. Dabei wird auf die Auswahl des C Quellcodes, die 
+Datenpipeline und die Stabiltät des Sentence Transformer eingegangen.\\
+Im Kapitel 4,5, 6 und 7 wird spezieller auf die Verschieden Methoden 
+vorgestellt Embeddings zu erzeugen. Also Funktionennamen
+Funktionenkommentare, Code-Llama Erklärungen und Cod2vec motiviert und
+vorgestellt.
+
+
 \pagebreak
 \section{Grundlagen und Termini}
 \subsection{Maschienelles Lernen}
@@ -944,7 +981,29 @@ intuition von der Anordnung der Datenpunkte zu erhalten.
 \section{Methodik}
 \subsection{Datensatz}
 Im Maschinellen lernen hat der Datensatz bzw. die Trainingsdaten den
-größten Einfluss auf die güte des Modells.
+größten Einfluss auf die güte des Modells. Wir haben die 
+Open Source Standard C Bibliothek von GNU ausgewählt.
+Die Sprache C wurde gewählt, da sie die weit verbreiteste zu 
+maschienen Code kompellierbare Sprache ist. Die GNU Bibliothek 
+wurde zum einen ausgewählt, da
+die Qualität des Quellcodes hoch ist, das liegt daran das das Projekt 
+seit 1987 existiert 
+und die große Community jederzeit auf Fehler im Quellcode aufmerksam
+machen kann. Zum anderen wird die Bibliothek weitgehend in vielen
+Applikationen eingesetzt. Der wohl wichtigste Punkt ist, dass
+man mit diesen Datensatz die Ergebnisse gut vergleichen kann, denn
+die C Bibliothek ist im posix standard festgelet und wurde mehrmals
+unterschiedlich implementiert, dadurch erhält man mehrer hoch Qualitative
+Quellcode Projekten, die die selbe Semantik aufweisen. Damit kann dann 
+bspw. die Binary Code Similarity Detection Aufgabe durchgeführt werden.\\
+Die {\bf Binary Code Similarity Detetection} (BCSD) gibt an wie 
+unterschiedlich zwei  in Assebler vorliegende Funktionen sind.
+Da unterschiedliche implementierungen zu unterschiedlichen 
+Assembler Code kompelliert werden, kann mit unterschiedlichen
+Standard-C-Bibliotheken die den POSIX Standard implementieren,
+getestet werden, ob das finale Modelle beide implementerungen 
+als sehr ähnlich klassifiziert.
+
 % Warum ist die Auswahl des Datensatzes wichtig
 % Warum Glibc? 
 % Gleicher Standard mit gleicher Semantik unterschiedlich Implementierung
@@ -995,11 +1054,20 @@ In dem vorherigen unterkapitel haben wir gesehen das der finale schritt
 für alle Daten der SentenceTransformer ist, deswegen ist er das Herzstück
 der Datenpipeline. In dieser Arbeit sollen verschiedene semantische 
 beschreibungen des Quellcodes in natürlicher Sprache verglichen werden.
-Um ein hier sinvoll zu messen müssen , wie bei einem physikilischen Experiment,
+Um hier sinvoll zu messe, müssen ,wie bei einem physikilischen Experiment,
 alle anderen Elemente in der Datenpipeline konstante Ergebnisse liefern und 
 nicht schwanken. Aus diesen Gründen wird im folgenden Untersucht, wie stabil
-sich der SentenceTransformer bei selber Eingabe verhält. Im optimafall sollte
-der SentenceTransfomer bei selben Input selbes Ergebnis liefern. 
+sich der SentenceTransformer bei selber Eingabe verhält. Im optimafall 
+sollte der SentenceTransfomer bei selben Input selbes Ergebnis liefern. \\
+Um das zu überprüfen wurden $n = ?$ Code-llama Quellcode Erklärungen 
+$m = ?$ mal in den Sentence Transformer eingegeben, dabei beträgt der 
+höchste Abstand von zwei Vektoren die aus der gleichen Erklärung resutliert
+sind $d = ?$. Dieser Abstand ist hinreichend gerin um ihn in der Evaluation
+zu vernachlässigen. Der Sentence Transformer ist also für die Anwendung in
+dieser Arbeit hinreichend Stabil.
+
+
+
 
 
 % Label Prozess sollte stabil sein bzw. deterministisch, sonst
@@ -1117,7 +1185,6 @@ Funktionsnamen zugeordnet werden konnte. \\
 Mit diesen Anpassungen die noch zusammen gefügt werden mussten konnte nun
 Trainiert werden und nach Abschlusses des Trainings konnten die semantischen
 Vektoren, durch diese Anpassungen verglichen und ausgewertet werden.
-
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % code2vec erklären
@@ -1173,12 +1240,45 @@ große Anzahl an Sprachen an.
 % -> Treesitter
 \section{Coddelama-Erklärungen}
 \subsection{Motivation}
-%Warum LLM's gute Embeddings produzieren könnten.
-%Wir erzeugen uns eine zusammenfassung vom code
+Large Language Models werden immer besser Quellcode selbst zuschreiben,
+zu verstehen und zusammen zu fassen. Eine Zusammenfassung von Quellcode
+in natürlcher Sprache spiegelt die Semantik des Quellcodes wieder. So ist
+auch Code-Llama fähig Quellcode zu erklären und somit einen Text zu generieren
+der die Semantik der Funktion enthält. Dieser Ansatz verwendet wie Code2Vec
+jede Quellcodeinforamtion, da der gesamte Quellcode als Eingabe genutzt wird.
+Da wir einen Datensatz erstellen sollte der Labelgenerierugnsprozess 
+deterministisch sein, das ist Code-llama anfänglich nicht. Außerdem ist der
+Eingabetext in Code-llama, abgesehen von dem Quellcode, entscheidend für die 
+Erklärungen.
+
+% Warum LLM's gute Embeddings produzieren könnten.
+% Wir erzeugen uns eine zusammenfassung vom code
 % "optimale" Kommentare
-\subsection{Codellama} 
 % Was ist Codellama und warum benutzten wir es?
-\subsection{Prompt Engeneering und Temperature}
+\subsection{Methodik}
+Die Quellcode erklärungen werden von Code-Llama erzeugt, indem Code-Llama
+eine präzise Fragestellung und den gesamten Quellcode einer Funktion enthält.
+Die Fragestellung wurde aus dem Clap Projekt übernommen, diese haben sich
+auch damit beschäftigt, wie die Fragestellung formulliert werden muss
+um Semantik reiche und präzise Quellcodeerklärungen zu erhalten. \\
+Damit
+der Code-Llama Output deterministisch ist, muss der Temperatur Parameter
+auf Null gesetzt werden. Der Parameter ist Teil einer Zufalls komponente
+bei der Auswahl des nächstens Tokens, ist dieser auf Null wird der Token
+mit der höchsten Score gewählt, dieser bleibt bei gleicher Eingabe immer
+der selbe. Leider ist der Detminismus trotzdem nicht garantiert, wie die
+studio von ... heraus fand. Der Grund ist laut ... das bei denen vielen
+fließkomma operationen rundungsfehler enstehen. Diese Erkentnisse stammen
+aber aus einen anderen Anwendungszweck.\\
+Die Stabilität mit Temperatur Null sollte deswegen für den Anwendungszweck
+dieser Arbeit getestet werden.
+Um das zu überprüfen wurden von $n = ?$ Funktionen der Quellcode mit Fragestellung
+$m = ?$ mal in Code-Llama eingegeben, bei den resultierenden Vektoren beträgt der 
+höchste Abstand von zwei Vektoren die aus der gleichen Quellcode resutliert
+sind $d = ?$. Dieser Abstand ist wieder hinreichend gering um ihn in der Evaluation
+zu vernachlässigen. Das Code-llama LLM ist also für die Anwendung in
+dieser Arbeit hinreichend Stabil.
+% Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
 % Ergebnisse der Standardabweichung mit Temperatur 0
 \section{Ergebnisse}
