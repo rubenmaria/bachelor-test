@@ -96,7 +96,8 @@ Diese Fortschritte dienen als Motivation, Assembler
 Quellcode auf einen Vektor abzubilden der die Semantik des Quellcodes
 kodiert. Die resultierenden Vektoren können dann wieder benutzt werden
 um Neuronale Netzwerke auf verschiedene Anwendungen zu trainieren, wie
-bspw. function boundary detection, function type inference oder neares
+bspw. binary code similarity detection, function boundary detection,
+function type inference oder nearest
 neigbor search in stripped binaries. Diese Anwendungen erleichtern
 Reverse Engeneering und das klassifizieren von Maleware in Maschienensprache.
 Um ein Modell mittels Supervised Learning zu trainieren welches Assembler 
@@ -123,7 +124,32 @@ den resultierenden Vektoren kann schließlich ein Datensatz erzeugt
 werden, der ein Neuronales Netzwerk darauf trainiert Assembler Quellcode
 auf hochdimensionale reelwertige Vektoren abzubilden, welcher die 
 Semantik des Quellcodes kodiert.
-\pagebreak
+\subsection{Stand der Technik}
+Das {\bf CLAP} ({\bf C}ontrastive {\bf L}anguage-
+{\bf A}ssembly {\bf P}re-training) Paper setze Anfang 2024 einen neuen Stand
+der Technik, mithilfe von natülicher Sprachverabeitung, in binary code
+simillarity detection. Dabei ist die Aufgabe bei binary code simillarity
+detection, bei zwei gegebnen Assemblerquellcodes zu entscheiden wie semantisch
+ähnlich diese sind.\\ 
+
+Das Clap Modell besteht aus zwei Teilen: Einen Assemblerencoder und einen
+Textencoder. Der Assemblerendcoder, der aus Assemblerquellcode reelwertige
+Vektoren erzeugt, knüpft mit kleinen änderungen an den vorherigen Stander der
+Technik von JTrans an. Der Textencoder ist dagegen eine komplett neue Idee,
+dieser wird darauf trainiert den Text wieder in einen reelwertigen Vektor
+zu kodieren. Dabei starten sie mit einen Modell aus der natürlicen
+Sprachverarbeitung names SenenceTransformer und trainieren dieses dann
+darauf Assemblerquellcode die passende Quellcodeerklärung zu zuordnen.
+Die Quellcodeerklärungen erhalten sie durch ein Large Language Modell wie
+bspw. Chat-GPT.\\
+
+Das {\bf JTrans} Modell baut auf einer Modellarchitektur aus der natürlichen 
+Sprachverarbeitung namens Transformer auf. Sie behandeln die einzelnen
+Assembler-Instruktionen als Wörter, um so die Transformer Modellarchitektur
+anwenden zu können. Außerdem kodieren sie Kontrollflußinformationen des 
+Assemblercodes in die Eingabe des Transformer-Modells. Mit diesen Ansatz
+erzielten sie im Jahre 2022 einen neuen Stand der Technik in \textit{binary code
+similarity detection}.
 \subsection{Leistungen der Arbeit}
 Die hauptsächlichen Leistungen dieser Arbeit sind:
 \begin{itemize}
@@ -137,7 +163,7 @@ Die hauptsächlichen Leistungen dieser Arbeit sind:
   \item Quantitative Auswertung durch eine Formel, welche die Verwendung
     von Funktionsnamen, Codellama Erklärungen und Code2Vec vergleicht.
 \end{itemize}
-\subsection{Stand der Technik}
+\pagebreak
 \subsection{Aufbau der Arbeit}
 Kapitel 2 führt anfangs grundlegende Konzepte und Begriffe des Maschinellen
 lernens ein. Danach werden semantische Vektorräume in Bezug auf natürlicher
@@ -147,11 +173,28 @@ Rolle in dieser Arbeit spielen.\\
 
 Die Generelle Umsetzung und Designentscheidungen werden im Kapitel
 3 beschrieben. Dabei wird auf die Auswahl des C Quellcodes, die 
-Datenpipeline und die Stabiltät des Sentence Transformer eingegangen.\\
-Im Kapitel 4,5, 6 und 7 wird spezieller auf die Verschieden Methoden 
-vorgestellt Embeddings zu erzeugen. Also Funktionennamen
-Funktionenkommentare, Code-Llama Erklärungen und Cod2vec motiviert und
-vorgestellt.
+Datenpipeline und die Stabiltät des Sentence Transformers eingegangen.\\
+
+Im Kapitel 4, 5, 6 und 7 wird spezieller auf die Verschieden Methoden 
+eingegangen Embeddings zu erzeugen. Also wie aus den Quellcodeinformationen
+wie Funktionennamen und Funktionenkommentare ein Vektor generiert werden kann.
+Außerdem wird erläutert wie mit Code-Llama und Code2Vec vektoren produziert
+werden können.\\
+
+Die Ergebnisse werden in einer Qualitativen und Quantitativen Auswertung 
+in Kapitel 8 vorgestellt. Zuerst wird durch eine Experten Evaluierung, 
+die beste Methode identifiziert. Mit dieser Einordnung wird dann überprüft,
+ob eine Qualitative Auswertung und eine Quanitative Ausertung die Experten 
+bestätigen kann.\\
+
+Im Kapitel 9 werden die Ergebnisse reflektiert, eingeordnet und diskutiert. 
+Auperdem werden Probleme und Schwächen jeder der Methode entlarvt und diskutiert.\\
+
+Im letzten Kapitel wirde die gesamte Arbeit reflektiert und danach ein Ausblick
+gegeben welche Probleme bestehen und inspiration für weitere Arbeit in diesem
+Thema.
+
+
 
 
 \pagebreak
