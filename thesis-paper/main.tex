@@ -10,6 +10,7 @@
 \usepackage{chngcntr}
 \usepackage{float}
 \usepackage{svg}
+\usepackage{cite}
 \usetikzlibrary{
   decorations.pathmorphing,
   automata, positioning, arrows, matrix,
@@ -86,116 +87,127 @@ Ablieferungstermin: \date{\today} \\
 \newtheorem{definition}{Definition}
 \section*{Abstract}
 \section{Einführung}
-In den letzten Jahren gab es große Fortschritte in der natürlichen
-Sprachverarbeitung, besonders wichtig war es natürliche Sprache 
-in reel wertige Vektoren abzubilden (word2vec). Diese hochdimensionale
-Vekoren kodieren die semantik von den ursprügnlichen Wörtern oder Sätzen.
-Mit diesen Vektoren können dann Neuronale Netzwerke auf verschiedenste
-Anwendungen Trainiert werden.\\
-Diese Fortschritte dienen als Motivation, Assembler
-Quellcode auf einen Vektor abzubilden der die Semantik des Quellcodes
-kodiert. Die resultierenden Vektoren können dann wieder benutzt werden
-um Neuronale Netzwerke auf verschiedene Anwendungen zu trainieren, wie
-bspw. binary code similarity detection, function boundary detection,
-function type inference oder nearest
-neigbor search in stripped binaries. Diese Anwendungen erleichtern
-Reverse Engeneering und das klassifizieren von Maleware in Maschienensprache.
-Um ein Modell mittels Supervised Learning zu trainieren welches Assembler 
-Quellcode in Semantsiche Vektoren abbildet, werden für jede Assembler 
-Funktion ein Vektor benötigt der die Semantik der Funktion kodiert.
-Diese Vektoren können aus komplierbaren höhren Programmiersprachen
-gewonnen werden.\\
+In den letzten Jahren wurden wichtige Fortschritte in der natürlichen
+Sprachverarbeitung erzielt, ein wichtiger Faktor war die Codierung von
+natürlicher Sprache in reellwertigen Vektoren (engl. embeddings). Die hochdimensionalen Vektoren
+codieren die Semantik der ursprünglichen Wörter oder Sätze. Die daraus 
+resultierenden Vektoren erlauben es, neuronale Netzwerke in diversen 
+Anwendungsbereichen zu trainieren, wie beispielsweise. 
+\textit{spam detection} \cite{Ball2019}.  
+Zu den bekanntesten Modellen, die natürliche Sprache in Vektoren abbilden, gehören 
+\textit{Word2Vec} \cite{mikolov2013efficientestimationwordrepresentations},
+\textit{WordPiece} \cite{wu2016googlesneuralmachinetranslation} und
+\textit{SentenceTransformer} \cite{reimers2019sentencebertsentenceembeddingsusing}.\\
+
+Diese Fortschritte dienen als Motivation, auch Assembler Quellcode auf einen 
+Vektor abzubilden, der die Semantik des Quellcodes codiert. Die resultierenden
+Vektoren können dann wieder benutzt werden, um neuronale Netzwerke auf
+diverse Anwendungen zu trainieren, wie beispielsweise
+\textit{binary code similarity detection} \cite{wang2022jtransjumpawaretransformerbinary},
+\textit{function boundary detection} \cite{190918},
+\textit{function type inference}\cite{203650},
+\textit{binary code search} \cite{9345532},
+Reverse Engineering \cite{lacomis2019direneuralapproachdecompiled},
+oder das Klassifizieren von 
+Malware in der Maschinensprache\cite{raff2017malwaredetectioneatingexe}.\\
+
+Um ein Modell mittels überwachtes Lernen zu trainieren, das Assemblercode in 
+semantische Vektoren abbildet, ist für jede Assembler-Funktion ein Vektor 
+erforderlich, der die Semantik der Funktion codiert. Der Datensatz kann durch 
+Kompilieren des Quellcodes von höheren Programmiersprachen generiert 
+werden.\\
 
 \textit{Ziel}: Das Ziel dieser Arbeit ist es, verschiedene Methoden zu vergleichen
-aus C Quellcode Vektoren zu generieren die die Semantik von dem ursprünglichen
-Quellcode kodieren, mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung.\\
+aus C Quellcode Vektoren zu generieren, die die Semantik von dem ursprünglichen
+Quellcode codieren, mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung.\\
 
-\textit{Motviation}: Der Prozess des kompelierens entfernt für den Computer
-alle unötigen Informationen einer Funktion, wie Funktionsnamen, 
-Variablennamen, Kommentare etc. Diese enfernten Quellcodeinformationen
-haben einen großen Semantischen Wert, sie geben Aufschluss auf die
-Funktionsweise und Anwendungzweck der Funktion. Diese Information
-könnten also dazu beitragen eine bessere semantische Kodierung
-von Quellcode zu erhalten. Diese Informationen sind in den meisten
-fällen in natürlicher Sprache. Insofern ist es sinvoll bewährte 
-Werkzeuge aus der natürlichen Sprachverarbeitung genutzt werden,
-um diese Informationen in semantische Vektoren zu kodieren. Aus
-den resultierenden Vektoren kann schließlich ein Datensatz erzeugt
-werden, der ein Neuronales Netzwerk darauf trainiert Assembler Quellcode
-auf hochdimensionale reelwertige Vektoren abzubilden, welcher die 
-Semantik des Quellcodes kodiert.
+\textit{Motviation}: Der Prozess des Kompilierens reduziert Funktionen
+auf die für den Computer wesentlichsten Bausteine, dabei gehen viele 
+Informationen verloren, wie Funktionsnamen, Variablennamen und Kommentare. 
+Diese Informationen sind von großer Bedeutung und geben Aufschluss über 
+die Funktionsweise und den Anwendungszweck der Funktion. Durch die Verwendung 
+dieser Informationen könnte die semantische Codierung des Quellcodes verbessert
+werden. Aufgrund der Tatsache, dass diese Informationen in der natürlichen 
+Sprache sind, ist es sinnvoll, bewährte Werkzeuge aus der natürlichen 
+Sprachverarbeitung zu verwenden, um diese in semantische Vektoren zu codieren. 
+Aus den resultierenden Vektoren kann schließlich ein Datensatz generiert werden,
+der ein neuronales Netzwerk darauf trainiert, Assemblercode auf hochdimensionale,
+reellwertige Vektoren abzubilden, die die Semantik des Quellcodes codieren.
+
 \subsection{Stand der Technik}
-Das {\bf CLAP} ({\bf C}ontrastive {\bf L}anguage-
-{\bf A}ssembly {\bf P}re-training) Paper setze Anfang 2024 einen neuen Stand
-der Technik, mithilfe von natülicher Sprachverabeitung, in binary code
-simillarity detection. Dabei ist die Aufgabe bei binary code simillarity
-detection, bei zwei gegebnen Assemblerquellcodes zu entscheiden wie semantisch
-ähnlich diese sind.\\ 
+Das {\bf CLAP} ({\bf C}ontrastive {\bf L}anguage {\bf A}ssembly {\bf P}re-training) 
+Paper \cite{wang2024claplearningtransferablebinary} 
+setze Anfang 2024 einen neuen Stand der Technik, mithilfe von natürlicher
+Sprachverarbeitung, in \textit{binary code simillarity detection}. Die Aufgabe 
+besteht dabei darin, die semantische Ähnlichkeit zwischen zwei gegebenen 
+Assemblercodes zu bestimmen.\\
 
-Das Clap Modell besteht aus zwei Teilen: Einen Assemblerencoder und einen
-Textencoder. Der Assemblerendcoder, der aus Assemblerquellcode reelwertige
-Vektoren erzeugt, knüpft mit kleinen änderungen an den vorherigen Stander der
-Technik von JTrans an. Der Textencoder ist dagegen eine komplett neue Idee,
-dieser wird darauf trainiert den Text wieder in einen reelwertigen Vektor
-zu kodieren. Dabei starten sie mit einen Modell aus der natürlicen
-Sprachverarbeitung names SenenceTransformer und trainieren dieses dann
-darauf Assemblerquellcode die passende Quellcodeerklärung zu zuordnen.
-Die Quellcodeerklärungen erhalten sie durch ein Large Language Modell wie
-bspw. Chat-GPT.\\
+Das Clap-Modell ist aus zwei Teilen zusammengesetzt: einem Assembler-Encoder 
+und einem Text-Encoder. Der Assembler-Encoder, der aus Assemblercode 
+reellwertige Vektoren erzeugt, knüpft mit kleinen Änderungen an den vorherigen
+Stand der Technik von JTrans an. Der Text-Encoder ist eine völlig neue Idee, 
+die darauf abzielt, den Text wieder in einen reellwertigen Vektor zu 
+konvertieren. Wang et. al starten dabei mit einem Modell aus der natürlichen 
+Sprachverarbeitung namens \textit{SentenceTransformer} und trainieren dieses
+darauf, Assemblercode die passende Quellcodeerklärung  zuzuordnen. Dabei 
+erhalten sie die Quellcodeerklärungen durch ein Large  Language Model, wie
+beispielsweise Chat-GPT.\\
 
-Das {\bf JTrans} Modell baut auf einer Modellarchitektur aus der natürlichen 
-Sprachverarbeitung namens Transformer auf. Sie behandeln die einzelnen
-Assembler-Instruktionen als Wörter, um so die Transformer Modellarchitektur
-anwenden zu können. Außerdem kodieren sie Kontrollflußinformationen des 
-Assemblercodes in die Eingabe des Transformer-Modells. Mit diesen Ansatz
-erzielten sie im Jahre 2022 einen neuen Stand der Technik in \textit{binary code
-similarity detection}.
+Das {\bf JTrans}-Modell \cite{wang2022jtransjumpawaretransformerbinary}
+baut auf einer Modellarchitektur aus der natürlichen 
+Sprachverarbeitung namens 
+Transformer \cite{vaswani2023attentionneed} auf. 
+Wang et. al behandeln die einzelnen Assembler-Instruktionen als Wörter, um so 
+die Transformer Modellarchitektur anwenden zu können. Außerdem codieren sie
+Kontrollflussinformationen des Assemblercodes in die Eingabe des 
+Transformer-Modells. Mit diesem Ansatz erzielten sie im Jahre 2022 einen neuen
+Stand der Technik in \textit{binary code similarity detection}.
+
 \subsection{Leistungen der Arbeit}
 Die hauptsächlichen Leistungen dieser Arbeit sind:
 \begin{itemize}
-  \item Ein Tool welches einen Datensatz mit Assembler Quellcode und
-    Semantischen Vektoren aus C Quellcode generiert.
-  \item Qualitative Ausertung durch t-SNE, welche die Verwendung von 
-    Funktionskommentaren, Funktionsnamen,  
-    Codellama Erklärungen und Code2Vec vergleicht.
-  \item Quantitative Auswertung durch Experten, welche die Verwendung von 
-    Funktionsnamen,  Codellama Erklärungen und Code2Vec vergleicht.
-  \item Quantitative Auswertung durch eine Formel, welche die Verwendung
-    von Funktionsnamen, Codellama Erklärungen und Code2Vec vergleicht.
+  \item Ein Tool, das einen Datensatz mit Assemblercode und semantischen 
+    Vektoren aus C-Quellcode und dem dazugehörigen Assemblercode generiert.
+  \item Eine qualitative Analyse durch 
+    \textit{t-SNE} \cite{JMLR:v9:vandermaaten08a}, die die Verwendung von 
+    Funktionskommentaren, Funktionsnamen, 
+    \textit{Code Llama} \cite{rozière2024codellamaopenfoundation} Erklärungen
+    und \textit{Code2Vec} \cite{alon2018code2veclearningdistributedrepresentations}
+    untersucht.
+  \item Eine quantitative Auswertung, die durch Befragung von Experten erfolgt,
+    vergleicht die Verwendung von Funktionsnamen, \textit{Code Llama} 
+    Erklärungen und \textit{Code2Vec} miteinander.
+  \item Eine Formel, die die Verwendung von Funktionsnamen, \textit{Code Llama}
+    Erklärungen und \textit{Code2Vec} vergleicht.
 \end{itemize}
 \pagebreak
 \subsection{Aufbau der Arbeit}
-Kapitel 2 führt anfangs grundlegende Konzepte und Begriffe des Maschinellen
-lernens ein. Danach werden semantische Vektorräume in Bezug auf natürlicher
-Sprache und die größten Fortschritte der letzten Jahren dargestellt. Am Ende
-werden noch Code-Llama, Code2Vec und t-SNE vorgestellt, welche eine wichtige
-Rolle in dieser Arbeit spielen.\\
+Kapitel 2 führt anfangs grundlegende Konzepte und Begriffe des maschinellen 
+Lernens ein. Anschließend werden semantische Vektorräume in Bezug auf 
+natürliche Sprache dargestellt und die größten Fortschritte der letzten Jahre 
+beschrieben. Am Ende werden noch \textit{Code Llama}, \textit{Code2Vec} und 
+\textit{t-SNE} vorgestellt, welche eine wichtige Rolle in dieser Arbeit spielen.\\
 
-Die Generelle Umsetzung und Designentscheidungen werden im Kapitel
-3 beschrieben. Dabei wird auf die Auswahl des C Quellcodes, die 
-Datenpipeline und die Stabiltät des Sentence Transformers eingegangen.\\
+Die allgemeine Umsetzung und die Designentscheidungen werden im Kapitel 3
+beschrieben. Es werden die Auswahl des C-Quellcodes, die Datenpipeline und die 
+Stabilität des \textit{SentenceTransformers} erläutert.\\
 
-Im Kapitel 4, 5, 6 und 7 wird spezieller auf die Verschieden Methoden 
-eingegangen Embeddings zu erzeugen. Also wie aus den Quellcodeinformationen
-wie Funktionennamen und Funktionenkommentare ein Vektor generiert werden kann.
-Außerdem wird erläutert wie mit Code-Llama und Code2Vec vektoren produziert
-werden können.\\
+Kapitel 4, 5, 6 und 7 befassen sich mit den verschiedenen Methoden, Embeddings
+zu erzeugen. Also wie aus den Quellcodeinformationen über Funktionsnamen und
+-kommentare ein Vektor erstellt werden kann. Außerdem wird erläutert, wie mit
+\textit{Code Llama} und \textit{Code2Vec} Vektoren produziert werden können.\\
 
-Die Ergebnisse werden in einer Qualitativen und Quantitativen Auswertung 
-in Kapitel 8 vorgestellt. Zuerst wird durch eine Experten Evaluierung, 
-die beste Methode identifiziert. Mit dieser Einordnung wird dann überprüft,
-ob eine Qualitative Auswertung und eine Quanitative Ausertung die Experten 
-bestätigen kann.\\
+Die Ergebnisse werden in einer qualitativen und quantitativen Auswertung in 
+Kapitel 8 vorgestellt. Zuerst wird durch eine Experten-Evaluierung die beste
+Methode identifiziert. Anhand dieser Einordnung wird überprüft, ob die Formel
+und Analyse durch \textit{t-SNE} ein ähnliches Ergebnis aufweisen.\\
 
-Im Kapitel 9 werden die Ergebnisse reflektiert, eingeordnet und diskutiert. 
-Auperdem werden Probleme und Schwächen jeder der Methode entlarvt und diskutiert.\\
+Die Ergebnisse werden im Kapitel 9 reflektiert, eingeordnet und diskutiert. 
+Es werden die Stärken und Schwächen jeder Methode dargestellt und diskutiert.\\
 
-Im letzten Kapitel wirde die gesamte Arbeit reflektiert und danach ein Ausblick
-gegeben welche Probleme bestehen und inspiration für weitere Arbeit in diesem
-Thema.
-
-
-
+Im letzten Kapitel wird die gesamte Arbeit reflektiert und anschließend ein 
+Ausblick gegeben, um weitere Anregungen für die weitere Arbeit in diesem Thema
+zu geben.
 
 \pagebreak
 \section{Grundlagen und Termini}
@@ -1381,82 +1393,6 @@ $CMP_k: \mathbf{R}^{N\times l} \times \mathbf{R}^{N\times l} \times
 
 \section{Conclusion}
 
-
-\section{Notes on form}
-\subsection{Formatting} 
-This LaTeX template uses the following formatting:
-\begin{itemize}
-\setlength{\itemsep}{0pt}
-	\item font: Linux Libertine O (alternatively: Times New Roman)
-	\item font size: 12 pt
-	\item left and right margin: 3.5 cm, top and bottom margin: 3 cm
-    \item align: left
-	\item line spacing: one and a half (alternative: 15 pt line spacing with 12 pt font size)
-\end{itemize}
-
-\noindent
-When implementing the specifications in Word, it is essential to define style sheets.
-
-\subsection{Citation} 
-\label{sec:cit}
-
-The citation method follows the author-year system. Place reference is in the text, footnotes should only be used for explanations and comments. The following notes are taken from the \emph{language} bibliography template from \url{ron.artstein.org}:\newline
-
-\noindent
-The \emph{Language} style sheet makes a distinction between two kinds of in-text citations: citing a work and citing an author.
-\begin{itemize}
-\item Citing a work:
-  \begin{itemize}
-    \setlength{\itemsep}{0pt}
-    \setlength{\parsep}{0pt}
-  \item Two authors are joined by an ampersand (\&).
-  \item More than two authors are abbreviated with \emph{et al.}
-  \item No parentheses are placed around the year (though parentheses
-    may contain the whole citation). 
-  \end{itemize}
-\item Citing an author:
-  \begin{itemize}
-    \setlength{\itemsep}{0pt}
-    \setlength{\parsep}{0pt}
-  \item Two authors are joined by \emph{and}.
-  \item More than two authors are abbreviated with \emph{and colleagues}.
-  \item The year is surrounded by parentheses (with page numbers, if
-    present).
-  \end{itemize} 
-\end{itemize}
-To provide for both kinds of citations, \verb+language.bst+ capitalizes on the fact that \verb+natbib+ citation commands come in
-two flavors. In a typical style compatible with \verb+natbib+, ordinary commands such as \verb+\citet+ and \verb+\citep+ produce short
-citations abbreviated with \emph{et al.}, whereas starred commands such as \verb+\citet*+ and \verb+\citep*+ produce a citation with a
-full author list. Since \emph{Language} does not require citations with full authors, the style \verb+language.bst+ repurposes the starred commands to be used for citing the author. The following table shows how the \verb+natbib+ citation commands work with \verb+language.bst+.
-\begin{center}
-  \begin{tabular}{lll}
-    \toprule
-    Command & Two authors & More than two authors \\
-    \midrule
-    \verb+\citet+ & \citet{hale} & \citet{sprouse} \\
-    \verb+\citet*+ & \citet*{hale} & \citet*{sprouse} \\
-    \addlinespace
-    \verb+\citep+ & \citep{hale} & \citep{sprouse} \\
-    \verb+\citep*+ & \citep*{hale} & \citep*{sprouse} \\
-    \addlinespace
-    \verb+\citealt+ & \citealt{hale} & \citealt{sprouse} \\
-    \verb+\citealt*+ & \citealt*{hale} & \citealt*{sprouse} \\
-    \addlinespace
-    \verb+\citealp+ & \citealp{hale} & \citealp{sprouse} \\
-    \verb+\citealp*+ & \citealp*{hale} & \citealp*{sprouse} \\
-    \addlinespace
-    \verb+\citeauthor+ & \citeauthor{hale} & \citeauthor{sprouse} \\
-    \verb+\citeauthor*+ & \citeauthor*{hale} & \citeauthor*{sprouse} \\
-    \verb+\citefullauthor+ & \citefullauthor{hale} & \citefullauthor{sprouse} \\
-    \bottomrule
-  \end{tabular}
-\end{center}
-Authors of \emph{Language} articles would typically use \verb+\citet*+, \verb+\citep+, \verb+\citealt+ and \verb+\citeauthor*+, though they
-could use any of the above commands. There is no command for giving a full list of authors.
-
-\section*{Bibliography}
-The bibliography of this template includes the references of the \emph{language} stylesheet as a sample bibliography.
-
 \pagebreak
 
 \input{pages/appendix}
@@ -1476,7 +1412,7 @@ The bibliography of this template includes the references of the \emph{language}
 \addcontentsline{toc}{section}{Literatur}
 \pagestyle{fancy}
 
-\bibliographystyle{language-dt} %using language.bst
+\bibliographystyle{IEEEtran}
 \bibliography{bibliography} %bib-filename
 
 \nocite{*} %List all bib-entries
