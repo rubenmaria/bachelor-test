@@ -212,22 +212,19 @@ zu geben.
 \pagebreak
 \section{Grundlagen und Termini}
 \subsection{Maschienelles Lernen}
-Heutzutage ist maschienelles Lernen weitverbreitet und wird in nahezu jeden
-Bereich der Informatik verwendet.
-In diesen Abschnitt wird zunächst maschinelles lernen definiert und 
-dann darauf aufbauend grundlegende Trainingsarten vorgestellt.
-Maschinelles Lernen wird überall dort eingesetzt
-wo eine anayltische Lösung eines Problems zu aufwendig oder gar überhaupt nicht
-existiert. % Book: Learingin from data, page 1, row 6
-Diese Lösung durch maschinelles Lernen versucht aus den Daten ein Muster
-abzuleiten. Bei einer endlichen Menge an Daten ist meist,
-das resultierende Modell nur eine Approximation der gesuchten Lösung.
+Heutzutage ist maschinelles Lernen weitverbreitet und wird in nahezu jedem
+Bereich der Informatik verwendet.  Maschinelles Lernen wird überall dort 
+eingesetzt, wo eine analytische Lösung eines Problems zu aufwendig oder gar 
+überhaupt nicht existiert. Maschinelles Lernen sucht nach einer Lösung, indem 
+es aus den Daten ein Muster ableitet. Sind die Daten endlich, ist meist das 
+resultierende Modell nur eine Approximation der gesuchten Lösung. In diesem 
+Abschnitt wird zunächst maschinelles Lernen definiert und dann darauf aufbauend 
+grundlegende Trainingsarten vorgestellt.
+ % Book: Learingin from data, page 1, row 6
 \subsubsection{Definition}
-Trotz des bekanntheitsgrades, gibt es den irreglauben, dass
-maschinelles lernen nur was mit Neuronalen Netzwerken zu tun
-hat, diese Anahme ist im allgemeinen falsch. Generell kann
-ein Problem das mit maschinelles Lernen gelöst wird, wie folgt 
-formulliert werden:
+Die weit verbreitete Ansicht, dass maschinelles Lernen nur etwas mit neuronalen 
+Netzwerken zu tun hat, ist im Allgemeinen falsch. Generell kann ein Problem, 
+das mit maschinellem Lernen gelöst wird, wie folgt definiert werden:
 \begin{definition}
   Sei $X$ eine beliebige Input Menge, $Y$ eine beliebige Output Menge,
   $f \in \{X \to Y\}$ die gesuchte Lösung des Problems, 
@@ -242,13 +239,13 @@ formulliert werden:
     A_1(H_1, \mathbb{D}) \approx f.
   \]
 \end{definition}
-Maschinelles lernen ist also die suche nach einen Lernalgorithmus und 
-Hypothesenraum, die dann in kombination mit gegebenen Daten, die optimale
-Lösung approximieren. Dabei ist hervorzuheben das der Datensatz das Herzstück
-jeder Problemstellung im Bereich des maschinellen Lernens ist. Ist der 
-Datensatz zu klein oder überhaupt nicht representativ für das gegebene
-Probelm, wird der Lernalgorithmus die falschen Muster erkennen und dadurch
-eine fehlerhafte Approximation produzieren. % visualisierung.
+Maschinelles Lernen ist also die Suche nach einem Lernalgorithmus und 
+Hypothesenraum, der dann in Kombination mit gegebenen Daten die bestmögliche
+Lösung approximiert. Dabei ist hervorzuheben, dass der Datensatz das Herzstück
+jeder Problemstellung im Bereich des maschinellen Lernens ist. Wenn der
+Datensatz zu klein oder überhaupt nicht repräsentativ für das gegebene Problem 
+ist, wird der Lernalgorithmus die falschen Muster erkennen und dadurch eine 
+fehlerhafte Approximation erzeugen.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -273,18 +270,18 @@ eine fehlerhafte Approximation produzieren. % visualisierung.
   \end{center}
 \end{figure}
 \hfill
-\\
-In der Figur 2.1 ist die Problembeschreibung nochmal bildlich dargestellt,
-erwähnenswert ist, dass die Datenpunkte nicht immer in abhängigkeit mit $f: X \to Y$
-stehen. Beispielsweise können die Datenpunkte einfach nur aus den Eingabewerten
-bestehen: $\mathbb{D} = \{x_1,x_2,x_2, \dots, x_n\} \subset X$. Die Struktur
-des Datensatzes kann sehr unterschiedlich sein, dass hängt auch mit 
-unterschiedlichen Lernmehthoden zusammen.
+\pagebreak
+In der Figur 2.1 ist die Problembeschreibung noch einmal bildlich dargestellt.
+Beachtenswert ist, dass die Datenpunkte nicht immer in Abhängigkeit mit 
+$f: X \to Y$ stehen. Beispielsweise können die Datenpunkte einfach nur aus den
+Eingabewerten bestehen: $\mathbb{D} = \{x_1,x_2,x_2, \dots, x_n\} \subset X$.
+Die Struktur des Datensatzes kann sehr unterschiedlich sein, das hängt auch mit 
+unterschiedlichen Lernmethoden zusammen.
 \subsubsection{Deep-Learning}
-Bevor die Lernmethoden genauer betrachtet werden, wird kurz Deep-Learning
-vorgestellt. Deep-Learning ist ein Neuronales Netzwerk mit mehreren 
-Layern zwischen Input und Output Layer. Zunächst müssen wir jedoch
-Neuronale Netzwerke definieren. 
+Vor der Betrachtung der Lernmethoden wird kurz auf Deep Learning eingegangen.
+Deep Learning ist ein neuronales Netzwerk, das über mehrere Layer zwischen
+Input und Output Layer verfügt. 
+Zunächst einmal müssen wir neuronale Netzwerke definieren:
 \begin{definition}
   Ein Neuronales Netzwerk (NN) ist eine Funtion $N: \mathbb{R}^q \to \mathbb{R}^p$,
   wobei $q\in \mathbb{N}$ die Anzahl der Inputs und $p \in \mathbb{N}$ die
