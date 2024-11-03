@@ -281,9 +281,11 @@ unterschiedlichen Lernmethoden zusammen.
 Vor der Betrachtung der Lernmethoden wird kurz auf Deep Learning eingegangen.
 Deep Learning ist ein neuronales Netzwerk, das über mehrere Layer zwischen
 Input und Output Layer verfügt. 
-Zunächst einmal müssen wir neuronale Netzwerke definieren:
+Zunächst einmal müssen wir neuronale Netzwerke definieren, die folgende
+Definition ist inspiriert aus der Vorlesung Computational Intelligence
+der LMU München:
 \begin{definition}
-  Ein Neuronales Netzwerk (NN) ist eine Funtion $N: \mathbb{R}^q \to \mathbb{R}^p$,
+  Ein neuronales Netzwerk (NN) ist eine Funtion $N: \mathbb{R}^q \to \mathbb{R}^p$,
   wobei $q\in \mathbb{N}$ die Anzahl der Inputs und $p \in \mathbb{N}$ die
   Anzahl der Outputs ist. Sei $(L_i)_{i \in \{ 1, \dots, n\}}$ die Layer,
   $(K_i^l)_{l=1,\dots, n, i = 1,\dots r_l}$ die Konten im jeweiligen Layer 
@@ -327,9 +329,9 @@ Zunächst einmal müssen wir neuronale Netzwerke definieren:
   Wir bezeichnen $L_1$ als Input-Layer, $L_n$ als Output-Layer und
   $L_i$, mit $i \in \{2, \dots, n-1\}$, als Hidden-Layer.
 \end{definition}
-Also ist Deep-Learning ein bestimmer Hypothesenraum, denn 
-alle Neuronale Netzwerke sind höher dimensionale reelwertige Funktionen. 
-Schließlich gilt für den Hypothesenraum:
+Deep Learning ist ein Hypothesenraum, da alle neuronalen Netzwerke 
+höherdimensionale reellwertige Funktionen sind. Schließlich gilt für den
+Hypothesenraum:
 \[
   H = \{\mathbb{R}^n \to \mathbb{R}^k\}, \text{ wobei } n,k \in \mathbb{N}
 \]
@@ -437,21 +439,21 @@ wird aber anschaulich anhand eines Beispiels.
     (W_1)_{1,1} = 0.2
   \]
 \end{example}
-Bei dem Beispiel oben handelt es sich um Deep-Learning, da das Neuronale 
-Netzwerk zwei Hidden-Layer besitzt. Heutzutage haben Deep-Learning Models
-zwei bis drei stellige Anzahl an Hidden-Layer. Diese Dimensionen sind aber
-für ein Beispiel eher ungeignet.
+In diesem Fall handelt es sich um Deep Learning, da das neuronale Netzwerk 
+zwei Hidden-Layer besitzt. Deep Learning Models verfügen heutzutage über
+eine zwei- bis dreistellige Anzahl an Hidden-Layer, diese Dimensionen sind 
+aber für ein Beispiel ungeeignet.
 \subsubsection{Überwachtes Lernen}
 %learning from data page 11 row 7
-Das überwachte Lernen ist die meist eingesetzte Trainingsmethode, deswegen
-auch die wichtigste. Bei diesem Ansatz liegt immer die korrekte Lösung
-für jeden Input bei, demtentsprechend ist der Datensatz ein Tuple aus Input und
-korrekten Output: 
+Das überwachte Lernen ist die am häufigsten verwendete Trainingsmethode
+und ist daher auch die wichtigste. Dieser Ansatz basiert immer auf der
+korrekten Lösung für jeden Input und ist daher ein Tupel aus Input und
+korrekten Outputwerten. 
   \[\mathbb{D} = \{ (x_1,y_1), (x_2,y_2) (x_3,y_3), \dots ,(x_n,y_n)\} 
   \subset X \times Y.\]
-Ein klasisches Beipiel für diesen Ansatz ist die Bilderkennung, hierbei 
-wäre ein möglicher input ein Vektor mit Grauwerten und der Output ein 
-Label bzw. die Bezeichung für das Bild.
+Ein Beispiel für diesen Ansatz ist die Bilderkennung, bei der ein Vektor
+mit Grauwerten und ein ein Label bzw. eine Bezeichnung für das Bild
+verwendet werden.
 \begin{example}
   Sei $X = \mathbb{R}^{4096}$ und
    $Y = \{ \text{Katze}, \text{ Hund}, \text{ Auto}\}$, dann könnte der 
@@ -466,27 +468,26 @@ Label bzw. die Bezeichung für das Bild.
     \}
    \]
 \end{example}
-Der entscheidende Punkt ist also hier, dass wir das richtige verhalten
-unseres Modells kennen und deswegen direkt wissen wenn es Fehler macht.
-Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich 
-erscheint nicht so selbstverständlich. Beim {\bf selbst-überwachten Lernen}
-generiert der Lernalgorithmus die richtigen Lösungen und jeden Input
-aus gegeben Daten selber.
+Der entscheidende Aspekt ist, dass wir das richtige Verhalten unseres Modells 
+kennen und deshalb direkt wissen, wenn es Fehler macht. Beim selbst-überwachten
+Lernen werden die richtigen Lösungen aus gegebenen Daten generiert. 
+Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich erscheint,
+nicht selbstverständlich.
 \subsubsection{Unüberwachtes Lernen}
-Unüberwachtes lernen ist der Extremfall, denn hier bekommt der Lernalgorithmus
-ausschließlich die Inputwerte: 
-$\mathbb{D} = (x_1, x_2, x_3, \dots, x_n) \subset X$.
-Der Lernalgorithmus erhält also keine hinweise darauf was ein 
-richtiger oder ein falscher Output ist. Unüberwachtes lernen 
-wird meist eingesetzt um in Daten, Strukturen und Muster zu 
-identifizieren. Ein Beispiel ist die Cluster-Analyse,
-hier bekommt der Lernalogrithmus eine Menge von Daten und 
-gruppiert diese in Teilmengen. In der Abbildung 2.2 ist ein Beispiel
-für das Resultat einer möglichen Cluster-Analyse dargestellt.
+Das unüberwachte Lernen ist der Extremfall, da der Lernalgorithmus
+ausschließlich die Inputwerte erhält.
+\[\mathbb{D} = (x_1, x_2, x_3, \dots, x_n) \subset X\]
+Der Lernalgorithmus erhält keine Hinweise darauf, was richtig oder falsch 
+ist. Unüberwachtes Lernen ist eine Methode, um in Daten Strukturen und 
+Muster zu identifizieren. Ein Beispiel ist die Cluster-Analyse, hier
+bekommt der Lernalgorithmus eine Menge von Daten und gruppiert diese in
+Teilmengen. In der Abbildung 2.2 ist ein Beispiel für das Resultat einer
+möglichen Cluster-Analyse dargestellt.
 \begin{figure}[H]
   \centering
-  \rule{1cm}{1cm}% placeholder for graphic
-  \caption{Cluster Analyse angewendet auf 2-dimensionale Daten}
+  \includegraphics[scale=0.5]{abb/t-sne-example.png}
+  \caption{Cluster Analyse angewendet auf 2-dimensionale Daten aus 
+  \cite{wattenberg2016how}.}
 \end{figure}
 
 \subsubsection{Reinforcement Learning}
@@ -508,6 +509,7 @@ Bereichen eingesetzt werden. In dieser Arbeit werden wir uns hauptsächlich
 mit dem Bereich der linguistischen Datenverabeitung 
 (engl. Natural Language Processing) befassen, was uns zum nächsten Begriff
 führt. Liguistische Datenverarbeitung wird im folgenden mit NLP abgekürtzt.
+\pagebreak
 \subsection{Semantische Vekorräume}
 Das semantische kodieren von natürlicher Sprache in einen Vektorraum,
 ist ein bedeutsames Problem in NLP(Referenz). Der resultierende 
