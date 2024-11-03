@@ -269,7 +269,6 @@ fehlerhafte Approximation erzeugen.
     \caption{Grundlegendes maschinelles Lernen Problem}
   \end{center}
 \end{figure}
-\hfill
 \pagebreak
 In der Figur 2.1 ist die Problembeschreibung noch einmal bildlich dargestellt.
 Beachtenswert ist, dass die Datenpunkte nicht immer in Abhängigkeit mit 
@@ -439,7 +438,8 @@ wird aber anschaulich anhand eines Beispiels.
     (W_1)_{1,1} = 0.2
   \]
 \end{example}
-In diesem Fall handelt es sich um Deep Learning, da das neuronale Netzwerk 
+\pagebreak
+In diesem Beispiel handelt es sich um Deep Learning, da das neuronale Netzwerk 
 zwei Hidden-Layer besitzt. Deep Learning Models verfügen heutzutage über
 eine zwei- bis dreistellige Anzahl an Hidden-Layer, diese Dimensionen sind 
 aber für ein Beispiel ungeeignet.
@@ -481,47 +481,45 @@ Der Lernalgorithmus erhält keine Hinweise darauf, was richtig oder falsch
 ist. Unüberwachtes Lernen ist eine Methode, um in Daten Strukturen und 
 Muster zu identifizieren. Ein Beispiel ist die Cluster-Analyse, hier
 bekommt der Lernalgorithmus eine Menge von Daten und gruppiert diese in
-Teilmengen. In der Abbildung 2.2 ist ein Beispiel für das Resultat einer
+Teilmengen. In der Abbildung 2.3 ist ein Beispiel für das Resultat einer
 möglichen Cluster-Analyse dargestellt.
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{abb/t-sne-example.png}
+  \includegraphics[scale=0.3]{abb/t-sne-example.png}
   \caption{Cluster Analyse angewendet auf 2-dimensionale Daten aus 
   \cite{wattenberg2016how}.}
 \end{figure}
 
 \subsubsection{Reinforcement Learning}
-Das Reinforcement Learning ist nicht so extrem wie das unüberwachte Lernen,
-bei diesem Paradigma liegen dem Lernalgorithmus, zwar auch nicht die korrekten
-Outputwerte vor, aber der Lernalgorithmus kriegt für jeden vorhergesagten Wert
-eine Rückmeldung,\underline{wie erwünscht dieser Wert ist}. Hier ist ein Beispiel,
-ein Modell, mittels einen Lernalgorithmus, darauf zu trainieren ein Videospiel
-zu Gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Umgebung und gibt dem
-Spiel ein Input, welcher eine Aktion zufolge hat. Falls nun die Aktion dazu beiträgt, 
-den Spieler in eine gute position zu bringen oder gar das Spiel zu gewinnen, bekommt 
-die Aktion eine positive Bewertung, anderfalls eine negative. Intuitiv 
-könnte man dieses Paradigma auch als "learning by doing" bezeichnen, da
-der Lernalgorithmus nach ausreichendem Ausprobieren das gewünschte 
-Verhalten erlernt.\\\\
-Die Problemstellung im maschinellen Lernen ist allgemein gehalten und abstrakt.
-Aber genau aus diesem Grund kann maschinelles Lernen in so vielen unterschiedlichen
-Bereichen eingesetzt werden. In dieser Arbeit werden wir uns hauptsächlich 
-mit dem Bereich der linguistischen Datenverabeitung 
-(engl. Natural Language Processing) befassen, was uns zum nächsten Begriff
-führt. Liguistische Datenverarbeitung wird im folgenden mit NLP abgekürtzt.
-\pagebreak
+Das Reinforcement Learning ist nicht so extrem wie das unüberwachte Lernen. 
+Bei diesem Paradigma liegen dem Lernalgorithmus zwar nicht die korrekten 
+Outputwerte vor, aber der Lernalgorithmus erhält für jeden vorhergesagten Wert 
+eine Rückmeldung, wie erwünscht dieser Wert ist. Ein Beispiel ist ein Modell,
+das mittels eines Lernalgorithmus darauf trainiert wird, ein Videospiel zu 
+gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Umgebung und gibt dem 
+Spiel einen Input, welcher eine Aktion zufolge hat. Falls nun die Aktion dazu 
+beiträgt, den Spieler in eine gute Position zu bringen oder gar das Spiel zu
+gewinnen, bekommt die Aktion eine positive Bewertung, andernfalls eine
+negative. \\
+
+Die Problemstellung im maschinellen Lernen ist allgemein formuliert und abstrakt.
+Dies ist der Grund, warum maschinelles Lernen in vielen unterschiedlichen 
+Bereichen eingesetzt werden kann. Einer der Bereiche ist die linguistische
+Datenverarbeitung (engl. Natural Language Processing), was uns zum nächsten 
+Begriff führt. Linguistische Datenverarbeitung wird im Folgenden mit NLP abgekürzt.
+
 \subsection{Semantische Vekorräume}
-Das semantische kodieren von natürlicher Sprache in einen Vektorraum,
-ist ein bedeutsames Problem in NLP(Referenz). Der resultierende 
-Vektorraum kann, für verschieden Problemstellungen 
-(engl. downstream task) verwendet werden. Ein Beispiel
-ist das klassifizierten von Fake-News oder das zusammenfassen
-von längeren Texten(Quelle?). Semantischer Vektorraum heißt hier
-das ähnliche Wörter, also Wörter mit ähnlicher Bedeutung, im 
-projizierten Vektorraum einen geringen Abstand zu einander haben.
-Diese Vektoren werden wir im folgenden Embeddings nennen.
-In einem optimalen Vektorraum würde im Figur 2.3 gezeigte Beziehung
-gelten.
+Das semantische Codieren von natürlicher Sprache in einem Vektorraum 
+ist ein bedeutsames Problem in NLP. %Referenz?
+Der resultierende Vektorraum kann
+für verschiedene Problemstellungen (engl. downstream tasks) verwendet
+werden. Ein Beispiel ist die Klassifizierung von Spam-Nachrichten 
+\cite{Ball2019}.
+Semantischer Vektorraum heißt hier, dass ähnliche Wörter, also Wörter 
+mit ähnlicher Bedeutung, im projizierten Vektorraum einen geringen 
+Abstand zueinander haben. Wir werden die Vektoren im Folgenden als
+Embeddings bezeichnen. In einem idealen semantischen Vektorraum würde 
+die Beziehung gelten, die in Figur 2.4 dargestellt wird.
 \begin{figure}[H]
   \begin{center}
       \begin{tikzpicture}
@@ -549,12 +547,13 @@ gelten.
   \caption{Optimaler fiktiver semantischer Vektorraum}
 \end{figure}
 \subsubsection{Bag of Words}
-Der naivste Ansatz ist es jedem Wort im vorliegenden Text eine 
-Zahl zu zuordnen. Daraus kann zum einen die Häufigkeit eines Wortes
-abgeleitet werden, aber auch die Sätze in denen ein bestimmtes Wort
-vor kommt, effizient gefunden werden. Die Bedeutung eines Wortes ist
-hier komplett unabhängig von der Wahl der zugewiesenen Zahl. Das führt
-dazu, dass sogar Synonyme einen hohen Abstand haben können.
+Der naivste Ansatz ist es, jedem Wort im vorliegenden Text eine Zahl 
+zuzuordnen. Dadurch können sowohl die Häufigkeit eines Wortes als auch
+die Sätze, in denen ein bestimmtes Wort vorkommt, effizient gefunden 
+werden. Die Bedeutung eines Wortes ist hier komplett unabhängig von 
+der Wahl der zugewiesenen Zahl. Das führt dazu, dass sogar Synonyme einen
+hohen Abstand haben können.
+
 \begin{example}
   Sei $T = \{\text{Input}, \text{Mann}, \text{Frau},
    \text{Eingabe}\}$ eine Menge von Wörtern, dann ist die zuordnung
@@ -569,25 +568,29 @@ dazu, dass sogar Synonyme einen hohen Abstand haben können.
   einen sehr unterschiedlichn Wert.
 \end{example}
 \subsubsection{Word2Vec}
-Im Jahr 2013 veröffentlichte Google ein Paper,
-indem sie zwei Modellarchitekturen vorstellen,
-mit denen ein neuronales Netzwerke effizient
-lernen kann, semantische embeddings zu produzieren.
-Das Neuronale Netzwerk hat in beiden Architekturen
-ein Hidden-Layer, die Gewichte des Hidden-Layers beinhalten nachdem
-Training die reelwertigen Vektor repräsentationen.
-Der Aufbau bei beiden Modellen ist in Figur 2.4 dargestellt.
-Zu beachten ist, dass der Hidden-Layer keine Aktivierungsfunktion
-besitzt, da er nur als lineare Transformation von einer
-One-Hot-Kodierung zu einem reelwertigen Vektor dient.
-One-Hot-Kodierung produziert für jedes aus
-n Wörten einen Vektor $v \in \{0,1\}^n$. Der Vektor besitzt immer
-nur eine eins und sonst überall eine null. Jede Position wo eine eins
-ist, gibt es jeweils nur einmal und kodiert so, mittels der Position,
-ein Wort. Der Output-Layer hat als Aktiverungsfunktion einen Softmax,
-der Sofmax gitbt Werte zwischen 0 und 1 zurück. Der Output ist also ein
-Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung ein
-Wort oder mehrere abgeleitet werden.
+Im Jahr 2013 veröffentlichte Mikolov et al. ein Paper 
+\cite{mikolov2013efficientestimationwordrepresentations},
+indem zwei Modellarchitekturen vorgestellt wurden, mit denen ein neuronales
+Netzwerk effizient lernen kann, semantische Embeddings zu produzieren.
+Die Autoren haben eine Implementierung veröffentlicht die sie 
+\textit{Word2Vec} genannt haben.
+In beiden Architekturen besteht das neuronale Netzwerk aus einem 
+Hidden-Layer, der nach dem Training die reellwertigen 
+Vektorrepräsentationen enthält.
+Der Aufbau bei beiden Modellen ist in Figur 2.5 dargestellt.
+Es ist zu beachten, dass der Hidden-Layer keine Aktivierungsfunktion 
+besitzt, da er nur als lineare Transformation von einer 
+One-Hot-Codierung zu einem reellwertigen Vektor dient.\\
+
+One-Hot-Codierung produziert für jedes aus n Wörtern einen Vektor
+$v \in \{0,1\}^n$. Dieser Vektor ist an einer Stelle mit einer Eins
+und sonst überall mit einer Null versehen. Jede Position, an der eine
+Eins ist, gibt es nur einmal und codiert so durch die Position ein Wort.
+Der Output-Layer hat als Aktivierungsfunktion einen Softmax, der 
+Softmax gibt Werte zwischen 0 und 1 zurück. Der Output ist also ein 
+Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung 
+durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.
+
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -652,60 +655,42 @@ Wort oder mehrere abgeleitet werden.
     \caption{ Neuronales Netzwerk von Word2Vec}
   \end{center}
 \end{figure}
-Es gibt nun zwei unterschiedliche herangehensweisen, dieses
-Neuronales Netzwerk zu trainieren. Die erste ist Skip-gram, gegeben ein Wort
-muss das Modell die naheliegende Wörter vorhersagen. Dass heißt es muss
-aus einen Wort einen richtigen Kontext zu ordnen. Das Modell wird so lernen
-wörtern die ähnliche Kontexte haben ähnliche Embeddings zu zuordnen. Die
-zweite Methode ist Continous-Bag-Of-Words (CBOW), bei der ist es genaum
-umkegehrt, bei dieser sind Wörter nah an einen bestimmten gegeben und
-die aufgabe des Modells ist es dieses bestimmte Wort vorherzusagen.
-Hier ist also der Kontext gegeben und das Wort, welches
-in den gegeben Kontext benutzt wird muss hervogesagt werden. Da ähnliche
-Wörter ähnliche Kontexte haben, neigt das Modell ähnliche 
-Outputs für ähnliche Kontexte zu erlernen. Ähnliche Outputs 
-können dadurch erzeugt werden, das die Embeddings für die
-Kontextwörter ähnlich sind.\\
-Die Word2Vec Embeddings sind also dann ähnlich bzw. 
-im Vektorraum nah aneinander, wenn ihre Kontexte in denen sie
-verwendet werden ähnlich sind. Das Problem ist, dass die Kontexte
-limitiert sind auf eine feste größe, die am Anfang gewählt wird.
-Sei nun die Kontextgröße $k \in \mathbb{N}$ ungerade, dass bedeutet, das der Kontext
-eines Wortes alle Wörter sind die $\floor*{\frac{k}{2}}$ stellen vor dem Wort
-positioniert sind und $\floor*{\frac{k}{2}}$ nach dem Wort positioniert sind.
-Falls das $k \in \mathbb{N}$ zu klein gewählt wird könnte es passieren, dass
-nur inhaltslose Wörter wie z.B. Artikel oder Präpositionen, im
-Kontext enthalten sind und somit das Wort mit Inhaltslosen
-Wörtern assoziert wird. Wenn aber das $k \in \mathbb{N}$ zu breit
-gewählt ist, könnten verschieden Kontexte verschwimmen und so
-ungenau Ergebnisse enstehen. Die Kontextgröße ist also ein
-entscheidender Parameter, für den Erfolg des Modells. Google selber löst
-das Kontextproblem in ihrem Paper "Attention Is All You Need",
-mit ihrer Modellarchitektur namens Transformer.
+Es gibt nun zwei unterschiedliche Strategien, das neuronale Netzwerk
+zu trainieren. Die erste ist Skip-gram, gegeben ein Wort, muss das
+Modell die naheliegenden Wörter vorhersagen. Das heißt, es muss einem
+Wort einen richtigen Kontext zuordnen. Das Modell wird die Fähigkeit
+entwickeln, Wörter mit ähnlichen Kontexten ähnlichen Embeddings
+zuzuordnen. \\
+
+Die zweite Methode ist Continous-Bag-Of-Words (CBOW),
+bei der das Modell Wörter nahe an einem bestimmten Wort als Input 
+erhält und versucht, dieses Wort vorherzusagen.Folglich muss das Wort,
+das in dem gegebenen Kontext verwendet wird, prädiziert werden.
+Da ähnliche Wörter ähnliche Kontexte haben, neigt das Modell dazu,
+ähnliche Outputs für ähnliche Kontexte zu lernen. \\
+
+Die Word2Vec Embeddings sind dann ähnlich, wenn ihre Kontexte,
+in denen sie verwendet werden, ähnlich sind.  
+Die Kontexte haben eine feste Größe, die am Anfang ausgewählt wird.
+Wenn die Kontextgröße zu klein gewählt wird, kann es passieren, dass 
+das Wort mit inhaltslosen Wörtern assoziiert wird, wie z.B. Artikel 
+oder Präpositionen. Wenn die Kontextgröße zu groß ist, können 
+unterschiedliche Kontexte verschwimmen und ungenaue Ergebnisse entstehen.
+Folglich hat die Kontextgröße einen entscheidenden Einfluss auf den Erfolg 
+des Modells. Vaswani et al. lösen das Kontextproblem 
+durch die Modellarchitektur Transformer \cite{vaswani2023attentionneed}.
+
 \subsubsection{Transformer}
-Das Paper "Attention Is All You Need" ist ein Meilenstein im NLP Bereich.
-Die vorgestellte Deep Learning-Architektur ist Grundlage für
-BERT, Sentence Transformer und Large Language Models (wie z.B. Chat-GPT).
-Das Modell wurde Ursprünglich entwickelt um bei gegebnen Satz, einen
-sinvollen neuen Satz zu generieren. Die verwendete donwstream task im
-Paper ist das übersetzen von englisch zu deutsch und englisch zu französisch.
-Der Transformer kann aber wieder dazu verwendet werden semantische 
-Embeddings zu produzieren, wie wir im Abschnitt zu dem Sentence Transformer
-sehen werden.
-Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6 zusehen
-sind. Der erste Block ist der Encoder, dieser ehält die Eingabe. Beim
-Übersetzen wäre das der zu übersetzende Text. Der Encoder kodiert den 
-Input in semantische embeddings und gibt den wichtigen Kontext für den
-Input aus, dass heißt er gibt aus wie wichtig jedes Wort in dem Satz ist
-für ein gegebenes Wort. Es gibt also keine Kontextgröße, sondern der
-gesmante Input ist der Kontext, aber der Encoder gibt vor, welche 
-wörter wichtig sind und welcher eher unwichtig sind, für ein gegebenes
-Wort. Der Decoder kriegt den von ihm selber produzierten Output und das
-Ergebnis des Encoders, um das nächste Wort zu generieren. Am Anfang bekommt
-der Decoder ein konstantes Start Embedding und um die generierung zu
-stoppen gibt er selber ein konstantes Stop Embedding aus. Zu beachten
-ist, dass man mehrere Encoder und Decoder hintereinander schalten 
-kann.
+Das Paper "Attention Is All You Need" \cite{vaswani2023attentionneed}
+ist ein Meilenstein im NLP Bereich.
+Die vorgestellte Deep Learning Architektur bildet die Basis für BERT,
+Sentence Transformer und Large Language Models (wie z.B. Chat-GPT).
+Das Modell wurde ursprünglich entwickelt, um bei einem gegebenen Satz 
+einen sinnvollen neuen Satz zu generieren. Die donwstream task im Paper 
+ist das Übersetzen von Englisch zu Deutsch oder Französisch. 
+Der Transformer kann jedoch wieder zur Erzeugung semantischer Embeddings 
+verwendet werden, wie wir im Abschnitt zum Sentence Transformer sehen 
+werden.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -725,167 +710,195 @@ kann.
   \end{center}
   \caption{Transformer Architektur stark vereinfacht}
 \end{figure}
-In Abbildung 2.7 ist die Architektur genauer dargestellt. Im folgenden
-werden alle Bestandteile die in Abbildung vorkommen kurz erklärt. 
-{\bf Input Embedding} gibt dem Input der in Textform vorliegt eine 
-Vektor repräsentation. Danach wird auf dem Vektor ein
-{\bf Positional Encoding} darauf addiert. Der Transformer verarbeitet
-alle Wörter Parallel, deswegen geht die Positionsinformation verloren.
-Um diese Information trotzdem im vektor zu kodieren wird für jede
-position ein einzigartigen Vektor darauf addiert. Im Block {\bf Add \& Norm}
-werden zwei Inputs addiert und dann normalisiert, damit die Werte in dem
-Modell nicht zu groß werden. {\bf Feed Forward} ist einfach ein Neuronales 
-Netzwerk mit zwei Layern. Alle Wortembeddings werden nacheinander und 
-identische in das Netzwerk ein gegeben. Der erste Input-Layer hat
-als Aktiverugnsfunktion ein Softmax und der zweite hat die Identitätsfuntion.
+Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6 zusehen
+sind. Der erste Block ist der Encoder, dieser erhält die Eingabe.
+Beim Übersetzen wäre das der zu übersetzende Text.
+Der Encoder codiert den Input in semantische Embeddings und gibt an,
+wie wichtig jedes Wort in dem Satz für ein gegebenes Wort ist.\\
+Es gibt keine Kontextgröße, sondern der Kontext ist die gesamte
+Eingabe.
+Der Encoder bestimmt, welche Wörter wichtig sind und welche eher 
+unwichtig sind in Bezug auf ein gegebenes Wort.
+Der Decoder erhält den von ihm selbst produzierten Output sowie 
+das Ergebnis des Encoders, um das nächste Wort zu generieren. 
+Außerdem startet dieser mit einem konstanten Start Embedding und 
+um die Generierung zu stoppen, gibt er selbst ein konstantes Stopp 
+Embedding aus. Es ist wichtig, dass mehrere Encoder und Decoder 
+gleichzeitig hintereinander geschaltet werden können.\\
+
+Die Architektur ist in Abbildung 2.7 dargestellt. Im Folgenden werden 
+die wichtigsten Bestandteile der Abbildung erläutert. {\bf Input Embedding}
+gibt dem Input, der in Textform vorliegt, eine Vektorrepräsentation.
+Danach wird auf dem Vektor ein {\bf Positional Encoding} darauf addiert.
+Der Transformer verarbeitet alle Wörter parallel, deswegen geht die 
+Positionsinformation verloren. Um diese Information trotzdem im Vektor 
+zu codieren, wird für jede Position ein einzigartiger Vektor darauf 
+addiert. Im Block {\bf Add \& Norm} werden zwei Inputs addiert und dann 
+normalisiert, damit die Werte in dem Modell nicht zu groß werden.
+Feed forward ist einfach ein neuronales Netzwerk mit zwei Layern.
+Alle Wortembeddings werden nacheinander und identisch in das Netzwerk 
+eingegeben. Der erste Input-Layer hat als Aktivierungsfunktion ein 
+Softmax und der zweite hat die Identitätsfunktion.
 Dann gilt für das Netzwerk:
 \[
   FFN(x) =\text{max}(0, xW_1 + b_1)W_2 + b_2.
 \]
-Der {\bf Linear } Block ist wieder ein Neuronales Netzwerk, mit allen
-Aktivierungsfunktionen: \\$ f_{i,j}(x) = x $. Nun fehlt noch der wohl 
-wichtigste Bestandteil der Architektur das {\bf Multi-Head Attention}
-Modul. Dieses gibt die Korrelation zwischen ein Wort und allen restlichen
-im Input aus. Hier wird also der ganze Input als Kontext genommen, aber
-das Modell lernt auf welche Wörter es im Kontext viel oder wenig
-aufmerksamkeit schenken sollte. Das {\bf Masked Multi-Head Attention}
-Modul ist nur beim trainieren anders, als das Multi-Head Attention Modul.
-Beim trainieren ist der Input des Decoders schon der Satz der von dem Modell
-vorhergesagt werden soll, deswegen müssen alle wörter die es noch nicht 
-vorhergesagt hat verdeckt (engl. Masked) werden.
-
-
+Der {\bf Linear Block} ist wieder ein neuronales Netzwerk, mit allen
+Aktivierungsfunktionen: $ f_{i,j}(x) = x $. 
+Das {\bf Multi-Head Attention} Modul ist der wohl wichtigste Bestandteil der 
+Architektur. Dieses gibt die Korrelation zwischen einem Wort und allen
+Restlichen im Input aus. Der gesamte Input wird als Kontext betrachtet,
+aber das Modell lernt, auf welche Wörter es im Kontext viel oder wenig
+Aufmerksamkeit schenken sollte. Das {\bf Masked Multi-Head Attention}
+Modul ist nur beim Trainieren anders als das Multi-Head Attention Modul.
+Beim Trainieren ist der Input des Decoders bereits der Satz,
+den das Modell vorhersagen soll. Daher müssen alle Wörter, 
+die es noch nicht vorhergesagt hat, verdeckt (engl. Masked) werden.
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=0.4]{abb/transformer-figure.png}
+    \includegraphics[scale=0.35]{abb/transformer-figure.png}
   \end{center}
-  \caption{entommen aus "Attention Is All You Need"}
+  \caption{
+      entommen aus "Attention Is All You Need"
+      \cite{vaswani2023attentionneed}
+  }
 \end{figure}
 \subsubsection{BERT}
-Das BERT Modell ist wieder ein großer Meilenstein im NLP Bereich und
-kann als einer der ersten Large Language Models betrachtet werden.
-Das Modell verbessert die Transformer Architektur indem es die
-Embeddings der Token verbessert, zwei neue Trainingsaufgaben einführt
-und aussschließlich Encoder verwendet.
+Das BERT-Modell \cite{devlin2019bertpretrainingdeepbidirectional}
+ist ein wichtiger Meilenstein im NLP-Bereich und kann 
+als eines der ersten Large Language Models betrachtet werden.
+Das Modell verbessert die Transformer Architektur, 
+indem es die Tokenembeddings verbessert, zwei neue Trainingsaufgaben einführt
+und ausschließlich Encoder verwendet.
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.5]{abb/BERT-Tokens.png}
   \end{center}
   \caption{Token Embedding Prozess entnommen aus dem BERT Paper.}
 \end{figure}
-In Abbildung 2.8 ist der Token Embedding Prozess abgebildet, der
-im folgenden näher beschrieben wird. Zunächst muss erläutert 
-werden was ein  Token ist. Ein {\bf Token} ist in unsere Fall ein Wort,
-aber generell ist ein Token, eine kleinere Zeichenkette die aus
-einen Text gewonnen wird und einer Bedeutung zugewiesen wird
-oder in eine Zahl umgewandelt wird um die weiterverarbeitung
-zu vereinfachen.\\
-Das BERT Modell addiert drei unterschiedlich informationen
-in Vektorform auf, um noch bessere Token Embeddings zu
-generieren. BERT benutzt WordPiece %(Quelle)
-um die Token Embeddings zu bekommen, auf diesen wird
-nun noch ein Segement Embedding und schließlich Position
-Embedding darauf addiert. {\bf Segment Embedding} kodiert
-die Information welche Tokens strukturell zusammen gehören
-(Bspw. ein Satz). Das {\bf Position Embedding} kodiert
-die sequentielle Position im Input.\\
-Das wichtigste Puzzleteil sind die zwei unterschiedlichen
-Trainingsaufgaben. Während der Transformer strikt die
-Token von links nach rechts vorhersagt, wird BERT darauf
-trainiert Wörter die auf beliebiger Position fehlen 
-vorherzusagen, deswegen hat das Modell zugriff auf
-den Kontext der sich links und recht von dem zu verhersagenden
-Token befindet. Die Autoren bennenen diese Trainingsform
-{\bf Masked Language Modeling}, es werden $15\%$ der Input
-Tokens durch, entweder das \verb|[Mask]| Token oder mit einen
-zufälligen anderen Token ersetzt. Dabei bleiben 
-$10\%$ der Tokens die maskiert werden sollten doch gleicht,
-weitere $10\%$ davon werden durch ein zufälligen anderen Token
-ersetzt und die restlichen $80\%$ davon werden durch
-das \verb|[Mask]| Token ersetzt. Die zweite Traininsaufgabe
-ist {\bf Next Sentence Prediction} (NSP), bei dieser Aufgabe
-muss das BERT Modell bei der Eingabe von zwei Sätzen entscheiden,
-ob diese sequentiell nacheinander kommen oder nicht. Dabei sind
-$50\%$ der Daten, zwei Sätze die nacheinander kommen und
-bei den anderen $50\%$ wird zu einen gegebenen Satz aus den gesamten
-Daten ein zufälliger nicht sequentieller Satz gewählt. Um eine vorhersage zu
-treffen,
-ob die Sätze nacheinander kommen oder nicht wird das konstante \verb|[cls]|
-Token Embedding verwendet, welches immer an erster stelle steht.
-Der erster Outputvektor korrespondiert dann mit dem \verb|[cls]| Token und
-wird verwendet um den Output \verb|isNext| oder \verb|notNext| zu produzieren.\\ 
-Nachdem Training erhält man aus BERT die Outputvektoren welche genau gleich viele
-sind wie der Inputvektoren, diese kann man dann mit wenig aufwand
-weiter verwenden, um das Modell für bestimmte Probleme in NLP
-anzupassen (engl. fine-tuning).
+In Abbildung 2.8 ist der Tokenembedding Prozess abgebildet,
+der im Folgenden näher beschrieben wird. Zunächst muss erläutert werden, 
+was ein Token ist. Ein Token ist in diesem Fall ein Wort, 
+aber generell ist ein Token eine kleinere Zeichenkette, die aus einem 
+Text gewonnen wird und einer Bedeutung zugewiesen wird oder in eine 
+Zahl umgewandelt wird, um die Weiterverarbeitung zu vereinfachen.\\
+
+Das BERT Modell kombiniert drei unterschiedliche Informationen
+in Vektorform, um noch bessere Token Embeddings zu generieren. BERT
+verwendet \textit{WordPiece} \cite{wu2016googlesneuralmachinetranslation},
+um die Tokenembeddings zu erhalten.
+Auf diese werden nun ein Segmentembedding und schließlich die
+Positionembeddings addiert. {\bf Segment Embedding} codiert die Information,
+welche Tokens strukturell zusammen gehören (Bspw. ein Satz).
+Das {\bf Position Embedding} codiert die sequenzielle Position im Input.\\
+
+
+Die beiden unterschiedlichen Trainingsaufgaben stellen das wichtigste
+Puzzleteil dar. Während der Transformer die Token von links nach rechts
+vorhersagt, wird BERT darauf trainiert, Wörter vorherzusagen, die auf
+beliebiger Position fehlen. Dadurch erhält das Modell Zugang zu dem
+Kontext, der sich links und rechts vom zu prädizierenden Token befindet.
+Wu et al. benennen diese Trainingsform {\bf Masked Language Modeling}.
+Bei diesem Verfahren werden $15 \%$ der Input-Token entweder durch das
+\verb|[Mask]| Token oder durch einen zufälligen anderen Token ersetzt.
+Dabei werden $10 \%$ der Token, die maskiert werden sollten,
+unverändert bleiben. Weitere $10 \%$ werden durch ein zufälliges anderes
+Token ersetzt, während die restlichen $80 \%$ durch das \verb|[Mask]| Token 
+ersetzt werden.
+\pagebreak
+
+Die zweite Trainingsaufgabe ist {\bf Next Sentence Prediction} (NSP),
+bei dieser Aufgabe muss das BERT Modell bei der Eingabe von zwei Sätzen 
+entscheiden, ob diese sequenziell nacheinander kommen oder nicht.
+Bei der einen Hälfte der Daten handelt es sich um zwei Sätze, die nacheinander 
+auftreten. Bei der anderen Hälfte der Daten handelt es sich um zufällige,
+nicht sequenzielle Sätze. Zur Vorhersage, ob die Sätze nacheinander kommen 
+oder nicht, wird das konstante \verb|[cls]| Tokenembedding verwendet, 
+welches beim Input immer an erster Stelle steht. Der erste Outputvektor 
+ist dann das Ergebnis des \verb|[cls]| Tokens und wird verwendet, um den Output
+\verb|isNext| oder \verb|notNext| zu produzieren.\\
+
+Nach dem Training erhält man aus BERT für jeden Inputvektor genau einen 
+Outputvektor, diesen kann man dann mit wenig Aufwand weiter verwenden,
+um das Modell für bestimmte Probleme in NLP anzupassen 
+(engl. fine tuning).
 
 \subsubsection{Sentence Transformer}
-Das Sentence-BERT (Reimers et al. 2019) Modell ist Stand der Technik,
-im semantischen kodieren von natürlicher Sprache in einem Vektorraum.
-Die Implementierung der Autoren ist unter den Namen Sentence-Transformer 
-(\underline{LINK??})
-bekannt und wird in dieser Arbeit verwendet. Die Motivation hinter Sentence-BERT
-(SBERT) ist das effiziente semantische vergleichen von zwei Sätzen. Wenn man mit
-BERT herausfinden will, wie semantisch ähnlich zwei gegebene Sätze sind, dann muss 
-man beide als Input in das Modell eingeben. Dass heißt wenn man die Ähnlichkeit
-von allen $n$ Sätzen jeweils zueinander haben will, gibt es $\frac{n(n-1)}{2}$
-eingaben in das BERT Modell, die man tätigen müsste. Bei SBERT allerdings kann 
-nun jeder Satz einzeln eigegeben werden, der resultierende Ouput ist dann 
-ein semantischer Vektorraum, indem jeder Satz ein semantischen Vektor besitzt.
-Um jetzt die semantische ähnlichkeit zwischen zwei Vektoren zu erhalten, müssen
-beide Vektoren nur in eine zu wählende Metrik eingesetzt werden. In den Paper
-wird die Kosinus-Ähnilichkeit verwendet: Sei $u,v \in \mathbb{R}^n$, dann setze
-\[
-  Kos(u,v) := cos(\phi) = \frac{u \cdot v}{\|u\|\|v\|} 
-  = \frac
-  {
-    \sum_{i=1}^n u_iv_i
-  }
-  {
-    \sqrt{\sum_{i=1}^n u_i^2} \sqrt{\sum_{i=1}^n v_i^2}
-  }.
-\]
-Damit kann dann effizient die semantsiche Ähnlichkeit zwischen zwei Vektoren
-berechnet werden. Die Modellarchitektur von SBERT wird als {\bf Siamese Neural Network }
-bezeichnet, da scheinbar zwei unterschiedliche BERT Modelle verwendet werden
-um beide Sätze in einen Vektor umzuwandeln, aber beide Modell teilen sich 
-die Gewichte. 
+Das Sentence-BERT \cite{reimers2019sentencebertsentenceembeddingsusing}
+Modell ist der aktuelle Stand der Technik im semantischen Codieren von 
+natürlicher Sprache in einem Vektorraum. Die Implementierung der Autoren
+ist unter dem Namen \textit{SentenceTransformer} bekannt. Die Motivation 
+hinter Sentence-BERT (SBERT) ist das effiziente semantische Vergleichen 
+von zwei Sätzen. Wenn man mit BERT herausfinden möchte, wie semantisch
+ähnlich zwei gegebene Sätze sind, dann muss man beide Sätze als Input 
+in das Modell eingeben. Das heißt, wenn man die Ähnlichkeit von allen
+$n$ Sätzen jeweils zueinander haben will, gibt es $\frac{n(n-1)}{2}$ 
+Eingaben in das BERT Modell, die man tätigen müsste.
+Bei SBERT kann dagegen jeder Satz einzeln eingegeben werden und der
+resultierende Output ist dann ein semantischer Vektorraum, indem jeder 
+Satz einen semantischen Vektor besitzt. Um die semantische Ähnlichkeit 
+zwischen zwei Vektoren zu erhalten, müssen beide Vektoren lediglich in 
+eine zu wählende Metrik eingesetzt werden. 
+%wird die Kosinus-Ähnilichkeit verwendet: Sei $u,v \in \mathbb{R}^n$, dann setze
+%\[
+%  Kos(u,v) := cos(\phi) = \frac{u \cdot v}{\|u\|\|v\|} 
+%  = \frac
+%  {
+%    \sum_{i=1}^n u_iv_i
+%  }
+%  {
+%    \sqrt{\sum_{i=1}^n u_i^2} \sqrt{\sum_{i=1}^n v_i^2}
+%  }.
+%\]
+Dies ermöglicht es, die semantische Ähnlichkeit zwischen zwei Vektoren 
+effizient zu berechnen.\\
+
+Die Modellarchitektur von SBERT wird als {\bf Siamese Neural Network }
+bezeichnet, da zwei unterschiedliche BERT-Modelle verwendet werden,
+um beide Sätze in einen Vektor umzuwandeln, aber beide Modelle teilen 
+sich die Gewichte.
+\pagebreak
+
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.3]{abb/SBERT.png}
   \end{center}
   \caption{SBERT Architektur entnommen aus dem SBERT Paper.}
 \end{figure}
-In Abbildung 2.9 ist die SBERT Sieamese Neural Network Architektur abgebildet,
-das heißt dass sich beide BERT Modelle die selben Geweicht teilen. Danach
-geht der Output von BERT in ein pooling Modul. {\bf Pooling} ist das transformieren
-von Output mit vielen Vektoren in eine geringere Anzahl von Vektoren oder 
-Dimension. In unseren Fall werden die $n$ Output Vektoren von BERT in einen 
-einzigen Output Vektor transformiert. Das in dem Paper verwendete
-default pooling ist der Mittelwert, d.h. auf alle Ouputvektoren von BERT,
-wird das arithmetische Mittel angewendet, daraus erhält man einen Vektor
-mit den Mittelwerten der jeweiligen BERT Output Vektoren. Desweiteren wird
-das BERT Modell noch einwenig, auf die spezielle aufgabe, zwei Vektoren
-semantisch zu vergleichen, angepasst. Dafür wird der SNLI Datensatz verwendet,
-dieser beinhaltet immer zwei sätze und eins von drei möglichen Label:
-\verb|contradiction|, \verb|neutral|, und \verb|entailment|. Also muss SBERT
-für zwei sätze vorhersagen ob sie sich inhaltlich wiedersrpechen, neutral
-zueinander sind, oder der eine Satz eine Fortsetzung des anderen ist. Daraus
-lernt das Modell ein semantisches verständis für Sätze zu erlangen. Beim Training
-wird um die label Vorhersage zubekommen, wie in Abbilding 2.9 dargestellt,
-die jeweiligen Vektoren und ihre Differenz konkatiniert. Anschließend werden
-diese mit einen lernbaren Gewicht multipliziert, sodass ein Vektor mit 
-drei Dimensionen herauskommt, dann wird der Softmax angewendet.
-Die Position in dem Vektor mit dem höchsten Wert wird schließlich dem zugehörigen
-Label zugeordnet. Mathematisch: \\Sei $W \in \mathbb{R}^{n\times 3}$
-das lernbare Gewicht und $v \in \mathbb{R}^n$ Outputvektor von pooling, dann
+In Abbildung 2.9 ist die SBERT Architektur dargestellt, 
+in der sich beide BERT Modelle dieselben Gewichte teilen. 
+Danach geht der Output von BERT in ein pooling Modul. 
+{\bf Pooling} ist das Transformieren von Output mit vielen Vektoren 
+in eine geringere Anzahl von Vektoren oder Dimensionen. In diesem Fall 
+werden die $n$ Output-Vektoren von BERT in einen einzigen Output-Vektor 
+transformiert. Das Default pooling ist der Mittelwert, d.h. auf alle 
+Output-Vektoren von BERT wird das arithmetische Mittel angewendet.
+Daraus erhält man einen Vektor mit den jeweiligen gemittelten 
+BERT-Output-Vektoren.\\
+
+Das BERT Modell wird an die spezielle Aufgabe 
+angepasst, zwei Vektoren semantisch zu vergleichen. 
+Dafür wird der SNLI Datensatz verwendet, dieser beinhaltet immer 
+zwei Sätze und eins von drei möglichen Labels: 
+\verb|contradiction|, \verb|neutral|, und \verb|entailment|.
+SBERT muss für zwei Sätze vorhersagen, ob sie sich inhaltlich widersprechen,
+neutral zueinander sind oder ob der eine Satz eine Fortsetzung des 
+anderen ist. Daraus lernt das Modell, ein semantisches Verständnis 
+für Sätze zu erlangen. Zur Ermittlung der Labelvorhersage werden die 
+jeweiligen Vektoren und ihre Differenz konkateniert. Anschließend 
+werden diese mit einem lernbaren Gewicht multipliziert, sodass ein 
+Vektor mit drei Dimensionen entsteht. Danach wird der Softmax auf das
+Ergebnis angewendet. Die Position in dem Vektor mit dem höchsten Wert 
+wird schließlich dem zugehörigen Label zugeordnet. Mathematisch:
+Sei $W \in \mathbb{R}^{n\times 3}$ das lernbare Gewicht und 
+$v \in \mathbb{R}^n$ Outputvektor von dem pooling, dann
 \[
   o = \text{softmax}(Wv).
 \]
-Nachdem Training, bei der Inferenz wird der Vektor nachdem pooling als 
-ouputvektor ausgeben.\\
-SBERT liefert uns also ein Tool, um Sätze semantisch in einen Vektorraum
-abzubilden, welches sich in späteren Kapitelen als sehr hilfreich herausstellt.
+Nachdem Training bei der Inferenz wird der Vektor, nachdem pooling 
+als Output-Vektor ausgeben. SBERT liefert uns also ein Tool, 
+um Sätze semantisch in einem Vektorraum abzubilden,
+welches sich in späteren Kapiteln als sehr hilfreich herausstellt.
 \subsection{Code-Llama}
 Die Code-Llama famillie an Large Language Models, wurde von Meta AI im Jahre
 2024 entwickelt. {\bf Large Language Models} sind Modelle, die auf einer
