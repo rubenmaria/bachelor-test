@@ -570,9 +570,10 @@ hohen Abstand haben können.
 \subsubsection{Word2Vec}
 Im Jahr 2013 veröffentlichte Mikolov et al. ein Paper 
 \cite{mikolov2013efficientestimationwordrepresentations},
-indem zwei Modellarchitekturen vorgestellt wurden, mit denen ein neuronales
-Netzwerk effizient lernen kann, semantische Embeddings zu produzieren.
-Die Autoren haben eine Implementierung veröffentlicht die sie 
+indem zwei Modellarchitekturen vorgestellt wurden. Mit diesen ein
+neuronales Netzwerk effizient lernen kann, semantische Embeddings
+zu produzieren.
+Mirkolov et al. haben eine Implementierung veröffentlicht die sie 
 \textit{Word2Vec} genannt haben.
 In beiden Architekturen besteht das neuronale Netzwerk aus einem 
 Hidden-Layer, der nach dem Training die reellwertigen 
@@ -994,33 +995,40 @@ und $\alpha \in \mathbb{R}^n$ der attention weights Vektor.
 \[
   \verb| code vector | v = \sum_{i = 1}^n \alpha_i \cdot h_i
 \]
-Mit dem \verb|code vector| kann dann das gewünschte Label vorhergesagt werden.
-Das Modell kann demnach darauf trainiert werden ein bestimmtes Label 
-vorherzusagen, welches zu einen Quellcode, also einer reihe an 
-\verb |context vector| zugerodnet wird. Nachdem Training kann es dann auch 
-Label für Quellcode vorhersagen die es noch nie gesehen hat.\\
-Die Trainingsart ist demnach Überwachteslernen, was eine aufbereitung der 
-Daten benötigt. Das Modell kann deswegen auch nur Label vorhersagen in der
-Inferenz, die es vorher im Training gesehen hat.
+
+Mit dem \verb|code vector| kann dann das gewünschte Label vorhergesagt 
+werden. Das Modell kann demnach darauf trainiert werden, bei gegebenem 
+\verb|code vector| bzw. Quellcodeauszug ein bestimmtes Label in 
+natürlicher Sprache vorherzusagen. Nachdem das Training abgeschlossen 
+ist, kann es ein Label für einen Quellcode vorhersagen, welches nicht 
+im Trainingssatz enthalten ist.\\ 
+Die Trainingsart ist demnach überwachtes Lernen, was eine Aufbereitung der
+Daten benötigt. Das Modell kann lediglich die Labels vorhersagen, die es 
+vorher im Training gesehen hat.
 \subsection{t-SNE}
-{\bf t}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding ({\bf t-SNE})
-ist ein Algorithmus, welcher zum visualisieren von hochdimensionalen Daten 
-eingesetzt wird. Um das zu ermöglichen reduziert t-SNE die Dimension von 
-$n \in \mathbb{N}$ zu einer niedrigeren Dimension wie zwei oder drei, inder
-der Mensch die Datenpunkte leicht interpretieren kann, ohne die 
-Nachbarschaftsverhältnisse der Datenpunkte in mitleidenschaft zu ziehen.\\
-Im folgende wird der Algorithmus skizziert und danach wird aufgezeigt was bei 
-der effektiven verwendung von t-SNE zu beachten ist. Die hochdimensionalen 
-Datenpunkte werden mit $\mathbf{H}$ und die niedrigdimensionale Datenpukte mit
-$\mathbf{N}$ bezeichnet. Der erste schritt des Algorithmuses ist es 
-jedem Datenpunktpaar im Datensatz $\mathbf{H}$ ein Ähnlichkeitsscore zu zuweisen.
-Dieser wird berechnet indem man zuerst die euklidische Distanz von jeden Datenpaar
-berechnet und dann das Ergebnis in eine Wahrscheinlichkeitsverteilung eingibt,
-dadurch wird der Wert unter anderen Normalisiert. Das Ergebis ist dann eine 
-Tabelle mit einen Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$. Als
-nächstes werden die Datenpunkte zufällig in der niedrigen Dimension 
-$\mathbf{N}$ angeordnet. Die nachfolgenden zwei schritte werden $T\in \mathbb{N}$
-mal wiederholt, wobei $T$ ein Parameter ist der wählbar ist.
+{\bf t}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding
+({\bf t-SNE}) ist ein Algorithmus, welcher zum Visualisieren von
+hochdimensionalen Daten eingesetzt wird. Um das zu ermöglichen,
+reduziert t-SNE die Dimension von $n \in \mathbb{N}$ zu einer niedrigeren 
+Dimension wie zwei oder drei, in der der Mensch die Datenpunkte leicht 
+interpretieren kann. Dabei versucht der Algorithmus, die
+Nachbarschaftsverhältnisse der Datenpunkte nicht in Mitleidenschaft zu 
+ziehen.\\
+
+Im Folgenden wird der Algorithmus skizziert und danach wird aufgezeigt,
+was bei der effektiven Verwendung von t-SNE zu beachten ist. Die
+hochdimensionalen Datenpunkte werden mit $\mathbf{H}$ und die niedrig 
+dimensionalen Datenpunkte mit $\mathbf{N}$ bezeichnet. Der erste Schritt 
+des Algorithmus ist es, jedem Datenpunktpaar im Datensatz $\mathbf{H}$
+einen Ähnlichkeitsscore zuzuweisen. Dieser wird berechnet, indem man 
+zuerst die euklidische Distanz von jedem Datenpaar berechnet und dann das 
+Ergebnis in eine Wahrscheinlichkeitsverteilung eingibt. Dies führt zu
+einer Normalisierung des Wertes. Das Ergebnis ist dann eine Tabelle mit 
+einem Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$.\\ 
+
+Als Nächstes werden die Datenpunkte zufällig in der niedrigen Dimension $\mathbf{N}$
+angeordnet. Die nachfolgenden zwei Schritte werden $T\in \mathbb{N}$ 
+mal wiederholt, wobei $T$ ein Parameter ist, der wählbar ist.
 \begin{enumerate}
   \item Berechne Ähnlichkeitsscore von $\mathbf{N}$, diesmal wird aber die
       studentische t-Verteilung als wahrscheinlichkeitsverteilung genommen. 
