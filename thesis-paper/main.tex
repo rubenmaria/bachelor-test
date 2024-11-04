@@ -172,20 +172,20 @@ Die hauptsächlichen Leistungen dieser Arbeit sind:
     \textit{t-SNE} \cite{JMLR:v9:vandermaaten08a}, die die Verwendung von 
     Funktionskommentaren, Funktionsnamen, 
     \textit{Code Llama} \cite{rozière2024codellamaopenfoundation} Erklärungen
-    und \textit{Code2Vec} \cite{alon2018code2veclearningdistributedrepresentations}
+    und  \textit{Code2Vec}  \cite{alon2018code2veclearningdistributedrepresentations}
     untersucht.
   \item Eine quantitative Auswertung, die durch Befragung von Experten erfolgt,
     vergleicht die Verwendung von Funktionsnamen, \textit{Code Llama} 
-    Erklärungen und \textit{Code2Vec} miteinander.
+    Erklärungen und  \textit{Code2Vec}  miteinander.
   \item Eine Formel, die die Verwendung von Funktionsnamen, \textit{Code Llama}
-    Erklärungen und \textit{Code2Vec} vergleicht.
+    Erklärungen und  \textit{Code2Vec}  vergleicht.
 \end{itemize}
 \pagebreak
 \subsection{Aufbau der Arbeit}
 Kapitel 2 führt anfangs grundlegende Konzepte und Begriffe des maschinellen 
 Lernens ein. Anschließend werden semantische Vektorräume in Bezug auf 
 natürliche Sprache erläutert und die größten Fortschritte der letzten Jahre 
-beschrieben. Am Ende werden noch \textit{Code Llama}, \textit{Code2Vec} und 
+beschrieben. Am Ende werden noch \textit{Code Llama},  \textit{Code2Vec}  und 
 \textit{t-SNE} vorgestellt, welche eine wichtige Rolle in dieser Arbeit spielen.\\
 
 Die allgemeine Architektur des Tools und dessen Designentscheidungen werden im Kapitel 3
@@ -195,7 +195,7 @@ Stabilität des \textit{SentenceTransformers} erläutert.\\
 Kapitel 4, 5, 6 und 7 befassen sich mit den verschiedenen Methoden, Embeddings
 zu erzeugen. Also wie aus den Quellcodeinformationen über Funktionsnamen und
 -kommentare ein Vektor erstellt werden kann. Außerdem wird erläutert, wie mit
-\textit{Code Llama} und \textit{Code2Vec} Vektoren produziert werden können.\\
+\textit{Code Llama} und  \textit{Code2Vec}  Vektoren produziert werden können.\\
 
 Die Ergebnisse werden in einer qualitativen und quantitativen Auswertung in 
 Kapitel 8 vorgestellt. Zuerst wird durch eine Experten-Evaluierung die beste
@@ -960,7 +960,7 @@ abschneidet. Multilingual bedeutet die Verwendung mehrerer
 Programmiersprachen. Diese Eigenschaften machen es sehr geeignet
 für diese Arbeit.
 \subsection{Code2Vec}
-\textit{Code2Vec} ist eine im Jahre 2018 von Alon et al. 
+ \textit{Code2Vec}  ist eine im Jahre 2018 von Alon et al. 
 entwickelte Modellarchitektur, die Quellcode in einen semantischen 
 Vektor kodiert
 \cite{alon2018code2veclearningdistributedrepresentations}.
@@ -968,7 +968,7 @@ Nach den Erfolgen in NLP, natürliche Sprache
 in semantische Vektoren zu kodieren, entstand der Wunsch, auch 
 Quellcode in semantischen Vektoren abzubilden. Mit diesen Vektoren 
 können dann wieder viele verschiedene Aufgaben gelöst werden.
-Das motivierende Beispiel im Code2Vec Paper ist die Vorhersage 
+Das motivierende Beispiel im \textit{Code2Vec} Paper ist die Vorhersage 
 eines sinnvollen Namens für eine Funktion. Die Architektur, welche 
 in Abbildung 2.10 dargestellt ist, wird im Folgenden erläutert. 
 \begin{figure}[H]
@@ -976,7 +976,7 @@ in Abbildung 2.10 dargestellt ist, wird im Folgenden erläutert.
     \includegraphics[scale=0.3]{abb/code2vec.png}
   \end{center}
   \caption{
-    Code2Vec Architektur entnommen aus dem Code2Vec Paper
+    \textit{Code2Vec} Architektur entnommen aus dem Paper
     \cite{alon2018code2veclearningdistributedrepresentations}
   }
 \end{figure}
@@ -1005,18 +1005,22 @@ im Trainingssatz enthalten ist.\\
 Die Trainingsart ist demnach überwachtes Lernen, was eine Aufbereitung der
 Daten benötigt. Das Modell kann lediglich die Labels vorhersagen, die es 
 vorher im Training gesehen hat.
-\subsection{t-SNE}
-{\bf t}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding
-({\bf t-SNE}) ist ein Algorithmus, welcher zum Visualisieren von
-hochdimensionalen Daten eingesetzt wird. Um das zu ermöglichen,
-reduziert t-SNE die Dimension von $n \in \mathbb{N}$ zu einer niedrigeren 
+
+\pagebreak
+
+\subsection{ T-Distributed Stochastic Nieigbor Embedding}
+{\bf T}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding
+({\bf  t-SNE}) ist ein Algorithmus, welcher zum Visualisieren von
+hochdimensionalen Daten eingesetzt wird
+\cite{JMLR:v9:vandermaaten08a}. Um das zu ermöglichen,
+reduziert  \textit{t-SNE} die Dimension von $n \in \mathbb{N}$ zu einer niedrigeren 
 Dimension wie zwei oder drei, in der der Mensch die Datenpunkte leicht 
 interpretieren kann. Dabei versucht der Algorithmus, die
 Nachbarschaftsverhältnisse der Datenpunkte nicht in Mitleidenschaft zu 
 ziehen.\\
 
 Im Folgenden wird der Algorithmus skizziert und danach wird aufgezeigt,
-was bei der effektiven Verwendung von t-SNE zu beachten ist. Die
+was bei der effektiven Verwendung von  \textit{t-SNE} zu beachten ist. Die
 hochdimensionalen Datenpunkte werden mit $\mathbf{H}$ und die niedrig 
 dimensionalen Datenpunkte mit $\mathbf{N}$ bezeichnet. Der erste Schritt 
 des Algorithmus ist es, jedem Datenpunktpaar im Datensatz $\mathbf{H}$
@@ -1036,38 +1040,55 @@ mal wiederholt, wobei $T$ ein Parameter ist, der wählbar ist.
     die Richtung, die den Unterschied der Ähnlichkeitsscores von $\mathbf{H}$
     und $\mathbf{N}$ minimiert.
 \end{enumerate}
-Nach $T$ wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und $\mathbf{H}$
-nahe bei einander, d.h. die Nachbarschaftsverhältniss von $\mathbf{N}$ und 
-$\mathbf{H}$ sind nun ähnlich.\\
-Mitarbeiter von Google haben untersucht, wie man t-SNE sinvoll anwendet und
-welche schlüsse man aus der visualisierung ziehen kann. Sie fanden heraus,
-dass die wahl der Parameter für das Ergebnis eine wichtige Rolle spielen.
-Die wichtigsten Parameter sind die Iterationen $T\in \mathbb{N}$ und die
-Perplexity $P \in \mathbb{N}$. Die {\bf Perplexity} kann intuitiv als schätzung 
-für die Anzahl an nahen Nachbarn die jeder Datenpunt hat gesehen werden.
+Nach $T$ Wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und 
+$\mathbf{H}$ nahe bei einander, d.h. die Nachbarschaftsverhältnisse 
+von $\mathbf{N}$ und $\mathbf{H}$ sind nun ähnlich.\\
+
+Wattenberg et al. haben untersucht, wie man  \textit{t-SNE} sinnvoll
+anwendet und welche Schlüsse man aus der Visualisierung 
+ziehen kann \cite{wattenberg2016how}. 
+Sie fanden heraus, dass die Wahl der Parameter 
+für das Ergebnis eine wichtige Rolle spielt. Die wichtigsten 
+Parameter sind die Iterationen $T\in \mathbb{N}$ und die Perplexity 
+$P \in \mathbb{N}$.\\ 
+
 Eine geignete Iteration $T$ kann relative einfach durch ausprobieren 
-herausgefunden werden: Falls sich die Datenwolke bei erhöhung von $T$
-nicht mehr wirklich verändert, ist die Anzahl der Iteration $T$ gefunden
-worden. Eine geeignete Perplexity zu finden ist schwieriger, da wir die
-hochdimensionalen Nachbarschaftsbeziehungen meistens nicht kennen. Die Autoren
-des t-SNE Paper empfehlen eine Perplexity $P \in \{5,6, \dots, 50\}$. Außerhalb
-dieses Bereiches können verschieden ungewollte Phänomene auftreten. Bei $P=2$
-haben die Google Mitarbeiter herausgefunden das t-SNE bei einer zufällig generierten
-Datenwolke, fälschlicher weise kleine Gruppierungen (Cluster) bildet. Falls
-$P$ größer ist als die Anzahl der Datenpunkte, ist das Ergebnis überhaupt nicht
-interpretierbar. Es ist also immer Sinvoll, mehere Werte für $P$ aus zuprobieren,
-um sicher zu gehen das t-SNE keine falschen Nachbarschaftsbeziehungen darstellt.
-Die Mitarbeiter von Google fanden ausßerdem heraus, dass sowie die Information 
-der Breite eines Clusters, als auch der Abstände von einen Cluster zu einen anderen 
-durch t-SNE komplett verloren gehen. Es kann also nach betrachten der
-t-SNE Ausgabe keine Aussage über den Durchmesser eines Clusters, die Position
-des Cluster und die Lagebeziehungen zwischen Clustern getroffen werden. \\
-Der t-SNE Algorithums ist ein wichtiges Tool um qualitative Aussagen über 
-Daten zu treffen. Allerdings sollten immer mehrere Parameter ausprobiert werden.
-Es kann nur eine Aussage über die existenz von Cluster getroffen werden und 
-nicht über ihre geometrischen gegebenheiten. Wenn diese Rahmenbedingungen 
-beachtet werden ist t-SNE ein sehr mächtiges visualisierung Tool um eine 
-intuition von der Anordnung der Datenpunkte zu erhalten.
+herausgefunden werden: Falls sich die Datenwolke bei erhöhung
+von $T$ nicht mehr wirklich verändert, ist die Anzahl der Iteration
+$T$ gefunden. \\
+
+Die Perplexity kann intuitiv als Schätzung für die Anzahl an nahen 
+Nachbarn, die jeder Datenpunkt hat, gesehen werden.
+Die Suche nach einer geeigneten Perplexity ist schwieriger, 
+da wir die hochdimensionalen Nachbarschaftsbeziehungen häufig 
+nicht kennen. Van der Maaten et al., welche  \textit{t-SNE} entwickelt haben,
+empfehlen eine Perplexity $P \in \{5,6, \dots, 50\}$ 
+\cite{JMLR:v9:vandermaaten08a}.
+Außerhalb dieses Bereichs kann es zu unerwünschten Ereignissen 
+kommen. Bei $P=2$ haben Wattenberg et al. herausgefunden, 
+dass  \textit{t-SNE} bei einer zufällig generierten Datenwolke 
+fälschlicherweise kleine Gruppierungen (engl. cluster) bildet. 
+Falls $P$ größer ist als die Anzahl der Datenpunkte, ist das
+Ergebnis überhaupt nicht interpretierbar. Es ist daher ratsam,
+mehrere Werte für $P$ zu verwenden, um sicherzustellen, 
+dass  \textit{t-SNE} keine falschen Nachbarschaftsbeziehungen darstellt.\\
+
+Wattenberg und Kollegen stellten außerdem fest, dass sowohl die 
+Information des Durchmessers eines Clusters als auch die Abstände 
+zwischen einem Cluster und einem anderen durch  \textit{t-SNE} vollständig 
+verloren gehen. Nach Betrachtung der  \textit{t-SNE} Ausgabe kann daher 
+keine Aussage über den Durchmesser eines Clusters, die Position 
+des Clusters und die Lagebeziehungen zwischen Clustern getroffen 
+werden. \\
+
+Der  \textit{t-SNE} Algorithmus ist ein wichtiges Tool, um qualitative 
+Aussagen über Daten zu treffen. Es ist jedoch wichtig, mehrere 
+Parameter auszuprobieren. Es kann nur eine Aussage über die 
+Existenz von Clustern gemacht werden, nicht über ihre geometrischen 
+Gegebenheiten. Wenn diese Bedingungen beachtet werden, kann  \textit{t-SNE}
+ein mächtiges Visualisierungstool sein, um eine Intuition für die
+Anordnung der Datenpunkte zu erlangen.
+
 % effective use paper: 
 % https://distill.pub/2016/misread-tsne/?_ga=2.135835192.888864733.1531353600-1779571267.1531353600
 %pgf plots
@@ -1078,115 +1099,135 @@ intuition von der Anordnung der Datenpunkte zu erhalten.
 %  Clap
 \section{Methodik}
 \subsection{Datensatz}
-Im Maschinellen lernen hat der Datensatz bzw. die Trainingsdaten den
-größten Einfluss auf die güte des Modells. Wir haben die 
-Open Source Standard C Bibliothek von GNU ausgewählt.
-Die Sprache C wurde gewählt, da sie die weit verbreiteste zu 
-maschienen Code kompellierbare Sprache ist. Die GNU Bibliothek 
-wurde zum einen ausgewählt, da
-die Qualität des Quellcodes hoch ist, das liegt daran das das Projekt 
-seit 1987 existiert 
-und die große Community jederzeit auf Fehler im Quellcode aufmerksam
-machen kann. Zum anderen wird die Bibliothek weitgehend in vielen
-Applikationen eingesetzt. Der wohl wichtigste Punkt ist, dass
-man mit diesen Datensatz die Ergebnisse gut vergleichen kann, denn
-die C Bibliothek ist im posix standard festgelet und wurde mehrmals
-unterschiedlich implementiert, dadurch erhält man mehrer hoch Qualitative
-Quellcode Projekten, die die selbe Semantik aufweisen. Damit kann dann 
-bspw. die Binary Code Similarity Detection Aufgabe durchgeführt werden.\\
-Die {\bf Binary Code Similarity Detetection} (BCSD) gibt an wie 
-unterschiedlich zwei  in Assebler vorliegende Funktionen sind.
-Da unterschiedliche implementierungen zu unterschiedlichen 
-Assembler Code kompelliert werden, kann mit unterschiedlichen
-Standard-C-Bibliotheken die den POSIX Standard implementieren,
-getestet werden, ob das finale Modelle beide implementerungen 
+Im maschinellen Lernen hat der Datensatz bzw. die Trainingsdaten
+den größten Einfluss auf die Güte des Modells. Wir haben uns 
+für die Open Source Standard C Bibliothek von GNU entschieden. 
+Die Sprache C wurde gewählt, da sie die zweitpopulärste Sprache 
+nach C++ ist, die zu Maschinencode kompilierbar ist.
+Die GNU-Bibliothek wurde aufgrund der hohen Qualität des 
+Quellcodes ausgewählt, da das Projekt seit 1987 existiert 
+und die Community jederzeit auf Fehler im Quellcode hinweisen kann.
+Zum anderen wird die Bibliothek weitgehend in vielen Applikationen 
+eingesetzt.\\
+
+Der wichtigste Aspekt ist, dass man mit diesem Datensatz 
+die Ergebnisse des trainierten Modells vergleichen kann, da die 
+C-Bibliothek im POSIX Standard festgelegt ist und mehrfach 
+implementiert wurde. Dadurch erhält man mehrere hochqualitative 
+Quellcodeprojekte, die die gleiche Semantik aufweisen. Die 
+unterschiedlichen Implementierungen werden zu unterschiedlichem 
+Assemblercode kompiliert. Deswegen kann mit unterschiedlichen 
+Standard-C-Bibliotheken, die den POSIX Standard implementieren,
+getestet werden, ob das finale Modell beide Implementierungen 
 als sehr ähnlich klassifiziert.
 
 % Warum ist die Auswahl des Datensatzes wichtig
 % Warum Glibc? 
 % Gleicher Standard mit gleicher Semantik unterschiedlich Implementierung
+
+\pagebreak
+
 \subsection{Datenpipeline}
-Die große praktische Arbeit der Bachelorarbeit war es, eine große Menge
-von Daten in verschiedensten Darstellungen immer wieder umzuwandeln. Dabei 
-wurde jeder Zwischenschritt gespeichert, damit nicht jede Darstellung immer
-wieder generiert werden muss. Im folgenden wird die generelle Architektur 
-wie Daten verabeitet werden vorgestellt (engl. Pipeline), um ein Überblick
-über den praktischen Teil dieser Arbeit zu geben.
+Der große praktische Teil der Arbeit bestand darin, eine große 
+Menge an Daten in unterschiedliche Darstellungen umzuwandeln. 
+Jeder Zwischenschritt wurde gespeichert, um nicht jede Darstellung 
+erneut generieren zu müssen. Im Folgenden wird die generelle Architektur,
+wie Daten verarbeitet werden (engl. Pipeline), vorgestellt, um einen 
+Überblick über den praktischen Teil dieser Arbeit zu geben.
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.8]{abb/data-pipeline.pdf}
   \end{center}
   \caption{Datenpipeline}
 \end{figure}
-In der Abbildung 3.1 ist die Datenpipeline dargestellt, dabei sind Vierecke 
-mit runden Ecken Tools die Daten in eine andere Darstellung umwandeln und
-Vierecke mit spitzen Ecken repräsentieren Darstellungen von Daten. Die erste
-Darstellung sind die Rohdaten, das entspricht den unverarbeiteten C Quellcode
-aus der GNU Standard C Bibliothek. Nun brauche wir aber nicht alle Teile des
-Quellcode sondern nur bestimmeteile, zum Beispiel arbeiten wir nur mit Funktionen
-d.h. alle Datenstrukturen die in dem Quellcode definiert werden, wollen wir
-aus dem Quellcode entfernen. Die Zerlegung und Umwandlung des Inputs 
-in sinvolle Teile wird parsing genannt. In dieser Arbeit wurde {\bf Tree-sitter}
-als Parser verwendet, welcher alle populären Programmiersprachen in Syntaxbäume
-umwandeln kann. Ursprünglich wurde Tree-sitter für den Texteditor Atom entwickelt
-und wird heute noch in vielen Texteditoren für bspw. Syntaxhighliting verwendet.
-Generell kann Tree-sitter jedoch für alles das Quellcode verarbeiten will 
-verwendet werden. Aus dem Syntaxbaum kann dann jeglich gewünschte Information 
-entnommen werden. Diese Quellinformationen werden dann estmal zwischen gespeichert,
-damit von nun an, die verabeitung hier angesetzt werden kann. Die Quellinforamtionen
-beziehen sich immer auf eine Funktion, also ist das Format eine Tabelle die
-für jede Funktion in den Rohdaten die gewünschten Quellinforamtionen enthält.
-Danach gibt es eine Abzweigung, entweder werden die Quellinformationen Code Llama
-nochmal erklärt und dann in den SentenceTransformer gegeben oder die 
-Quellinformation wird direkt in den SentenceTransformer gegeben. Schließlich 
-erhält man wieder eine Tabelle die gespeichert wird, die für jede Funktion
-das zugewisene Semantische Embedding enthält. Bei dieser Architektur kann
-mühelos jedes Tool ausgewechselt werden solange die Ausgabeformate eingehalten
-werden.
+In der Abbildung 3.1 ist die Datenpipeline dargestellt, dabei 
+sind Vierecke mit abgerundeten Ecken Tools, die Daten in eine 
+andere Darstellung umwandeln, und Vierecke mit spitzen Ecken
+repräsentieren Darstellungen von Daten.\\
+
+Die erste Darstellung sind die Rohdaten, die dem unverarbeiteten 
+C-Quellcode aus der GNU Standard-C-Bibliothek entsprechen. 
+Wir benötigen nicht alle Teile des Quellcodes, sondern nur bestimmte.
+Wir betrachten ausschließlich nur Funktionen, d.h. wir wollen
+bspw. alle Datenstrukturen, die in dem Quellcode definiert werden,
+aus dem Quellcode entfernen. Die Zerlegung und Umwandlung des
+Inputs in sinnvolle Teile wird Parsing genannt.\\
+
+In dieser Arbeit wurde {\bf Tree-sitter} als Parser verwendet, welcher
+alle populären Programmiersprachen in Syntaxbäume umwandeln kann.
+Ursprünglich wurde \textit{Tree-sitter} für den Texteditor Atom
+entwickelt und wird heute noch in vielen Texteditoren bspw. 
+für die Hervorhebung von Syntax verwendet. Generell kann 
+\textit{Tree-sitter} jedoch
+für alle Anwendungen benutzt werden, die Informationen aus Quellcode
+verarbeiten wollen. Aus dem von \textit{Tree-sitter} generierten
+Syntaxbaum kann dann jegliche gewünschte Information entnommen 
+werden.\\
+
+Die Quellinformationen werden immer zunächst gespeichert, damit die 
+Verarbeitung beim nächsten Mal an diesem Punkt beginnen kann.
+Die Quellinformationen beziehen sich immer auf eine Funktion,
+deswegen bestehen die Daten aus einem Tupel, der aus je einer
+Funktion und den gewünschten Quellinformationen besteht. \\
+
+Danach gibt es eine Abzweigung, entweder werden die 
+Quellinformationen Code Llama nochmal erklärt und dann in den 
+SentenceTransformer gegeben oder die Quellinformation wird direkt
+in den SentenceTransformer gegeben. Schließlich erhält man wieder 
+eine Datenmenge, die aus Tupel besteht. Das Tupel besteht aus dem 
+Funktionsnamen und dem zugewiesenen semantischen Embedding. 
+Bei dieser Architektur kann mühelos jedes Tool ausgewechselt werden,
+solange die Ausgabeformate eingehalten werden. \\
 % Treesitter erklären
 % Source Code information in json datei speichern
 % Dann Source code information in Vektor umwandeln
 % Modularität -> Vorteile dieses Designs 
 \subsection{Stabilität von SentenceTransformer}
-In dem vorherigen unterkapitel haben wir gesehen das der finale schritt 
-für alle Daten der SentenceTransformer ist, deswegen ist er das Herzstück
-der Datenpipeline. In dieser Arbeit sollen verschiedene semantische 
-beschreibungen des Quellcodes in natürlicher Sprache verglichen werden.
-Um hier sinvoll zu messe, müssen ,wie bei einem physikilischen Experiment,
-alle anderen Elemente in der Datenpipeline konstante Ergebnisse liefern und 
-nicht schwanken. Aus diesen Gründen wird im folgenden Untersucht, wie stabil
-sich der SentenceTransformer bei selber Eingabe verhält. Im optimafall 
-sollte der SentenceTransfomer bei selben Input selbes Ergebnis liefern. \\
-Um das zu überprüfen wurden $n = ?$ Code-llama Quellcode Erklärungen 
-$m = ?$ mal in den Sentence Transformer eingegeben, dabei beträgt der 
-höchste Abstand von zwei Vektoren die aus der gleichen Erklärung resutliert
-sind $d = ?$. Dieser Abstand ist hinreichend gerin um ihn in der Evaluation
-zu vernachlässigen. Der Sentence Transformer ist also für die Anwendung in
-dieser Arbeit hinreichend Stabil.
+Im vorherigen Abschnitt haben wir festgestellt, dass der endgültige
+Schritt für alle Daten der SentenceTransformer ist, deshalb bildet 
+er das Herzstück der Datenpipeline. In dieser Arbeit sollen 
+verschiedene semantische Beschreibungen des Quellcodes in 
+natürlicher Sprache verglichen werden. Es ist wichtig, dass alle 
+anderen Elemente in der Datenpipeline konstante Ergebnisse 
+liefern und nicht schwanken. Aus diesem Grund wird im Folgenden 
+untersucht, wie sich der SentenceTransformer bei selber Eingaben 
+verhält. Im Optimalfall sollte der SentenceTransfomer bei 
+selbem Input dasselbe Ergebnis liefern.\\
 
-
-
-
+Um dies zu überprüfen, wurden $n = ?$ Code-llama 
+Quellcode-Erklärungen zufällig ausgewählt und anschließend in
+den SentenceTransformer $m = ?$ Mal eingegeben. Dabei beträgt
+der höchste Abstand von zwei Vektoren,
+die aus der gleichen Erklärung resultiert sind $d = ?$. Der 
+Abstand ist ausreichend klein, um ihn in der Evaluation zu 
+vernachlässigen. Der SentenceTransformer ist daher für die 
+Anwendung in dieser Arbeit ausreichend stabil.
 
 % Label Prozess sollte stabil sein bzw. deterministisch, sonst
 % kann keine aussage über die Güte der Labels getätig werden
 % Tabelle mit Ergebnissen der standardabweichungen
-
-\
+%
 \section{Funktionskommentare}
 \subsection{Motivation}
-Bevor ein Programm kompelliert wird und nur noch die nötigsten Informationen
-für den Computer bestehen bleiben, gibt es eine Menge an Informationen die 
-die Semantik der Funktion in natürlicher Sprache beschreiben. Eine offensichtliche
-Quellcodeinformation die im optimalfall die Semantik der Funktion in natürlicher
-Sprache beschreibt ist der Kommentar. Ein gelungener Kommentar für eine Funktion
-beschreibt präzise die kernfunktion der Prozedur, d.h. der Input, den Output
-und wie diese umwandlung erfolgt. Dieser könnte man dann mit dem 
-SentenceTransformer in einen Semantischen Vektoraum abbilden, was in einen
-Semantischen Quellcode Vektor resultiert.
+Bevor ein Programm kompiliert wurde, gibt es eine Menge an
+Informationen, die die Semantik der Funktion in natürlicher Sprache 
+beschreiben. Eine offensichtliche Quellcodeinformation, die im
+Optimalfall die Semantik der Funktion in natürlicher Sprache 
+beschreibt, ist der Kommentar. Ein gelungener Kommentar zu einer
+Funktion beschreibt die Kernfunktion der Prozedur, d.h. den Input,
+den Output und die Umwandlung. Dieser Kommentar kann man dann in den 
+SentenceTransformer  eingeben und  so in einen semantischen 
+Vektorraum abbilden.\\
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
 \subsection{Methodik} 
+Die Parsen der Kommentare wurden mit Tree-sitter realisiert, wie im Abschnitt zur Datenpipeline erwähnt. Dabei gab es eine große Designentscheidung zu treffen.  Welche Kommentare in einer Funktion berücksichtigt werden sollen. 
+Im Rahmen dieser Arbeit werden ausschließlich Kommentare verwendet, die direkt  über der Funktion in stehen. Da die einzeiligen Kommentare in der Funktion meistens keinen großen semantischen Wert haben, sondern auf Gefahren oder Designentscheidungen  hinweisen. (Beleg maybe: A survey on Reasearh of code comment). Hierbei muss man aufpassen, dass der Prozess des Parsen nicht zu speziell an die vorliegenden Daten angepasst wird, sonst verliert er seine Allgemeingültigkeit.
+
+
+
+
+Deswegen habe ich mich nicht auf weitere Optimierungen, die ein wenig mehr Kommentare erbringen könnten, eingelassen, sondern es bei den oben beschriebenen belassen.
 Das parsen der Kommentare wurde wie in dem Unterkapitel Datenpipeline erwähnt 
 mit Tree-sitter realisiert. Dabei gab es zwei große Designentscheidungen zu treffen.
 Zum einen welche Kommentare in einer Funktion berücksichtigt werden sollen und
@@ -1214,19 +1255,19 @@ erbrignen könnten eingelassen, sondern es bei den oben beschriebenen belassen.
 % -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
 \section{Code2Vec}
 \subsection{Motivation} 
-Das besondere an Code2Vec ist, dass es den Quellcode in eine abstrakten
-Syntaxbaum kodiert. Damit nutzt Code2Vec alle Quellcodeinformationen die
+Das besondere an \textit{Code2Vec} ist, dass es den Quellcode in eine abstrakten
+Syntaxbaum kodiert. Damit nutzt \textit{Code2Vec} alle Quellcodeinformationen die
 in dem Quellcode vorhanden sind. Danach wird das Modell darauf trainiert
 eine Eigenschaft in natürlicher Sprache über den Quellcode vorherzusagen.
 Bei dieser herangehensweise wird also kein SentenceTransformer verwendent
-sondern der Semantische Vektroraum wird durch Training des Code2Vec Modells
+sondern der Semantische Vektroraum wird durch Training des \textit{Code2Vec} Modells
 als Nebenprodukt erzeugt. Wie in den Paper wird auch hier Code2Vec
 darauf trainiert Funktionsnamen vorherzusagen. Die Implementierung des Code2Vec
 Modells wurde von den Autorn nur auf Java trainiert, deswegen gab es
-einige anpassungen nötig, um Code2Vec auf C Quellcode trainieren zu können.
-Da das Code2Vec Modell auf überwachtes Lernen basiert, muss der Datensatz 
+einige anpassungen nötig, um \textit{Code2Vec} auf C Quellcode trainieren zu können.
+Da das \textit{Code2Vec} Modell auf überwachtes Lernen basiert, muss der Datensatz 
 vor dem Training erstmal aus den ursprünlgichen Quellcode aufbereitet werden.
-% Warum könnte code2vec semantisch gute Vektoren produzieren
+% Warum könnte \textit{Code2Vec} semantisch gute Vektoren produzieren
 \subsection{Adaption auf C}
 Um das Cod2Vec Modell Trainineren zu können muss aus den rohen Quellcode einer
 Funktion jeweils ein abstrakter Syntaxbaum und den Funktionsnamen extrahiert 
@@ -1243,12 +1284,12 @@ muss. Ein Trainingsbeispiel besteht jeweils aus einen Funktionsnamen, dem
 Label und einer Liste von Kontexten, welche
 den AST repräsnetieren sollen. Ein Kontext besteht aus einen Token gefolgt von
 einer Pfadbeschreibung zu einen anderen Token, welches danach folgt.
-Dieses Code2Vec Format kann durch eine zusätzlich Option in der Konfiguration
+Dieses \textit{Code2Vec} Format kann durch eine zusätzlich Option in der Konfiguration
 des astminers generiert werden. Trotz dieser Option die mit "code2vec" betitelt
 ist, ist der Output von dem \textit{astminer} nicht direkt von Code2vec
 verwendbar. Das Tool weist nämlich jeden Token eine einzigartige Zahl zu und
 verwendet dann in Datensatz nur noch die Zahl. Dieses Format reduziert zwar
-den Speicheraufwand stark, aber es wird von Code2vec nicht als valide Eingabe
+den Speicheraufwand stark, aber es wird von \textit{Code2Vec} nicht als valide Eingabe
 akzeptiert. Demnach mussten noch die Nummern wieder zu der passenden Token
 umgewandelt werden.
 \begin{figure}[H]
@@ -1285,7 +1326,7 @@ Trainiert werden und nach Abschlusses des Trainings konnten die semantischen
 Vektoren, durch diese Anpassungen verglichen und ausgewertet werden.
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
-% code2vec erklären
+% \textit{Code2Vec} erklären
 \subsection{Training}
 Das Ziel beim Training war es die selbe Qualität wie im Paper zu erhalten.
 Also die selben Ergebnisse für Java auch für C-Quellcode zu replizieren.
@@ -1303,7 +1344,7 @@ passenden Funktionsnamen auswendig lernt, enstehen dabei Vektoren die
 gewisse Inforamtionen des Namens wiederspiegeln. Nachdem das Trainingsszeneario
 genau das selbe wie im Paper ist, wurden alle Trainingsparameter gleich gelassen.
 Die Ergebnisse nach der 84 Epoche sind: {\bf Precision: $65.6$, F1: $65.1$, 
-Recall: $64.7$}. Diese Werte sind etwas über den Werten von den Code2Vec 
+Recall: $64.7$}. Diese Werte sind etwas über den Werten von den \textit{Code2Vec} 
 Autoren, sie kamen beim Full Test Set auf : {\bf Precision: $63.1$, F1: $58.4$, 
 Recall: $54.4$}. Dabei ist hervorzuheben das unser Test und Trainings Datensatz
 der selbe ist, im gegensatz zu dem Test Datensatz von Code2Vec. Die vorgehensweise
@@ -1388,9 +1429,9 @@ dieser Arbeit hinreichend Stabil.
 % Diskussion der Ergebnisse
 % Folgerungen das CodeLlamma "gute" Embeddings produziert 
 \subsection{Qualitative Evaluierung} 
-% t-SNE Plots
+%  \textit{t-SNE} Plots
 % Vielleicht nochmal subsections mit Funktionsname, Funktionskommentare, 
-% Funktionserklärung, und Code2Vec Vektoren
+% Funktionserklärung, und \textit{Code2Vec} Vektoren
 % Probleme des jeweiligen Ansatzes mit drei Vektoren
 \subsection{Quantitative Evaluierung} 
 % Formel um zwei Embedding spaces zu vergleichen
@@ -1404,7 +1445,7 @@ dieser Arbeit hinreichend Stabil.
 % Funktionnamen -> Nicht geignet, da zu wenig informationen und abkürzungen
 % Funktionskommentare -> Je nach Projekt geignet, aber nicht allgemeingültig
 %     deswegen eher ungeignet
-% Code2Vec -> Kommt nur knapp an mit benutzuten Daten an Names ran also nicht 
+% \textit{Code2Vec} -> Kommt nur knapp an mit benutzuten Daten an Names ran also nicht 
 % geignet
 \section{Fazit}
 \section{Results: Comparing natural language supervised methods for creating Rich Binary Labels}
@@ -1412,7 +1453,7 @@ dieser Arbeit hinreichend Stabil.
   \item Stabilität von Sentence Transformer
   \item Kommentare von Funktionen um Embeddings zu generieren
   \item Funktionsnamen von Funktionen um Embeddings zu generieren
-  \item Code2Vec um Embeddings zu generieren
+  \item \textit{Code2Vec} um Embeddings zu generieren
   \item CodeLlama Erklärungen von Funktionen um Embeddings zu generieren
   \item Evaluierung durch tSNE-Plots
   \item Evaluierung durch Experten
