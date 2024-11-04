@@ -899,74 +899,97 @@ Nachdem Training bei der Inferenz wird der Vektor, nachdem pooling
 als Output-Vektor ausgeben. SBERT liefert uns also ein Tool, 
 um Sätze semantisch in einem Vektorraum abzubilden,
 welches sich in späteren Kapiteln als sehr hilfreich herausstellt.
-\subsection{Code-Llama}
-Die Code-Llama famillie an Large Language Models, wurde von Meta AI im Jahre
-2024 entwickelt. {\bf Large Language Models} sind Modelle, die auf einer
-großen Menge von Daten trainiert wurden, welche sich darin auszeichnen,
-natürliche Sprache verstehen sowie generieren zu können und deswegen in 
-der Lage sind, eine Vielzahl von Aufhaben im NLP-Bereich zu lösen.
-Meta AI Optimiert das vorangegangene Llama2 Modell, auf programmiersprachen 
-spezifischen Aufgaben. Das LLama2 Model wird um zum resultierenden Code-llama
-zu kommen, erneut auf einen neuen Datensatz trainiert. Dieser besteht aus
-drei verschieden kategorien von Daten. Der größte Teil im Datensatz mit
-$85\%$, ist der mit
-Programmiersprachen spezifischen aufgaben, indem wird das Modell darauf 
-trainiert fehlende Programmzeilen in einer vorgebenen Lücke zu füllen.
-Dabei kann es sich um Befehle, aber auch um Kommentare handeln. Der zweit 
-größte Teil im Datensatz mit $8\%$, besteht aus natürlicher Sprache in der 
-es um programmcode geht. Dieser Teil beimhaltet diskussion über Programmcode
-,sowie Fragen und Antworten welche sich auf Programmcode beziehen. Der kleinste
-Teil im Datensatz mit $7\%$ besteht aus belibiger natürlicher Sprache, damit
-das Modell seine alten fähigkeiten erhält. \\
-Das LLama2 Modell ist eine Verbesserung des Llama1 Modells. Dieses wurde auf
-neuren Daten Trainiert und verwendet einen $40\%$ größeren Datensatz.
-Deweiteren wurde die {\bf context length} verdoppelt, welche die maximale
-Anzahl der gleichzeitig zu verabeitende Token beschreibt. Außerdem gab es
-eine veränderung in der Llama1 Transformer Architektur. In den Attention 
-Modulen werden zwei Werte die normalerweise jedesmal wieder berechnet
-werden geteilt, d.h. jedes Attention Modul hat Zugriff auf die gleichen
-Werte. Das führt zu etwas schlechteren Ergebnissen, aber einer deutlichen
-Leistungs steigerung.\\
-Das Llama1 Modell wiederum besteht aus einer Decoder-Only Transformer
-Architektur. Der {\bf Decoder-Only Transformer} besteht wie der Name es schon
-vermuten lässt, nur aus Decoder Transformer Blöcken. Bei dieser Architektur
-ist der anfängliche Input des Decoders, die Einabe des Nutzers. Auf diese
-Eingabe wird dann immer wieder das neu generierte Token konkatiniert. Auf diese
-weise wird die Eingabe nicht explizit von dem bereits generierten getrennt
-sondern beides wird als bereits generierter Kontext verwendet. Das besondere
-an Llama1 ist das es nur auf frei verfügbaren Daten trainiert wurde und 
-dass das Modell Open Source ist. Der Datensatz besteht aus {\bf English 
-Common Crawl [$67\%$]}, {\bf C4 [$15\%$]}, {\bf Github [$4.5\%$]},
+\pagebreak
+\subsection{Code Llama}
+Die \textit{Code Llama} Familie an Large Language Models wurde von 
+Rozière et al. bei Meta AI im Jahre 2024 entwickelt
+\cite{rozière2024codellamaopenfoundation}.
+{\bf Large Language Models} sind Modelle, die auf
+einer großen Menge von Daten trainiert wurden, welche sich darin
+auszeichnen, natürliche Sprache verstehen sowie generieren zu
+können und deswegen in der Lage sind, eine Vielzahl von Aufgabe
+n im NLP-Bereich zu lösen.\\
+
+Meta AI optimiert das vorangegangene Llama2 Modell auf
+Programmiersprachen spezifische Aufgaben. Das LLama2 Model wird,
+um zum resultierenden Code-llama zu kommen, erneut auf einem neuen
+Datensatz trainiert. Dieser besteht aus drei verschiedenen 
+Kategorien von Daten. Der größte Teil im Datensatz, mit $85 \%$,
+ist mit Programmiersprachen spezifischen Aufgaben verbunden,
+indem das Modell darauf trainiert wird, fehlende Programmzeilen in 
+einer vergebenen Lücke zu füllen. Dabei kann es sich um Programmcode,
+aber auch um Kommentare handeln. Der zweitgrößte Teil im Datensatz,
+mit $8 \%$, besteht aus natürlicher Sprache, in der es um 
+Programmcode geht. Dieser Teil beinhaltet Diskussion über Quellcode
+sowie Fragen und Antworten, welche sich auf Quellcode beziehen. 
+Der kleinste Teil im Datensatz mit $7 \%$ besteht aus beliebiger 
+natürlicher Sprache, damit das Modell seine alten Fähigkeiten erhält. \\
+
+Das LLama2 Modell ist eine Verbesserung des Llama1 Modells.
+Dieses wurde auf neueren Daten trainiert und verwendet einen 
+$40 \%$ größeren Datensatz. Zudem wurde die maximale Anzahl 
+der gleichzeitig zu verarbeitenden Token verdoppelt. Außerdem 
+gab es eine Veränderung in der Llama1 Transformer Architektur. 
+In den Attention Modulen werden zwei Werte, die normalerweise 
+jedes Mal wieder berechnet werden, geteilt, was bedeutet, dass 
+jedes Attention Modul Zugriff auf die gleichen Werte hat.
+Dies führt zu geringfügig schlechteren Ergebnissen, jedoch zu
+einer deutlichen Leistungssteigerung.\\
+
+Das Llama1 Modell wiederum besteht aus einer Decoder-Only
+Transformer Architektur. Der {\bf Decoder-Only} Transformer
+besteht lediglich aus Decoder Transformer Blöcken,
+wie der Name bereits vermuten lässt. Bei dieser Architektur
+ist der anfängliche Input des Decoders die Eingabe des Nutzers.
+Auf diese Eingabe wird dann immer wieder das neu generierte Token
+drauf konkateniert. Auf diese Weise wird die Eingabe nicht explizit
+von dem bereits generierten getrennt, sondern beides wird als 
+gleicher Kontext verwendet.\\
+
+Das Besondere an Llama1 ist, dass es nur auf frei verfügbaren
+Daten trainiert wurde und dass das Modell Open Source ist. Der
+Datensatz besteht aus {\bf English Common Crawl [$67\%$]},
+{\bf C4 [$15\%$]}, {\bf Github [$4.5\%$]},
 {\bf Wikipedia [$4.5\%$]}, {\bf Gutenberg and Books3 [$4.5\%$]}, 
 {\bf ArXiv [$2.5\%$]}, und {\bf Stack Exchange [$2\%$]}.\\
-Code Llama ist Open-Source und schneidet unter allen öffentlich verfügbaren
-Modellen am besten in multilinugal Benchmarks ab. Mit multilingual ist hier die
-verwendung von mehreren Programmiersprachen gemeint. Diese 
-Eigenschaften machen es sehr geignet für diese Arbeit.
+
+Code Llama ist eine Open Source Software, die unter allen 
+verfügbaren Modellen am besten in multilingualen Benchmarks 
+abschneidet. Multilingual bedeutet die Verwendung mehrerer 
+Programmiersprachen. Diese Eigenschaften machen es sehr geeignet
+für diese Arbeit.
 \subsection{Code2Vec}
-Cod2Vec ist eine im Jahre 2018 entwickelte Modellarchitektur, die Quellcode in
-einen semantischen Vektor kodiert. Nach den vielen erfolgen in NLP, natürliche
-Sprache in semantische Vektoren zu kodieren, ergab sich der natürliche wunsch
-auch Quellcode in semantische Vektoren abzubilden. Mit diesen Vektoren kann
-dann wieder viele verschiedene Aufgaben gelöst werden. Das motivierende Beispiel
-im Code2Vec Paper ist dem Quellcode einer Funktion einen sinvollen Namen 
-vorherzusagen. Im folgende wird die Architektur die in Abbilding 2.10 zusehen
-ist erklärt. 
+\textit{Code2Vec} ist eine im Jahre 2018 von Alon et al. 
+entwickelte Modellarchitektur, die Quellcode in einen semantischen 
+Vektor kodiert
+\cite{alon2018code2veclearningdistributedrepresentations}.
+Nach den Erfolgen in NLP, natürliche Sprache 
+in semantische Vektoren zu kodieren, entstand der Wunsch, auch 
+Quellcode in semantischen Vektoren abzubilden. Mit diesen Vektoren 
+können dann wieder viele verschiedene Aufgaben gelöst werden.
+Das motivierende Beispiel im Code2Vec Paper ist die Vorhersage 
+eines sinnvollen Namens für eine Funktion. Die Architektur, welche 
+in Abbildung 2.10 dargestellt ist, wird im Folgenden erläutert. 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.3]{abb/code2vec.png}
   \end{center}
-  \caption{Code2Vec Architektur entnommen aus dem Code2Vec Paper}
+  \caption{
+    Code2Vec Architektur entnommen aus dem Code2Vec Paper
+    \cite{alon2018code2veclearningdistributedrepresentations}
+  }
 \end{figure}
-Die Autoren fanden heraus das eine geignete Darstellung von Quellcode
-als ein mathematisches Objekt ein abstraketer Syntaxbaum ist. Dieser erhält 
-die strukturellen zusammenhänge zwischen den Tokens und kann gut in einen
-Vektor kodiert werden. Die Inputvektoren (context vectors) bestehen jeweils aus
-einen Pfad im abstrakten Syntaxbaum, mit dem jeweilligen Starttoken und
-Endtoken des Pfades. Danach folgt ein Hidden-Layer, mit \verb|tanh| als
-Aktivierungsfunktion. Der finale Vektor (code vector) berechnet sich einfach
-als linear kombination aus den Ouputvektoren und den attention weights. Sei
-$h_1, \dots, h_n \in \mathbb{R}^d$ die Outputvektoren von dem Hidden-Layer
+Alon et al. fanden heraus, dass eine geeignete Darstellung
+von Quellcode als ein mathematisches Objekt ein abstrakter 
+Syntaxbaum ist. Dieser erhält die strukturellen Zusammenhänge
+zwischen den Tokens und kann gut in einen Vektor kodiert werden.
+Die Inputvektoren (context vectors) bestehen jeweils aus einem
+Pfad im abstrakten Syntaxbaum, mit dem jeweiligen Starttoken und
+Endtoken des Pfades. Danach folgt ein Hidden-Layer, mit \verb|tanh|
+als Aktivierungsfunktion. Der endgültige Vektor wird als lineare 
+Kombination aus den Outputvektoren und den attention weights 
+berechnet. Sei $h_1, \dots, h_n \in \mathbb{R}^d$ die Outputvektoren 
+von dem Hidden-Layer
 und $\alpha \in \mathbb{R}^n$ der attention weights Vektor.
 \[
   \verb| code vector | v = \sum_{i = 1}^n \alpha_i \cdot h_i
