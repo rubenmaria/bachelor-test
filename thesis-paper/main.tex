@@ -827,7 +827,8 @@ um das Modell für bestimmte Probleme in NLP anzupassen
 \subsubsection{Sentence Transformer}
 Das Sentence-BERT \cite{reimers2019sentencebertsentenceembeddingsusing}
 Modell ist der aktuelle Stand der Technik im semantischen Codieren von 
-natürlicher Sprache in einem Vektorraum. Die Implementierung der Autoren
+natürlicher Sprache in einem Vektorraum. Die Implementierung von 
+Reimers et al.
 ist unter dem Namen \textit{SentenceTransformer} bekannt. Die Motivation 
 hinter Sentence-BERT (SBERT) ist das effiziente semantische Vergleichen 
 von zwei Sätzen. Wenn man mit BERT herausfinden möchte, wie semantisch
@@ -1221,86 +1222,83 @@ Vektorraum abbilden.\\
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
 \subsection{Methodik} 
-Die Parsen der Kommentare wurden mit Tree-sitter realisiert, wie im Abschnitt zur Datenpipeline erwähnt. Dabei gab es eine große Designentscheidung zu treffen.  Welche Kommentare in einer Funktion berücksichtigt werden sollen. 
-Im Rahmen dieser Arbeit werden ausschließlich Kommentare verwendet, die direkt  über der Funktion in stehen. Da die einzeiligen Kommentare in der Funktion meistens keinen großen semantischen Wert haben, sondern auf Gefahren oder Designentscheidungen  hinweisen. (Beleg maybe: A survey on Reasearh of code comment). Hierbei muss man aufpassen, dass der Prozess des Parsen nicht zu speziell an die vorliegenden Daten angepasst wird, sonst verliert er seine Allgemeingültigkeit.
+Das Parsen der Kommentare wurden mit Tree-sitter realisiert,
+wie im Abschnitt zur Datenpipeline erwähnt. Dabei gab es eine große
+Designentscheidung zu treffen, welche Kommentare in einer Funktion
+berücksichtigt werden sollen.
+Im Rahmen dieser Arbeit werden ausschließlich Kommentare verwendet,
+die direkt  über der Funktion in stehen. Da die einzeiligen Kommentare
+innerhalb der Funktion meistens keinen großen semantischen Wert haben,
+sondern auf Gefahren oder Designentscheidungen  hinweisen.
+%(Beleg maybe: A survey on Reasearh of code comment). 
+Hierbei muss man aufpassen, dass der Prozess des Parsen nicht zu
+speziell an die vorliegenden Datensatz angepasst wird, sonst 
+verliert er seine Allgemeingültigkeit. 
 
-
-
-
-Deswegen habe ich mich nicht auf weitere Optimierungen, die ein wenig mehr Kommentare erbringen könnten, eingelassen, sondern es bei den oben beschriebenen belassen.
-Das parsen der Kommentare wurde wie in dem Unterkapitel Datenpipeline erwähnt 
-mit Tree-sitter realisiert. Dabei gab es zwei große Designentscheidungen zu treffen.
-Zum einen welche Kommentare in einer Funktion berücksichtigt werden sollen und
-zweitens was macht man mit Funktionen die eine leicht Variationen von einer
-anderen Funktion sind und deswegen keine Kommentare besitzten. Ein gutes Beispiel
-für das zweite Problem ist \verb|exit| und \verb|__run_exit_handlers|, wenn
-\verb|exit| aufgerufen wir, ruft diese Funktion einfach 
-\verb|__run_exit_handlers| mit speziellen Parametern auf. Dabei ist \verb|exit|
-nicht kommentiert, aber \verb|__run_exit_handlers| ist kommentiert.\\
-{\color{red} Bei der ersten Designentscheidung welche Kommentare ich berücksichtige,
-habe ich mich ausschließlich für den Kommentar direkt über der Funktion 
-entschieden, da die einzeiligen Kommentare in der Funktion meistens keinen
-großen Semantischen Wert haben, sondern auf gefahren oder Designentscheidungen
- hinweisen. (Beleg maybe: A survey on Reasearh of code comment)} Für das zweite Problem habe ich mich für folgende Lösung entschieden.
-Falls eine Funktion keinen Kommentar besitzt, dann werden die Kommentare von
-allen Funktionen die in den Funktionskörper aufgerufen werden konkatiniert und
-als eigenen Kommentar übernommen. Dardurch hat \verb|exit| dann einen Kommentar
-und zwar exakt den selben wir \verb|__run_exit_handlers|.\\
-Hierbei muss man aufpassen das der Prozess des parsens nicht zu speziell an
-den vorliegenden Daten angepasst wird, sonst verliert er seine Allgemeingültigkeit.
-Deswegen habe ich mich nicht auf weitere Optimierungen die ein wenig mehr Kommentare
-erbrignen könnten eingelassen, sondern es bei den oben beschriebenen belassen.
 % Probleme beim Parsen, wo sucht man nach Kommentaren?
 % Keine einheitliche Konvention
 % -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
 \section{Code2Vec}
 \subsection{Motivation} 
-Das besondere an \textit{Code2Vec} ist, dass es den Quellcode in eine abstrakten
-Syntaxbaum kodiert. Damit nutzt \textit{Code2Vec} alle Quellcodeinformationen die
-in dem Quellcode vorhanden sind. Danach wird das Modell darauf trainiert
-eine Eigenschaft in natürlicher Sprache über den Quellcode vorherzusagen.
-Bei dieser herangehensweise wird also kein SentenceTransformer verwendent
-sondern der Semantische Vektroraum wird durch Training des \textit{Code2Vec} Modells
-als Nebenprodukt erzeugt. Wie in den Paper wird auch hier Code2Vec
-darauf trainiert Funktionsnamen vorherzusagen. Die Implementierung des Code2Vec
-Modells wurde von den Autorn nur auf Java trainiert, deswegen gab es
-einige anpassungen nötig, um \textit{Code2Vec} auf C Quellcode trainieren zu können.
-Da das \textit{Code2Vec} Modell auf überwachtes Lernen basiert, muss der Datensatz 
-vor dem Training erstmal aus den ursprünlgichen Quellcode aufbereitet werden.
+Das Besondere an \textit{Code2Vec} ist, dass der Quellcode in einem
+abstrakten Syntaxbaum kodiert wird. Dies ermöglicht die Verwendung aller
+Quellcodeinformationen, die im Quellcode enthalten sind. Anschließend wird
+das Modell darauf trainiert, eine Eigenschaft in natürlicher Sprache
+über den Quellcode vorherzusagen.\\
+
+Bei dieser Herangehensweise, semantische Vektoren zu erzeugen, wird
+also kein \textit{SentenceTransformer}
+verwendet, sondern die Vektorraum werden durch Training des
+\textit{Code2Vec} Modells als Nebenprodukt erzeugt. Wie in dem 
+Paper wird das Modell auch hier darauf trainiert, Funktionsnamen 
+vorherzusagen. Die Implementierung des \textit{Code2Vec} Modells
+nutzte Java als Datensatz, weshalb einige Anpassungen notwendig waren,
+um das Modell auf C-Code zu trainieren.\\
+
+Da das \textit{Code2Vec} Modell auf überwachtem Lernen basiert,
+muss der Datensatz vor dem Training zunächst aus dem rohen Quellcode 
+aufbereitet werden.
 % Warum könnte \textit{Code2Vec} semantisch gute Vektoren produzieren
 \subsection{Adaption auf C}
-Um das Cod2Vec Modell Trainineren zu können muss aus den rohen Quellcode einer
-Funktion jeweils ein abstrakter Syntaxbaum und den Funktionsnamen extrahiert 
-werden. Die Autoren des Papers stellen ein Tool für Java zu verfügung, welches
-die Extrahierung von abstrakten Syntaxbäumen und Funktionsnamen aus Java Quellcode
-ermöglicht.\\
-Der \textit{astminer} von JetBrains stellt ermöglicht es aus C-Quellcode 
-abstrakte Syntaxbäume und Funktionsnamen zu extrahieren. Das
-Tool wurde von dem JetBrains Research Team entwickelt, 
-um Quellcode in abstrakte Syntaxbäume (AST) zu kodieren, 
-welche sich als Inputformat für maschinelle Lernen Modelle eignen. \\
-Das Cod2Vec Modell braucht ein bestimmtes Format indem der Datensatz vorliegen
-muss. Ein Trainingsbeispiel besteht jeweils aus einen Funktionsnamen, dem
-Label und einer Liste von Kontexten, welche
-den AST repräsnetieren sollen. Ein Kontext besteht aus einen Token gefolgt von
-einer Pfadbeschreibung zu einen anderen Token, welches danach folgt.
-Dieses \textit{Code2Vec} Format kann durch eine zusätzlich Option in der Konfiguration
-des astminers generiert werden. Trotz dieser Option die mit "code2vec" betitelt
-ist, ist der Output von dem \textit{astminer} nicht direkt von Code2vec
-verwendbar. Das Tool weist nämlich jeden Token eine einzigartige Zahl zu und
-verwendet dann in Datensatz nur noch die Zahl. Dieses Format reduziert zwar
-den Speicheraufwand stark, aber es wird von \textit{Code2Vec} nicht als valide Eingabe
-akzeptiert. Demnach mussten noch die Nummern wieder zu der passenden Token
-umgewandelt werden.
+Um das \textit{Cod2Vec} Modell zu trainieren, ist es notwendig,
+aus dem rohen Quellcode einer Funktion jeweils einen abstrakten 
+Syntaxbaum und den
+Funktionsnamen zu extrahieren. Alon et al. stellen ein Tool 
+für Java zur Verfügung, welches das Extrahieren von abstrakten 
+Syntaxbäumen und Funktionsnamen aus Java-Quellcode ermöglicht.\\
+
+Mit dem ASTminer von Kovalenko et al. können abstrakte Syntaxbäume und 
+Funktionsnamen extrahiert werden \cite{kovalenko2019pathminer}. 
+Das Tool wurde vom JetBrains Research Team entwickelt, um Quellcode
+in abstrakte Syntaxbäume (AST) zu 
+kodieren, die als Inputformat für maschinelles Lernen dienen.\\
+
+Die implementierung des \textit{Cod2Vec} Modells braucht ein bestimmtes
+Format, den der Datensatz aufweisen muss. Ein Trainingsbeispiel besteht
+jeweils aus einem 
+Funktionsnamen, dem Label und einer Liste von Kontexten, welche den AST 
+repräsentieren. Ein Kontext besteht aus einem Starttoken, einem Endtoken 
+und einer Pfadbeschreibung vom Starttoken bis zum Endtoken. \\
+
+
+Dieses \textit{Code2Vec} Format kann durch eine zusätzliche Option in der
+Konfiguration des ASTminers generiert werden. Obwohl diese Option 
+mit "code2vec" betitelt ist, ist der Output des ASTminers nicht direkt 
+von \textit{Code2vec} verwendbar. Das Tool weist nämlich jedem Token eine
+einzigartige Zahl zu und verwendet dann im Datensatz nur noch die Zahl.
+Dieses Format reduziert zwar den Speicheraufwand, aber es wird von 
+Code2Vec nicht als valide Eingabe akzeptiert. Demnach mussten noch die 
+Nummern wieder zu den passenden Token umgewandelt werden.
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.2]{abb/ast-extraction-example.drawio.png}
   \end{center}
   \caption{Extrahierung eines Kontexts}
 \end{figure}
-Da es unterschiedliche Koventionen für Funktionsnamen gibt, wie Bspw. Camelcase und
-Snakecase, normalisert der \textit{astminer} die Funktionsnamen. Dadurch sind
-die Trainingsdaten unabhängig von den spezifischen Quellcodekonventionen.
+Da es unterschiedliche Konventionen für Funktionsnamen gibt, wie z.B.
+\verb|CamelCase| und \verb|Snakecase|, normalisiert der \textit{ASTminer} 
+die Funktionsnamen. Dadurch sind die Trainingsdaten unabhängig von den
+jeweiligen Quellcodekonventionen.
 \begin{example}
   \hfill
   \begin{center}
@@ -1308,53 +1306,52 @@ die Trainingsdaten unabhängig von den spezifischen Quellcodekonventionen.
     Camelcase: \verb|funktionsName| $\to$ {\bf funktions\text{\textbar}name}
   \end{center}
 \end{example}
-Code2Vec kann nach dem Training für jede Funktion einen Hochdimensionalen
-Vektor ausgeben, der die Semantik der Funktion beschreiben soll. Damit Code2Vec
-diesen Vektor generiert, muss der abstrakte Syntaxbaum eingegeben werden. Die
-abstrakten Syntaxbäume können nur durch ihren normalisierten Namen identifiziert
-werden, da sie als Tupel in dieser Form im Datensatz vorliegen.
-Die normalisierten Namen können aber nicht mehr eindeutig dem initialen
-Namen zugeordnet werden,da bei der Normalisierung Informationen verloren
-gehen. Um jedoch Cod2Vec mit anderen Ansätzen wie Funktionskommentaren 
-vergleichen zu können, müssen die normalisierten Namen wieder zu den
-ursprünglichen Namen zurückgeführt werden. Aufgrund dessen mussten im
-Quellcode von astminer änderungen vorgenommen werden, so dass zu jeder 
-Position eines Trainingsbeispiels im Datensatz den ursprünglichen 
-Funktionsnamen zugeordnet werden konnte. \\
-Mit diesen Anpassungen die noch zusammen gefügt werden mussten konnte nun
-Trainiert werden und nach Abschlusses des Trainings konnten die semantischen
-Vektoren, durch diese Anpassungen verglichen und ausgewertet werden.
+Code2Vec kann nach dem Training für jede Funktion einen hochdimensionalen 
+Vektor ausgeben, der die Semantik der Funktion beschreiben soll.
+Um mit Code2Vec diesen Vektor generieren zu können, muss der abstrakte 
+Syntaxbaum eingegeben werden. Die abstrakten Syntaxbäume können nur durch 
+ihren normalisierten Namen identifiziert werden, da sie als Tupel in dieser 
+Form im Datensatz vorliegen. Die normalisierten Namen können nicht mehr 
+eindeutig dem initialen Funktionsnamen zugeordnet werden, da durch die 
+Normalisierung Informationen verloren gehen. Zur Vergleichbarkeit von 
+Cod2Vec mit anderen Ansätzen wie z.b. Funktionskommentaren ist es notwendig,
+die normalisierten Namen wieder zu den ursprünglichen Namen zurückzuführen.
+Aufgrund dessen mussten im Quellcode von astminer Änderungen vorgenommen 
+werden, sodass zu jeder Position eines Trainingsbeispiels im Datensatz der 
+ursprüngliche Funktionsname zugeordnet werden kann. \\
+
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % \textit{Code2Vec} erklären
 \subsection{Training}
-Das Ziel beim Training war es die selbe Qualität wie im Paper zu erhalten.
-Also die selben Ergebnisse für Java auch für C-Quellcode zu replizieren.
-Für den Anwendungszweck einen Datensatz zu erstellen der für eine Funktion
-in Assemblersprache einen semantischen Vektor als Label zuordnet, können
-bestimmte problemstellungen beim generellen trainieren von Modellen 
-ignoriert werden. Eine Problemstellung bei Modellen ist es inwiefern
-das Modell generalisiert, also wie Leistungsfähig das Modell auf
-neuen Daten im gegensatz zu den Trainingsdaten ist. Diese Problemstellung
-muss nicht beachtet werden, da das Ergebnis kein fähiges Modell ist, sondern
-semantische Vektoren. Auch der kleine Datensatz mit $n = 5155$ Datenpunkten,
-ist zwar für die Güte des Modells problematisch, jedoch nicht für die
-resultierenden semantischen Vektoren. Selbst wenn das Modell nur die 
-passenden Funktionsnamen auswendig lernt, enstehen dabei Vektoren die
-gewisse Inforamtionen des Namens wiederspiegeln. Nachdem das Trainingsszeneario
-genau das selbe wie im Paper ist, wurden alle Trainingsparameter gleich gelassen.
-Die Ergebnisse nach der 84 Epoche sind: {\bf Precision: $65.6$, F1: $65.1$, 
-Recall: $64.7$}. Diese Werte sind etwas über den Werten von den \textit{Code2Vec} 
-Autoren, sie kamen beim Full Test Set auf : {\bf Precision: $63.1$, F1: $58.4$, 
-Recall: $54.4$}. Dabei ist hervorzuheben das unser Test und Trainings Datensatz
-der selbe ist, im gegensatz zu dem Test Datensatz von Code2Vec. Die vorgehensweise
-ist normalerweise ein grober Fehler, da wir nicht die Generalisierung des 
-Modells messen. In diesem speziellen Anwedungszweck ist jedoch die Güte des
-Modell nicht von bedeutung, sondern nur die die güte der Erzeugten Vektoren.
-Diese werden von der Verwendung des gleichen Datensatzes beim Testen nicht in
-mitleidenschaft gezogen. \\
-Damit haben wir ähnliche Ergebnisse wie aus dem Paper und können diese mit
-den anderen vorgestellten Ansätzen vergleichen.
+Das Ziel beim Training war es, dieselbe Qualität wie im Paper zu erhalten. 
+Also dieselben Ergebnisse für Java auch für C-Quellcode zu replizieren.
+Für die Erstellung eines Datensatzes, der aus dem Modell resultiert, können 
+bestimmte Problemstellungen beim allgemeinen Trainieren von Modellen 
+vernachlässigt werden. Eine Problemstellung beim Trainieren von Modellen 
+ist es, inwiefern das Modell generalisiert, also wie leistungsfähig das 
+Modell auf neuen Daten im Gegensatz zu den Trainingsdaten ist.
+Die Problemstellung muss nicht berücksichtigt werden, da das Ergebnis kein 
+fähiges Modell ist, sondern semantische Vektoren für den Datensatz. 
+Auch der kleine Datensatz, mit $n = 5155 $ Datenpunkten, ist zwar für die 
+Güte des Modells problematisch, jedoch nicht für die resultierenden 
+semantischen Vektoren. Selbst wenn das Modell nur die passenden 
+Funktionsnamen auswendig lernt, entstehen dabei Vektoren, die gewisse 
+Informationen des Namens widerspiegeln. Nachdem das Trainingsszenario 
+genau dasselbe wie im Paper ist, wurden alle Trainingsparameter gleich 
+gelassen. Die Ergebnisse nach der 84 Epoche sind: 
+{\bf Precision: $65.6$, F1: $65.1$,  Recall: $64.7$}. Diese Werte sind 
+etwas über den Werten von den \textit{Code2Vec} Autoren, sie kamen beim 
+Full Test Set auf: {\bf Precision: $63.1$, F1: $58.4$,  Recall: $54.4$}. 
+Dabei ist hervorzuheben, dass unser Test- und Trainings-Datensatz derselbe ist
+und der Test-Datensatz von Code2Vec verschieden ist von dem 
+Trainings-Datensatz. Die Vorgehensweise ist normalerweise grob fahrlässig,
+da wir nicht die Generalisierung des Modells messen. In diesem speziellen 
+Anwendungszweck ist jedoch die Güte des Modells nicht von Bedeutung,
+sondern nur die Güte der erzeugten Vektoren. Diese werden von der 
+Verwendung des gleichen Datensatzes beim Testen nicht in
+Mitleidenschaft gezogen. Damit haben wir ähnliche Ergebnisse wie aus dem
+Paper und können diese mit den anderen vorgestellten Ansätzen vergleichen.
 %Parameterwahl und Ergebnisse
 % Ganzes engeneering und pain hinter code2vec
 \section{Funktionsnamen}
