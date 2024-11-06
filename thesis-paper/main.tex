@@ -685,12 +685,12 @@ durch die Modellarchitektur Transformer \cite{vaswani2023attentionneed}.
 Das Paper "Attention Is All You Need" \cite{vaswani2023attentionneed}
 ist ein Meilenstein im NLP Bereich.
 Die vorgestellte Deep Learning Architektur bildet die Basis für BERT,
-Sentence Transformer und Large Language Models (wie z.B. Chat-GPT).
+\textit{SentenceTransformer} und Large Language Models (wie z.B. Chat-GPT).
 Das Modell wurde ursprünglich entwickelt, um bei einem gegebenen Satz 
 einen sinnvollen neuen Satz zu generieren. Die donwstream task im Paper 
 ist das Übersetzen von Englisch zu Deutsch oder Französisch. 
 Der Transformer kann jedoch wieder zur Erzeugung semantischer Embeddings 
-verwendet werden, wie wir im Abschnitt zum Sentence Transformer sehen 
+verwendet werden, wie wir im Abschnitt zum \textit{SentenceTransformer} sehen 
 werden.
 \begin{figure}[H]
   \begin{center}
@@ -1173,8 +1173,8 @@ Funktion und den gewünschten Quellinformationen besteht. \\
 
 Danach gibt es eine Abzweigung, entweder werden die 
 Quellinformationen Code Llama nochmal erklärt und dann in den 
-SentenceTransformer gegeben oder die Quellinformation wird direkt
-in den SentenceTransformer gegeben. Schließlich erhält man wieder 
+\textit{SentenceTransformer} gegeben oder die Quellinformation wird direkt
+in den \textit{SentenceTransformer} gegeben. Schließlich erhält man wieder 
 eine Datenmenge, die aus Tupel besteht. Das Tupel besteht aus dem 
 Funktionsnamen und dem zugewiesenen semantischen Embedding. 
 Bei dieser Architektur kann mühelos jedes Tool ausgewechselt werden,
@@ -1185,24 +1185,26 @@ solange die Ausgabeformate eingehalten werden. \\
 % Modularität -> Vorteile dieses Designs 
 \subsection{Stabilität von SentenceTransformer}
 Im vorherigen Abschnitt haben wir festgestellt, dass der endgültige
-Schritt für alle Daten der SentenceTransformer ist, deshalb bildet 
+Schritt für alle Daten der \textit{SentenceTransformer} ist, deshalb
+bildet 
 er das Herzstück der Datenpipeline. In dieser Arbeit sollen 
 verschiedene semantische Beschreibungen des Quellcodes in 
 natürlicher Sprache verglichen werden. Es ist wichtig, dass alle 
 anderen Elemente in der Datenpipeline konstante Ergebnisse 
 liefern und nicht schwanken. Aus diesem Grund wird im Folgenden 
-untersucht, wie sich der SentenceTransformer bei selber Eingaben 
-verhält. Im Optimalfall sollte der SentenceTransfomer bei 
+untersucht, wie sich der \textit{SentenceTransformer} bei selber
+Eingaben verhält. Im Optimalfall sollte der SentenceTransfomer bei 
 selbem Input dasselbe Ergebnis liefern.\\
 
-Um dies zu überprüfen, wurden $n = ?$ Code-llama 
+Um dies zu überprüfen, wurden $n = 100$ Code llama 
 Quellcode-Erklärungen zufällig ausgewählt und anschließend in
-den SentenceTransformer $m = ?$ Mal eingegeben. Dabei beträgt
+den SentenceTransformer $m = 100$ Mal eingegeben. Dabei beträgt
 der höchste Abstand von zwei Vektoren,
-die aus der gleichen Erklärung resultiert sind $d = ?$. Der 
+die aus der gleichen Erklärung resultiert sind \\
+$d = 6.661338\cdot 10^{-16}$. Der 
 Abstand ist ausreichend klein, um ihn in der Evaluation zu 
-vernachlässigen. Der SentenceTransformer ist daher für die 
-Anwendung in dieser Arbeit ausreichend stabil.
+vernachlässigen. Der \textit{SentenceTransformer} ist daher
+für die Anwendung in dieser Arbeit ausreichend stabil.
 
 % Label Prozess sollte stabil sein bzw. deterministisch, sonst
 % kann keine aussage über die Güte der Labels getätig werden
@@ -1325,10 +1327,10 @@ ursprüngliche Funktionsname zugeordnet werden kann. \\
 % \textit{Code2Vec} erklären
 \subsection{Training}
 Das Ziel beim Training war es, dieselbe Qualität wie im Paper zu erhalten. 
-Also dieselben Ergebnisse für Java auch für C-Quellcode zu replizieren.
-Für die Erstellung eines Datensatzes, der aus dem Modell resultiert, können 
-bestimmte Problemstellungen beim allgemeinen Trainieren von Modellen 
-vernachlässigt werden. Eine Problemstellung beim Trainieren von Modellen 
+Das heißt, dieselben Ergebnisse für Java auch für C-Quellcode zu replizieren.
+Bei der Erstellung eines Datensatzes, der aus dem Modell resultiert, 
+können bestimmte Gütekriterien beim Trainieren von Modellen vernachlässigt 
+werden. Eine Problemstellung beim Trainieren von Modellen 
 ist es, inwiefern das Modell generalisiert, also wie leistungsfähig das 
 Modell auf neuen Daten im Gegensatz zu den Trainingsdaten ist.
 Die Problemstellung muss nicht berücksichtigt werden, da das Ergebnis kein 
@@ -1356,17 +1358,16 @@ Paper und können diese mit den anderen vorgestellten Ansätzen vergleichen.
 % Ganzes engeneering und pain hinter code2vec
 \section{Funktionsnamen}
 Eine andere Quellinformation, die in jedem Quellcode enthalten ist,
-sind die Funktionsnamen. 
-Funktionsnamen sollen in wenigen Wörtern den Kerninhalt der Funktion
-wiederspiegeln. %function names.pdf
-Dadurch eignen sich Funktionsnamen um die Semantik einer Funktion 
-zu beschreiben. Außerdem ist die Extrahierung der Funktionsnamen
-keine schwierige Aufgabe. Hierfür wäre Tree-sitter nicht unbedingt
-nötig, aber falls ein Datensatz für eine andere Sprache wie Rust
-erstellt werden sollte, müsste der Parser jedes mal angepasst werden.
+sind die Funktionsnamen. Funktionsnamen sollen in wenigen Wörtern 
+den Kerninhalt der Funktion widerspiegeln. Dadurch eignen sich 
+Funktionsnamen, um die Semantik einer Funktion zu beschreiben. 
+Die Extrahierung von Funktionsnamen ist keine schwierige Aufgabe.
+Hierfür wäre \textit{Tree-sitter} nicht unbedingt nötig, aber falls ein 
+Datensatz für eine andere Sprache wie Rust erstellt werden sollte,
+müsste der Parser jedes Mal angepasst werden.
 Deswegen wurde hier für die einfache Erweiterung des Programms,
-Tree-sitter verwendet. Tree-sitter bietet nämlich Parser für eine
-große Anzahl an Sprachen an.
+Tree-sitter verwendet. \textit{Tree-sitter} bietet Parser für eine Vielzahl 
+von Sprachen an.
 % Motivation warum es gute semantische Vektoren erzeugen konnte
 % Parsen
 % Eigentlich einfach aber wenn man in Zukunft 
@@ -1376,44 +1377,50 @@ große Anzahl an Sprachen an.
 % -> Treesitter
 \section{Coddelama-Erklärungen}
 \subsection{Motivation}
-Large Language Models werden immer besser Quellcode selbst zuschreiben,
-zu verstehen und zusammen zu fassen. Eine Zusammenfassung von Quellcode
-in natürlcher Sprache spiegelt die Semantik des Quellcodes wieder. So ist
-auch Code-Llama fähig Quellcode zu erklären und somit einen Text zu generieren
-der die Semantik der Funktion enthält. Dieser Ansatz verwendet wie Code2Vec
-jede Quellcodeinforamtion, da der gesamte Quellcode als Eingabe genutzt wird.
-Da wir einen Datensatz erstellen sollte der Labelgenerierugnsprozess 
-deterministisch sein, das ist Code-llama anfänglich nicht. Außerdem ist der
-Eingabetext in Code-llama, abgesehen von dem Quellcode, entscheidend für die 
-Erklärungen.
-
+Large Language Models werden immer besser, Quellcode selbst zuschreiben,
+zu verstehen und zusammenzufassen. Eine Zusammenfassung des Quellcodes
+in natürlicher Sprache spiegelt die Semantik des Quellcodes wider.
+So ist auch Code-Llama fähig, Quellcode zu erklären und somit einen 
+Text zu generieren, der die Semantik der Funktion enthält. Dieser 
+Ansatz verwendet wie Code2Vec jede Quellcodeinformation, da der 
+gesamte Quellcode als Eingabe genutzt wird.
 % Warum LLM's gute Embeddings produzieren könnten.
 % Wir erzeugen uns eine zusammenfassung vom code
 % "optimale" Kommentare
 % Was ist Codellama und warum benutzten wir es?
 \subsection{Methodik}
-Die Quellcode erklärungen werden von Code-Llama erzeugt, indem Code-Llama
-eine präzise Fragestellung und den gesamten Quellcode einer Funktion enthält.
-Die Fragestellung wurde aus dem Clap Projekt übernommen, diese haben sich
-auch damit beschäftigt, wie die Fragestellung formulliert werden muss
-um Semantik reiche und präzise Quellcodeerklärungen zu erhalten. \\
-Damit
-der Code-Llama Output deterministisch ist, muss der Temperatur Parameter
-auf Null gesetzt werden. Der Parameter ist Teil einer Zufalls komponente
-bei der Auswahl des nächstens Tokens, ist dieser auf Null wird der Token
-mit der höchsten Score gewählt, dieser bleibt bei gleicher Eingabe immer
-der selbe. Leider ist der Detminismus trotzdem nicht garantiert, wie die
-studio von ... heraus fand. Der Grund ist laut ... das bei denen vielen
-fließkomma operationen rundungsfehler enstehen. Diese Erkentnisse stammen
-aber aus einen anderen Anwendungszweck.\\
-Die Stabilität mit Temperatur Null sollte deswegen für den Anwendungszweck
-dieser Arbeit getestet werden.
-Um das zu überprüfen wurden von $n = ?$ Funktionen der Quellcode mit Fragestellung
-$m = ?$ mal in Code-Llama eingegeben, bei den resultierenden Vektoren beträgt der 
-höchste Abstand von zwei Vektoren die aus der gleichen Quellcode resutliert
-sind $d = ?$. Dieser Abstand ist wieder hinreichend gering um ihn in der Evaluation
-zu vernachlässigen. Das Code-llama LLM ist also für die Anwendung in
-dieser Arbeit hinreichend Stabil.
+Code-Llama generiert Quellcodeerklärungen, indem Code-Llama eine präzise 
+Fragestellung und den gesamten Quellcode einer Funktion erhält.
+Die Fragestellung wurde aus der Implementierung von \textit{Clap} 
+\cite{wang2024claplearningtransferablebinary} übernommen,
+diese haben sich auch damit beschäftigt, wie die Fragestellung formuliert
+werden muss, um semantikreiche und präzise Quellcodeerklärungen zu 
+erhalten.\\
+
+Damit der Code-Llama Output deterministisch ist,
+muss der Temperaturparameter auf null gesetzt werden. 
+Der Parameter ist Teil einer Zufallskomponente bei der
+Auswahl des nächsten Tokens, ist dieser auf null,
+wird der Token mit dem höchsten Score gewählt, dieser 
+bleibt bei gleicher Eingabe immer derselbe. Leider ist der
+Determinismus trotzdem nicht garantiert, 
+wie die Studie von Astekin et al. heraus fand
+\cite{Ma_2024}. Laut Astekin et al. ist der Grund dafür, dass
+bei den vielen Fließkommaoperationen, die für die Berechnung
+eines Code Llama Outputs erforderlich sind,
+Rundungsfehler entstehen. Diese Erkenntnisse stammen aber 
+aus einem anderen Anwendungszweck.\\
+
+Die Stabilität mit Temperatur Null sollte daher für den
+Anwendungszweck dieser Arbeit getestet werden. Um das zu
+überprüfen, wurden von $n = ?$ Funktionen der Quellcode mit 
+Fragestellung $m = ?$ mal in Code Llama eingegeben, bei den 
+resultierenden Vektoren beträgt der höchste Abstand von zwei 
+Vektoren, die aus dem gleichen Quellcode resultiert sind, $d = ?$.
+Dieser Abstand ist ausreichend gering, um ihn in der Evaluation 
+zu vernachlässigen. Das Code Llama LLM ist also für die Anwendung 
+in dieser Arbeit ausreichend stabil.
+
 % Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
 % Ergebnisse der Standardabweichung mit Temperatur 0

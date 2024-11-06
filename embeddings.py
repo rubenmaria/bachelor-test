@@ -139,6 +139,27 @@ def calculate_standard_deviation_llm(
     dump_standard_deviation(dev, output_dir, output_name)
     dump_mean(mean, output_dir, output_name)
 
+def calculate_max_standard_deviation_llm(
+    model_name: str,
+    output_dir: str,
+    output_name: str,
+    functions_path: str,
+    text_count: int,
+    n: int
+) -> None: 
+    generate_summaries_n(
+        model_name,
+        output_dir,
+        output_name,
+        functions_path,
+        text_count,
+        n
+    )
+    embed_summaries_n(output_dir, output_name, n)
+    max = get_max_deviation_from_embeddings_n(output_dir, output_name, n)
+    dump_max_deviation(max, output_dir, output_name)
+
+
 def generate_summaries_n(
     model_name: str,
     output_dir: str,
@@ -192,11 +213,11 @@ def calculate_max_deviation_sentence_transfomer(
     output_name: str,
     text_data_path: str,
     text_count: int,
-    n: int
+    m: int
 ) -> None:
     text_sample = dict(sample(list(load_text_data(text_data_path).items()), text_count))
-    generate_high_dimensional_n(output_dir, output_name, text_sample, n)
-    max_deviation = get_max_deviation_from_embeddings_n(output_dir, output_name, n)
+    generate_high_dimensional_n(output_dir, output_name, text_sample, m)
+    max_deviation = get_max_deviation_from_embeddings_n(output_dir, output_name, m)
     dump_max_deviation(max_deviation, output_dir, output_name)
 
 
@@ -264,7 +285,7 @@ def get_max_deviation_from_embeddings_n(
     n: int
 ) -> float:
     embeddings = load_embeddings_n(input_dir, input_name, n)
-    distances = get_pairwise_distance_n(embeddings)
+    distances = get_pairwise_distance_same_text_n(embeddings)
     max_deviation = get_max_deviation(distances)
     return max_deviation
 
@@ -293,6 +314,7 @@ def get_pairwise_distance_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
 def get_pairwise_distance_same_text_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
     # Currently calculating distance in one file 
     # should calculate distance over one text in diffrent files
+    embeddings = [[row[i] for row in embeddings] for i in range(len(embeddings[0]))]
     distance_vectors: list[NDArray] = []
     for vectors in embeddings:
         distances = cosine_distances(vectors)
