@@ -48,27 +48,27 @@
 \begin{center}
 \begin{large}
 \begin{Large}
-Bachelorarbeit\\
+Bachelorarbeit
 \end{Large}
-im Studiengang 'Informatik plus Mathematik' \\
+im Studiengang 'Informatik plus Mathematik' 
 \end{large}
 \end{center}
 \vspace{1cm}
 \begin{center}
 \begin{large}
-Betreuer: Prof. Dr. Johannes Kinder\\
+Betreuer: Prof. Dr. Johannes Kinder
 \end{large}
 \end{center}
 \begin{center}
 \begin{large}
-Mentor: Moritz Dannehl, M.Sc.\\
+Mentor: Moritz Dannehl, M.Sc.
 \end{large}
 \end{center}
 
 
 \begin{center}
 \begin{large}
-Ablieferungstermin: \date{\today} \\
+Ablieferungstermin: \date{\today} 
 \end{large}
 \end{center}
 
@@ -97,7 +97,7 @@ Anwendungsbereichen zu trainieren, wie beispielsweise.
 Zu den bekanntesten Modellen, die natürliche Sprache in Vektoren abbilden, gehören 
 \textit{Word2Vec} \cite{mikolov2013efficientestimationwordrepresentations},
 \textit{WordPiece} \cite{wu2016googlesneuralmachinetranslation} und
-\textit{SentenceTransformer} \cite{reimers2019sentencebertsentenceembeddingsusing}.\\
+\textit{SentenceTransformer} \cite{reimers2019sentencebertsentenceembeddingsusing}.
 
 Diese Fortschritte dienen als Motivation, auch Assembler Quellcode auf einen 
 Vektor abzubilden, der die Semantik des Quellcodes codiert. Die resultierenden
@@ -109,19 +109,19 @@ diverse Anwendungen zu trainieren, wie beispielsweise
 \textit{binary code search} \cite{9345532},
 Reverse Engineering \cite{lacomis2019direneuralapproachdecompiled},
 oder das Klassifizieren von 
-Malware in der Maschinensprache\cite{raff2017malwaredetectioneatingexe}.\\
+Malware in der Maschinensprache\cite{raff2017malwaredetectioneatingexe}.
 
 Um ein Modell mittels überwachtes Lernen zu trainieren, das Assemblercode in 
 semantische Vektoren abbildet, ist für jede Assembler-Funktion ein Vektor 
 erforderlich, der die Semantik der Funktion codiert. Der Datensatz kann durch 
 Kompilieren des Quellcodes von höheren Programmiersprachen generiert 
-werden.\\
+werden.
 
-\textit{Ziel}: Das Ziel dieser Arbeit ist es, verschiedene Methoden zu vergleichen
+Das Ziel dieser Arbeit ist es, verschiedene Methoden zu vergleichen
 aus C Quellcode Vektoren zu generieren, die die Semantik von dem ursprünglichen
-Quellcode codieren, mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung.\\
+Quellcode codieren, mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung.
 
-\textit{Motviation}: Der Prozess des Kompilierens reduziert Funktionen
+Der Prozess des Kompilierens reduziert Funktionen
 auf die für den Computer wesentlichsten Bausteine, dabei gehen viele 
 Informationen verloren, wie Funktionsnamen, Variablennamen und Kommentare. 
 Diese Informationen sind von großer Bedeutung und geben Aufschluss über 
@@ -140,7 +140,7 @@ Paper \cite{wang2024claplearningtransferablebinary}
 setze Anfang 2024 einen neuen Stand der Technik, mithilfe von natürlicher
 Sprachverarbeitung, in \textit{binary code simillarity detection}. Die Aufgabe 
 besteht dabei darin, die semantische Ähnlichkeit zwischen zwei gegebenen 
-Assemblercodes zu bestimmen.\\
+Assemblercodes zu bestimmen.
 
 Das Clap-Modell ist aus zwei Teilen zusammengesetzt: einem Assembler-Encoder 
 und einem Text-Encoder. Der Assembler-Encoder, der aus Assemblercode 
@@ -151,7 +151,7 @@ konvertieren. Wang et. al starten dabei mit einem Modell aus der natürlichen
 Sprachverarbeitung namens \textit{SentenceTransformer} und trainieren dieses
 darauf, Assemblercode die passende Quellcodeerklärung  zuzuordnen. Dabei 
 erhalten sie die Quellcodeerklärungen durch ein Large  Language Model, wie
-beispielsweise Chat-GPT.\\
+beispielsweise Chat-GPT.
 
 Das {\bf JTrans}-Modell \cite{wang2022jtransjumpawaretransformerbinary}
 baut auf einer Modellarchitektur aus der natürlichen 
@@ -166,18 +166,18 @@ Stand der Technik in \textit{binary code similarity detection}.
 \subsection{Leistungen der Arbeit}
 Die hauptsächlichen Leistungen dieser Arbeit sind:
 \begin{itemize}
-  \item Ein Tool, das einen Datensatz mit Assemblercode und semantischen 
+  \item ein Tool, das einen Datensatz mit Assemblercode und semantischen 
     Vektoren aus C-Quellcode und dem dazugehörigen Assemblercode generiert.
-  \item Eine qualitative Analyse durch 
+  \item eine qualitative Analyse durch 
     \textit{t-SNE} \cite{JMLR:v9:vandermaaten08a}, die die Verwendung von 
     Funktionskommentaren, Funktionsnamen, 
     \textit{Code Llama} \cite{rozière2024codellamaopenfoundation} Erklärungen
     und  \textit{Code2Vec}  \cite{alon2018code2veclearningdistributedrepresentations}
     untersucht.
-  \item Eine quantitative Auswertung, die durch Befragung von Experten erfolgt,
+  \item eine quantitative Auswertung, die durch Befragung von Experten erfolgt,
     vergleicht die Verwendung von Funktionsnamen, \textit{Code Llama} 
     Erklärungen und  \textit{Code2Vec}  miteinander.
-  \item Eine Formel, die die Verwendung von Funktionsnamen, \textit{Code Llama}
+  \item eine Formel, die die Verwendung von Funktionsnamen, \textit{Code Llama}
     Erklärungen und  \textit{Code2Vec}  vergleicht.
 \end{itemize}
 \pagebreak
@@ -186,24 +186,24 @@ Kapitel 2 führt anfangs grundlegende Konzepte und Begriffe des maschinellen
 Lernens ein. Anschließend werden semantische Vektorräume in Bezug auf 
 natürliche Sprache erläutert und die größten Fortschritte der letzten Jahre 
 beschrieben. Am Ende werden noch \textit{Code Llama},  \textit{Code2Vec}  und 
-\textit{t-SNE} vorgestellt, welche eine wichtige Rolle in dieser Arbeit spielen.\\
+\textit{t-SNE} vorgestellt, welche eine wichtige Rolle in dieser Arbeit spielen.
 
 Die allgemeine Architektur des Tools und dessen Designentscheidungen werden im Kapitel 3
 beschrieben. Es werden die Auswahl des C-Quellcodes, die Datenpipeline und die 
-Stabilität des \textit{SentenceTransformers} erläutert.\\
+Stabilität des \textit{SentenceTransformers} erläutert.
 
 Kapitel 4, 5, 6 und 7 befassen sich mit den verschiedenen Methoden, Embeddings
 zu erzeugen. Also wie aus den Quellcodeinformationen über Funktionsnamen und
 -kommentare ein Vektor erstellt werden kann. Außerdem wird erläutert, wie mit
-\textit{Code Llama} und  \textit{Code2Vec}  Vektoren produziert werden können.\\
+\textit{Code Llama} und  \textit{Code2Vec}  Vektoren produziert werden können.
 
 Die Ergebnisse werden in einer qualitativen und quantitativen Auswertung in 
 Kapitel 8 vorgestellt. Zuerst wird durch eine Experten-Evaluierung die beste
 Methode identifiziert. Anhand dieser Einordnung wird überprüft, ob die Formel
-und Analyse durch \textit{t-SNE} ein ähnliches Ergebnis aufweisen.\\
+und Analyse durch \textit{t-SNE} ein ähnliches Ergebnis aufweisen.
 
 Die Ergebnisse werden im Kapitel 9 reflektiert, eingeordnet und diskutiert. 
-Es werden die Stärken und Schwächen jeder Methode dargestellt und diskutiert.\\
+Es werden die Stärken und Schwächen jeder Methode dargestellt und diskutiert.
 
 Im letzten Kapitel wird die gesamte Arbeit reflektiert und anschließend ein 
 Ausblick gegeben, um weitere Anregungen für die weitere Arbeit in diesem Thema
@@ -211,7 +211,7 @@ zu geben.
 
 \pagebreak
 \section{Grundlagen und Termini}
-\subsection{Maschienelles Lernen}
+\subsection{Maschinelles Lernen}
 Heutzutage ist maschinelles Lernen weitverbreitet und wird in nahezu jedem
 Bereich der Informatik verwendet.  Maschinelles Lernen wird überall dort 
 eingesetzt, wo eine analytische Lösung eines Problems zu aufwendig oder gar 
@@ -228,7 +228,7 @@ das mit maschinellem Lernen gelöst wird, wie folgt definiert werden:
 \begin{definition}
   Sei $X$ eine beliebige Input Menge, $Y$ eine beliebige Output Menge,
   $f \in \{X \to Y\}$ die gesuchte Lösung des Problems, 
-  $\mathbb{D}$ eine beliebige Menge aus gegebenen Datenpunkten,\\
+  $\mathbb{D}$ eine beliebige Menge aus gegebenen Datenpunkten,
   $H_1 \subset \{X \to Y\}$ ein Hypothesenraum, und 
   $A_1: \mathcal{P}(\{X \to Y\}) \times 
   \mathcal{P}(\mathbb{D}) \to \{ X \to Y \} $
@@ -266,7 +266,7 @@ fehlerhafte Approximation erzeugen.
        decoration={snake,amplitude=.4mm,segment length=2mm,post length=1mm}]
       (F) -- (D);
     \end{tikzpicture}
-    \caption{Grundlegendes maschinelles Lernen Problem}
+    \caption{Herangehensweise um mit maschinellen Lernen ein Problem zu lösen}
   \end{center}
 \end{figure}
 \pagebreak
@@ -276,7 +276,7 @@ $f: X \to Y$ stehen. Beispielsweise können die Datenpunkte einfach nur aus den
 Eingabewerten bestehen: $\mathbb{D} = \{x_1,x_2,x_2, \dots, x_n\} \subset X$.
 Die Struktur des Datensatzes kann sehr unterschiedlich sein, das hängt auch mit 
 unterschiedlichen Lernmethoden zusammen.
-\subsubsection{Deep-Learning}
+\subsubsection{Deep Learning}
 Vor der Betrachtung der Lernmethoden wird kurz auf Deep Learning eingegangen.
 Deep Learning ist ein neuronales Netzwerk, das über mehrere Layer zwischen
 Input und Output Layer verfügt. 
@@ -304,8 +304,8 @@ der LMU München:
   Sei $x \in \mathbb{R}^{r_l}$, dann setze
   \[
     F_l(x) := \begin{pmatrix} 
-        f_1(x_1) \\
-        \vdots\\
+        f_1(x_1) 
+        \vdots
         f_{r_l}(x_{r_l})
     \end{pmatrix}.
   \]
@@ -321,8 +321,8 @@ der LMU München:
   \[
     h_l(x) = 
       \begin{cases}
-        h_{l+1}(F_{l+1}(W_lx + B_{l+1}))& ,  \text{if } l < n \\ 
-        x & , \text{sonst}\\
+        h_{l+1}(F_{l+1}(W_lx + B_{l+1}))& ,  \text{if } l < n  \\
+        x & , \text{sonst}
       \end{cases}.
   \]
   Wir bezeichnen $L_1$ als Input-Layer, $L_n$ als Output-Layer und
@@ -344,18 +344,18 @@ wird aber anschaulich anhand eines Beispiels.
   Mit den Knoten $(K^l_i)_{l=1,2,3, i = 1, \dots, r_l}$ und zufälligen
   Gewichten:
   \[
-    W_1 = \begin{pmatrix} 0.2 & 0.7 & 0.4 \\ 0 & 0.7 & 0.8 \end{pmatrix} 
+    W_1 = \begin{pmatrix} 0.2 & 0.7 & 0.4  0 & 0.7 & 0.8 \end{pmatrix} 
     \in \mathbb{R}^{2 \times 3},
-    W_2 = \begin{pmatrix} 0.6 & 0 & 0.4 \\ 0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
+    W_2 = \begin{pmatrix} 0.6 & 0 & 0.4  0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
     \in \mathbb{R}^{3 \times 3},
-    W_3 = \begin{pmatrix} 0.2 & 0.45 \\ 0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
+    W_3 = \begin{pmatrix} 0.2 & 0.45  0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
     \in \mathbb{R}^{3 \times 2}.
   \]
   Für den Bias setzen wir:
   \[
-    B_2 = \begin{pmatrix} 0.1 \\ 0.2 \\ 0.3\end{pmatrix} \in \mathbb{R}^3,
-    B_3 = \begin{pmatrix} 0.4 \\ 0.5 \\ 0.6\end{pmatrix} \in \mathbb{R}^3,
-    B_4 = \begin{pmatrix} 0.7 \\ 0.8 \end{pmatrix} \in \mathbb{R}^2,
+    B_2 = \begin{pmatrix} 0.1  0.2 \\ 0.3\end{pmatrix} \in \mathbb{R}^3,
+    B_3 = \begin{pmatrix} 0.4  0.5 \\ 0.6\end{pmatrix} \in \mathbb{R}^3,
+    B_4 = \begin{pmatrix} 0.7  0.8 \end{pmatrix} \in \mathbb{R}^2,
   \]
   Außerdem setzen wir alle Aktivierungfunktionen:
   \[
@@ -366,20 +366,20 @@ wird aber anschaulich anhand eines Beispiels.
   \[
     N(x) = 
     {\color{green}
-    \text{tanh}(\begin{pmatrix} 0.2 & 0.45 \\ 0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
+    \text{tanh}(\begin{pmatrix} 0.2 & 0.45  0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
     }
     {\color{blue}
-    \text{tanh}(\begin{pmatrix} 0.6 & 0 & 0.4 \\ 0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
+    \text{tanh}(\begin{pmatrix} 0.6 & 0 & 0.4  0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
     }
     {\color{red}
-    \text{tanh}(\begin{pmatrix} 0.2 & 0.7 & 0.4 \\ 0 & 0.7 & 0.8 \end{pmatrix}x
-      + \begin{pmatrix} 0.1 \\ 0.2 \\ 0.3\end{pmatrix})} 
+    \text{tanh}(\begin{pmatrix} 0.2 & 0.7 & 0.4  0 & 0.7 & 0.8 \end{pmatrix}x
+      + \begin{pmatrix} 0.1  0.2 \\ 0.3\end{pmatrix})} 
     {\color{blue}
       + 
-    \begin{pmatrix} 0.4 \\ 0.5 \\ 0.6\end{pmatrix})}
+    \begin{pmatrix} 0.4  0.5 \\ 0.6\end{pmatrix})}
     { \color{green}
     +
-    \begin{pmatrix} 0.7 \\ 0.8 \end{pmatrix})
+    \begin{pmatrix} 0.7  0.8 \end{pmatrix})
     }
   \]
   \begin{figure}[H]
@@ -460,11 +460,11 @@ verwendet werden.
    Datensatz wie folgt aussehen:
    \[
      \mathbb{D} = \{
-     (\begin{pmatrix} 0.2 \\ 0.9 \\ 0.5 \\ \vdots \end{pmatrix}, \text{Hund}),
-     (\begin{pmatrix} 0.1 \\ 0.1 \\ 0.6 \\ \vdots \end{pmatrix}, \text{Hund}),
-     (\begin{pmatrix} 0.6 \\ 0.7 \\ 0 \\ \vdots \end{pmatrix}, \text{Katze}),
+     (\begin{pmatrix} 0.2  0.9 \\ 0.5 \\ \vdots \end{pmatrix}, \text{Hund}),
+     (\begin{pmatrix} 0.1  0.1 \\ 0.6 \\ \vdots \end{pmatrix}, \text{Hund}),
+     (\begin{pmatrix} 0.6  0.7 \\ 0 \\ \vdots \end{pmatrix}, \text{Katze}),
      \dots, 
-     (\begin{pmatrix} 0.4 \\ 0.3 \\ 0.9 \\ \vdots \end{pmatrix}, \text{Auto})
+     (\begin{pmatrix} 0.4  0.3 \\ 0.9 \\ \vdots \end{pmatrix}, \text{Auto})
     \}
    \]
 \end{example}
@@ -500,7 +500,7 @@ gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Umgebung und gibt dem
 Spiel einen Input, welcher eine Aktion zufolge hat. Falls nun die Aktion dazu 
 beiträgt, den Spieler in eine gute Position zu bringen oder gar das Spiel zu
 gewinnen, bekommt die Aktion eine positive Bewertung, andernfalls eine
-negative. \\
+negative. 
 
 Die Problemstellung im maschinellen Lernen ist allgemein formuliert und abstrakt.
 Dies ist der Grund, warum maschinelles Lernen in vielen unterschiedlichen 
@@ -581,7 +581,7 @@ Vektorrepräsentationen enthält.
 Der Aufbau bei beiden Modellen ist in Figur 2.5 dargestellt.
 Es ist zu beachten, dass der Hidden-Layer keine Aktivierungsfunktion 
 besitzt, da er nur als lineare Transformation von einer 
-One-Hot-Codierung zu einem reellwertigen Vektor dient.\\
+One-Hot-Codierung zu einem reellwertigen Vektor dient.
 
 One-Hot-Codierung produziert für jedes aus n Wörtern einen Vektor
 $v \in \{0,1\}^n$. Dieser Vektor ist an einer Stelle mit einer Eins
@@ -653,7 +653,7 @@ durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.
     \draw[->] (L32) -- (o2);
     \draw[->] (L33) -- (o3);
     \end{tikzpicture}
-    \caption{ Neuronales Netzwerk von Word2Vec}
+    \caption{ Architektur des neuronalen Netzwerks von Word2Vec}
   \end{center}
 \end{figure}
 Es gibt nun zwei unterschiedliche Strategien, das neuronale Netzwerk
@@ -661,14 +661,14 @@ zu trainieren. Die erste ist Skip-gram, gegeben ein Wort, muss das
 Modell die naheliegenden Wörter vorhersagen. Das heißt, es muss einem
 Wort einen richtigen Kontext zuordnen. Das Modell wird die Fähigkeit
 entwickeln, Wörter mit ähnlichen Kontexten ähnlichen Embeddings
-zuzuordnen. \\
+zuzuordnen. 
 
 Die zweite Methode ist Continous-Bag-Of-Words (CBOW),
 bei der das Modell Wörter nahe an einem bestimmten Wort als Input 
 erhält und versucht, dieses Wort vorherzusagen.Folglich muss das Wort,
 das in dem gegebenen Kontext verwendet wird, prädiziert werden.
 Da ähnliche Wörter ähnliche Kontexte haben, neigt das Modell dazu,
-ähnliche Outputs für ähnliche Kontexte zu lernen. \\
+ähnliche Outputs für ähnliche Kontexte zu lernen. 
 
 Die Word2Vec Embeddings sind dann ähnlich, wenn ihre Kontexte,
 in denen sie verwendet werden, ähnlich sind.  
@@ -715,7 +715,7 @@ Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6 zusehen
 sind. Der erste Block ist der Encoder, dieser erhält die Eingabe.
 Beim Übersetzen wäre das der zu übersetzende Text.
 Der Encoder codiert den Input in semantische Embeddings und gibt an,
-wie wichtig jedes Wort in dem Satz für ein gegebenes Wort ist.\\
+wie wichtig jedes Wort in dem Satz für ein gegebenes Wort ist.
 Es gibt keine Kontextgröße, sondern der Kontext ist die gesamte
 Eingabe.
 Der Encoder bestimmt, welche Wörter wichtig sind und welche eher 
@@ -725,7 +725,7 @@ das Ergebnis des Encoders, um das nächste Wort zu generieren.
 Außerdem startet dieser mit einem konstanten Start Embedding und 
 um die Generierung zu stoppen, gibt er selbst ein konstantes Stopp 
 Embedding aus. Es ist wichtig, dass mehrere Encoder und Decoder 
-gleichzeitig hintereinander geschaltet werden können.\\
+gleichzeitig hintereinander geschaltet werden können.
 
 Die Architektur ist in Abbildung 2.7 dargestellt. Im Folgenden werden 
 die wichtigsten Bestandteile der Abbildung erläutert. {\bf Input Embedding}
@@ -760,8 +760,8 @@ die es noch nicht vorhergesagt hat, verdeckt (engl. Masked) werden.
     \includegraphics[scale=0.35]{abb/transformer-figure.png}
   \end{center}
   \caption{
-      entommen aus "Attention Is All You Need"
-      \cite{vaswani2023attentionneed}
+      Transformer-Architektur entommen aus \cite{vaswani2023attentionneed}. 
+      Der linke Block ist der Encoder und der rechte Block der Decoder.
   }
 \end{figure}
 \subsubsection{BERT}
@@ -775,14 +775,17 @@ und ausschließlich Encoder verwendet.
   \begin{center}
     \includegraphics[scale=0.5]{abb/BERT-Tokens.png}
   \end{center}
-  \caption{Token Embedding Prozess entnommen aus dem BERT Paper.}
+  \caption{
+    Token-Embedding-Prozess entnommen aus 
+    \cite{devlin2019bertpretrainingdeepbidirectional}
+  }.
 \end{figure}
 In Abbildung 2.8 ist der Tokenembedding Prozess abgebildet,
 der im Folgenden näher beschrieben wird. Zunächst muss erläutert werden, 
 was ein Token ist. Ein Token ist in diesem Fall ein Wort, 
 aber generell ist ein Token eine kleinere Zeichenkette, die aus einem 
 Text gewonnen wird und einer Bedeutung zugewiesen wird oder in eine 
-Zahl umgewandelt wird, um die Weiterverarbeitung zu vereinfachen.\\
+Zahl umgewandelt wird, um die Weiterverarbeitung zu vereinfachen.
 
 Das BERT Modell kombiniert drei unterschiedliche Informationen
 in Vektorform, um noch bessere Token Embeddings zu generieren. BERT
@@ -791,7 +794,7 @@ um die Tokenembeddings zu erhalten.
 Auf diese werden nun ein Segmentembedding und schließlich die
 Positionembeddings addiert. {\bf Segment Embedding} codiert die Information,
 welche Tokens strukturell zusammen gehören (Bspw. ein Satz).
-Das {\bf Position Embedding} codiert die sequenzielle Position im Input.\\
+Das {\bf Position Embedding} codiert die sequenzielle Position im Input.
 
 
 Die beiden unterschiedlichen Trainingsaufgaben stellen das wichtigste
@@ -817,7 +820,7 @@ nicht sequenzielle Sätze. Zur Vorhersage, ob die Sätze nacheinander kommen
 oder nicht, wird das konstante \verb|[cls]| Tokenembedding verwendet, 
 welches beim Input immer an erster Stelle steht. Der erste Outputvektor 
 ist dann das Ergebnis des \verb|[cls]| Tokens und wird verwendet, um den Output
-\verb|isNext| oder \verb|notNext| zu produzieren.\\
+\verb|isNext| oder \verb|notNext| zu produzieren.
 
 Nach dem Training erhält man aus BERT für jeden Inputvektor genau einen 
 Outputvektor, diesen kann man dann mit wenig Aufwand weiter verwenden,
@@ -853,7 +856,7 @@ eine zu wählende Metrik eingesetzt werden.
 %  }.
 %\]
 Dies ermöglicht es, die semantische Ähnlichkeit zwischen zwei Vektoren 
-effizient zu berechnen.\\
+effizient zu berechnen.
 
 Die Modellarchitektur von SBERT wird als {\bf Siamese Neural Network }
 bezeichnet, da zwei unterschiedliche BERT-Modelle verwendet werden,
@@ -865,10 +868,11 @@ sich die Gewichte.
   \begin{center}
     \includegraphics[scale=0.3]{abb/SBERT.png}
   \end{center}
-  \caption{SBERT Architektur entnommen aus dem SBERT Paper.}
+  \caption{
+    SBERT-Architektur entnommen aus \cite{reimers2019sentencebertsentenceembeddingsusing}. 
+    Beide BERT-Modelle teilen sich dieselben Gewichte. 
+  }
 \end{figure}
-In Abbildung 2.9 ist die SBERT Architektur dargestellt, 
-in der sich beide BERT Modelle dieselben Gewichte teilen. 
 Danach geht der Output von BERT in ein pooling Modul. 
 {\bf Pooling} ist das Transformieren von Output mit vielen Vektoren 
 in eine geringere Anzahl von Vektoren oder Dimensionen. In diesem Fall 
@@ -876,7 +880,7 @@ werden die $n$ Output-Vektoren von BERT in einen einzigen Output-Vektor
 transformiert. Das Default pooling ist der Mittelwert, d.h. auf alle 
 Output-Vektoren von BERT wird das arithmetische Mittel angewendet.
 Daraus erhält man einen Vektor mit den jeweiligen gemittelten 
-BERT-Output-Vektoren.\\
+BERT-Output-Vektoren.
 
 Das BERT Modell wird an die spezielle Aufgabe 
 angepasst, zwei Vektoren semantisch zu vergleichen. 
@@ -910,7 +914,7 @@ Rozière et al. bei Meta AI im Jahre 2024 entwickelt
 einer großen Menge von Daten trainiert wurden, welche sich darin
 auszeichnen, natürliche Sprache verstehen sowie generieren zu
 können und deswegen in der Lage sind, eine Vielzahl von Aufgabe
-n im NLP-Bereich zu lösen.\\
+n im NLP-Bereich zu lösen.
 
 Meta AI optimiert das vorangegangene Llama2 Modell auf
 Programmiersprachen spezifische Aufgaben. Das LLama2 Model wird,
@@ -925,7 +929,7 @@ mit $8 \%$, besteht aus natürlicher Sprache, in der es um
 Programmcode geht. Dieser Teil beinhaltet Diskussion über Quellcode
 sowie Fragen und Antworten, welche sich auf Quellcode beziehen. 
 Der kleinste Teil im Datensatz mit $7 \%$ besteht aus beliebiger 
-natürlicher Sprache, damit das Modell seine alten Fähigkeiten erhält. \\
+natürlicher Sprache, damit das Modell seine alten Fähigkeiten erhält. 
 
 Das LLama2 Modell ist eine Verbesserung des Llama1 Modells.
 Dieses wurde auf neueren Daten trainiert und verwendet einen 
@@ -933,10 +937,10 @@ $40 \%$ größeren Datensatz. Zudem wurde die maximale Anzahl
 der gleichzeitig zu verarbeitenden Token verdoppelt. Außerdem 
 gab es eine Veränderung in der Llama1 Transformer Architektur. 
 In den Attention Modulen werden zwei Werte, die normalerweise 
-jedes Mal wieder berechnet werden, geteilt, was bedeutet, dass 
+immer wieder berechnet werden, geteilt, was bedeutet, dass 
 jedes Attention Modul Zugriff auf die gleichen Werte hat.
 Dies führt zu geringfügig schlechteren Ergebnissen, jedoch zu
-einer deutlichen Leistungssteigerung.\\
+einer deutlichen Leistungssteigerung.
 
 Das Llama1 Modell wiederum besteht aus einer Decoder-Only
 Transformer Architektur. Der {\bf Decoder-Only} Transformer
@@ -946,14 +950,14 @@ ist der anfängliche Input des Decoders die Eingabe des Nutzers.
 Auf diese Eingabe wird dann immer wieder das neu generierte Token
 drauf konkateniert. Auf diese Weise wird die Eingabe nicht explizit
 von dem bereits generierten getrennt, sondern beides wird als 
-gleicher Kontext verwendet.\\
+gleicher Kontext verwendet.
 
 Das Besondere an Llama1 ist, dass es nur auf frei verfügbaren
 Daten trainiert wurde und dass das Modell Open Source ist. Der
-Datensatz besteht aus {\bf English Common Crawl [$67\%$]},
-{\bf C4 [$15\%$]}, {\bf Github [$4.5\%$]},
-{\bf Wikipedia [$4.5\%$]}, {\bf Gutenberg and Books3 [$4.5\%$]}, 
-{\bf ArXiv [$2.5\%$]}, und {\bf Stack Exchange [$2\%$]}.\\
+Datensatz besteht aus English Common Crawl [$67\%$],
+f C4 [$15\%$],  Github [$4.5\%$],
+Wikipedia [$4.5\%$], Gutenberg and Books3 [$4.5\%$], 
+ArXiv [$2.5\%$], und Stack Exchange [$2\%$].
 
 Code Llama ist eine Open Source Software, die unter allen 
 verfügbaren Modellen am besten in multilingualen Benchmarks 
@@ -977,7 +981,7 @@ in Abbildung 2.10 dargestellt ist, wird im Folgenden erläutert.
     \includegraphics[scale=0.3]{abb/code2vec.png}
   \end{center}
   \caption{
-    \textit{Code2Vec} Architektur entnommen aus dem Paper
+    \textit{Code2Vec}-Architektur entnommen aus
     \cite{alon2018code2veclearningdistributedrepresentations}
   }
 \end{figure}
@@ -1002,7 +1006,7 @@ werden. Das Modell kann demnach darauf trainiert werden, bei gegebenem
 \verb|code vector| bzw. Quellcodeauszug ein bestimmtes Label in 
 natürlicher Sprache vorherzusagen. Nachdem das Training abgeschlossen 
 ist, kann es ein Label für einen Quellcode vorhersagen, welches nicht 
-im Trainingssatz enthalten ist.\\ 
+im Trainingssatz enthalten ist. 
 Die Trainingsart ist demnach überwachtes Lernen, was eine Aufbereitung der
 Daten benötigt. Das Modell kann lediglich die Labels vorhersagen, die es 
 vorher im Training gesehen hat.
@@ -1018,7 +1022,7 @@ reduziert  \textit{t-SNE} die Dimension von $n \in \mathbb{N}$ zu einer niedrige
 Dimension wie zwei oder drei, in der der Mensch die Datenpunkte leicht 
 interpretieren kann. Dabei versucht der Algorithmus, die
 Nachbarschaftsverhältnisse der Datenpunkte nicht in Mitleidenschaft zu 
-ziehen.\\
+ziehen.
 
 Im Folgenden wird der Algorithmus skizziert und danach wird aufgezeigt,
 was bei der effektiven Verwendung von  \textit{t-SNE} zu beachten ist. Die
@@ -1029,7 +1033,7 @@ einen Ähnlichkeitsscore zuzuweisen. Dieser wird berechnet, indem man
 zuerst die euklidische Distanz von jedem Datenpaar berechnet und dann das 
 Ergebnis in eine Wahrscheinlichkeitsverteilung eingibt. Dies führt zu
 einer Normalisierung des Wertes. Das Ergebnis ist dann eine Tabelle mit 
-einem Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$.\\ 
+einem Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$. 
 
 Als Nächstes werden die Datenpunkte zufällig in der niedrigen Dimension $\mathbf{N}$
 angeordnet. Die nachfolgenden zwei Schritte werden $T\in \mathbb{N}$ 
@@ -1043,7 +1047,7 @@ mal wiederholt, wobei $T$ ein Parameter ist, der wählbar ist.
 \end{enumerate}
 Nach $T$ Wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und 
 $\mathbf{H}$ nahe bei einander, d.h. die Nachbarschaftsverhältnisse 
-von $\mathbf{N}$ und $\mathbf{H}$ sind nun ähnlich.\\
+von $\mathbf{N}$ und $\mathbf{H}$ sind nun ähnlich.
 
 Wattenberg et al. haben untersucht, wie man  \textit{t-SNE} sinnvoll
 anwendet und welche Schlüsse man aus der Visualisierung 
@@ -1051,12 +1055,13 @@ ziehen kann \cite{wattenberg2016how}.
 Sie fanden heraus, dass die Wahl der Parameter 
 für das Ergebnis eine wichtige Rolle spielt. Die wichtigsten 
 Parameter sind die Iterationen $T\in \mathbb{N}$ und die Perplexity 
-$P \in \mathbb{N}$.\\ 
+$P \in \mathbb{N}$. 
 
 Eine geignete Iteration $T$ kann relative einfach durch ausprobieren 
 herausgefunden werden: Falls sich die Datenwolke bei erhöhung
 von $T$ nicht mehr wirklich verändert, ist die Anzahl der Iteration
-$T$ gefunden. \\
+$T$ gefunden. 
+\pagebreak
 
 Die Perplexity kann intuitiv als Schätzung für die Anzahl an nahen 
 Nachbarn, die jeder Datenpunkt hat, gesehen werden.
@@ -1072,7 +1077,7 @@ fälschlicherweise kleine Gruppierungen (engl. cluster) bildet.
 Falls $P$ größer ist als die Anzahl der Datenpunkte, ist das
 Ergebnis überhaupt nicht interpretierbar. Es ist daher ratsam,
 mehrere Werte für $P$ zu verwenden, um sicherzustellen, 
-dass  \textit{t-SNE} keine falschen Nachbarschaftsbeziehungen darstellt.\\
+dass  \textit{t-SNE} keine falschen Nachbarschaftsbeziehungen darstellt.
 
 Wattenberg und Kollegen stellten außerdem fest, dass sowohl die 
 Information des Durchmessers eines Clusters als auch die Abstände 
@@ -1080,7 +1085,7 @@ zwischen einem Cluster und einem anderen durch  \textit{t-SNE} vollständig
 verloren gehen. Nach Betrachtung der  \textit{t-SNE} Ausgabe kann daher 
 keine Aussage über den Durchmesser eines Clusters, die Position 
 des Clusters und die Lagebeziehungen zwischen Clustern getroffen 
-werden. \\
+werden. 
 
 Der  \textit{t-SNE} Algorithmus ist ein wichtiges Tool, um qualitative 
 Aussagen über Daten zu treffen. Es ist jedoch wichtig, mehrere 
@@ -1109,7 +1114,7 @@ Die GNU-Bibliothek wurde aufgrund der hohen Qualität des
 Quellcodes ausgewählt, da das Projekt seit 1987 existiert 
 und die Community jederzeit auf Fehler im Quellcode hinweisen kann.
 Zum anderen wird die Bibliothek weitgehend in vielen Applikationen 
-eingesetzt.\\
+eingesetzt.
 
 Der wichtigste Aspekt ist, dass man mit diesem Datensatz 
 die Ergebnisse des trainierten Modells vergleichen kann, da die 
@@ -1137,22 +1142,22 @@ wie Daten verarbeitet werden (engl. Pipeline), vorgestellt, um einen
 Überblick über den praktischen Teil dieser Arbeit zu geben.
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=0.8]{abb/data-pipeline.pdf}
+    \includegraphics[scale=0.35]{abb/data-pipeline-2.drawio.png}
   \end{center}
-  \caption{Datenpipeline}
+  \caption{
+    Die Datenpipeline dargestellt, dabei 
+    sind Vierecke mit abgerundeten Ecken Tools, die Daten in eine 
+    andere Darstellung umwandeln.
+  }
 \end{figure}
-In der Abbildung 3.1 ist die Datenpipeline dargestellt, dabei 
-sind Vierecke mit abgerundeten Ecken Tools, die Daten in eine 
-andere Darstellung umwandeln, und Vierecke mit spitzen Ecken
-repräsentieren Darstellungen von Daten.\\
 
-Die erste Darstellung sind die Rohdaten, die dem unverarbeiteten 
-C-Quellcode aus der GNU Standard-C-Bibliothek entsprechen. 
+Die Rohdaten entsprechen dem unverarbeiteten 
+C-Quellcode aus der GNU Standard-C-Bibliothek. 
 Wir benötigen nicht alle Teile des Quellcodes, sondern nur bestimmte.
 Wir betrachten ausschließlich nur Funktionen, d.h. wir wollen
 bspw. alle Datenstrukturen, die in dem Quellcode definiert werden,
 aus dem Quellcode entfernen. Die Zerlegung und Umwandlung des
-Inputs in sinnvolle Teile wird Parsing genannt.\\
+Inputs in sinnvolle Teile wird Parsing genannt.
 
 In dieser Arbeit wurde {\bf Tree-sitter} als Parser verwendet, welcher
 alle populären Programmiersprachen in Syntaxbäume umwandeln kann.
@@ -1163,22 +1168,23 @@ für die Hervorhebung von Syntax verwendet. Generell kann
 für alle Anwendungen benutzt werden, die Informationen aus Quellcode
 verarbeiten wollen. Aus dem von \textit{Tree-sitter} generierten
 Syntaxbaum kann dann jegliche gewünschte Information entnommen 
-werden.\\
+werden.
 
 Die Quellinformationen werden immer zunächst gespeichert, damit die 
 Verarbeitung beim nächsten Mal an diesem Punkt beginnen kann.
 Die Quellinformationen beziehen sich immer auf eine Funktion,
 deswegen bestehen die Daten aus einem Tupel, der aus je einer
-Funktion und den gewünschten Quellinformationen besteht. \\
+Funktion und den gewünschten Quellinformationen besteht. 
 
-Danach gibt es eine Abzweigung, entweder werden die 
-Quellinformationen Code Llama nochmal erklärt und dann in den 
-\textit{SentenceTransformer} gegeben oder die Quellinformation wird direkt
-in den \textit{SentenceTransformer} gegeben. Schließlich erhält man wieder 
-eine Datenmenge, die aus Tupel besteht. Das Tupel besteht aus dem 
+Danach gibt es eine Abzweigung in der Datenpipeline, entweder 
+werden die Quellinformationen von Code Llama nochmal in natürlicher 
+Sprache beschrieben und dann in den \textit{SentenceTransformer}
+eingegeben oder die Quellinformation wird direkt in den 
+\textit{SentenceTransformer} eingegeben. Schließlich erhält man wieder 
+eine Datenmenge, die aus Tupeln besteht. Ein Tupel besteht aus dem 
 Funktionsnamen und dem zugewiesenen semantischen Embedding. 
 Bei dieser Architektur kann mühelos jedes Tool ausgewechselt werden,
-solange die Ausgabeformate eingehalten werden. \\
+solange die Ausgabeformate eingehalten werden. 
 % Treesitter erklären
 % Source Code information in json datei speichern
 % Dann Source code information in Vektor umwandeln
@@ -1194,13 +1200,13 @@ anderen Elemente in der Datenpipeline konstante Ergebnisse
 liefern und nicht schwanken. Aus diesem Grund wird im Folgenden 
 untersucht, wie sich der \textit{SentenceTransformer} bei selber
 Eingaben verhält. Im Optimalfall sollte der SentenceTransfomer bei 
-selbem Input dasselbe Ergebnis liefern.\\
+selbem Input dasselbe Ergebnis liefern.
 
-Um dies zu überprüfen, wurden $n = 100$ Code llama 
+Um dies zu überprüfen, wurden $n = 100$ Code Llama 
 Quellcode-Erklärungen zufällig ausgewählt und anschließend in
 den SentenceTransformer $m = 100$ Mal eingegeben. Dabei beträgt
 der höchste Abstand von zwei Vektoren,
-die aus der gleichen Erklärung resultiert sind \\
+die aus der gleichen Erklärung resultiert sind 
 $d = 6.661338\cdot 10^{-16}$. Der 
 Abstand ist ausreichend klein, um ihn in der Evaluation zu 
 vernachlässigen. Der \textit{SentenceTransformer} ist daher
@@ -1210,6 +1216,7 @@ für die Anwendung in dieser Arbeit ausreichend stabil.
 % kann keine aussage über die Güte der Labels getätig werden
 % Tabelle mit Ergebnissen der standardabweichungen
 %
+\pagebreak
 \section{Funktionskommentare}
 \subsection{Motivation}
 Bevor ein Programm kompiliert wurde, gibt es eine Menge an
@@ -1220,7 +1227,7 @@ beschreibt, ist der Kommentar. Ein gelungener Kommentar zu einer
 Funktion beschreibt die Kernfunktion der Prozedur, d.h. den Input,
 den Output und die Umwandlung. Dieser Kommentar kann man dann in den 
 SentenceTransformer  eingeben und  so in einen semantischen 
-Vektorraum abbilden.\\
+Vektorraum abbilden.
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
 \subsection{Methodik} 
@@ -1237,6 +1244,7 @@ Hierbei muss man aufpassen, dass der Prozess des Parsen nicht zu
 speziell an die vorliegenden Datensatz angepasst wird, sonst 
 verliert er seine Allgemeingültigkeit. 
 
+\pagebreak
 % Probleme beim Parsen, wo sucht man nach Kommentaren?
 % Keine einheitliche Konvention
 % -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
@@ -1246,7 +1254,7 @@ Das Besondere an \textit{Code2Vec} ist, dass der Quellcode in einem
 abstrakten Syntaxbaum kodiert wird. Dies ermöglicht die Verwendung aller
 Quellcodeinformationen, die im Quellcode enthalten sind. Anschließend wird
 das Modell darauf trainiert, eine Eigenschaft in natürlicher Sprache
-über den Quellcode vorherzusagen.\\
+über den Quellcode vorherzusagen.
 
 Bei dieser Herangehensweise, semantische Vektoren zu erzeugen, wird
 also kein \textit{SentenceTransformer}
@@ -1255,7 +1263,7 @@ verwendet, sondern die Vektorraum werden durch Training des
 Paper wird das Modell auch hier darauf trainiert, Funktionsnamen 
 vorherzusagen. Die Implementierung des \textit{Code2Vec} Modells
 nutzte Java als Datensatz, weshalb einige Anpassungen notwendig waren,
-um das Modell auf C-Code zu trainieren.\\
+um das Modell auf C-Code zu trainieren.
 
 Da das \textit{Code2Vec} Modell auf überwachtem Lernen basiert,
 muss der Datensatz vor dem Training zunächst aus dem rohen Quellcode 
@@ -1267,20 +1275,20 @@ aus dem rohen Quellcode einer Funktion jeweils einen abstrakten
 Syntaxbaum und den
 Funktionsnamen zu extrahieren. Alon et al. stellen ein Tool 
 für Java zur Verfügung, welches das Extrahieren von abstrakten 
-Syntaxbäumen und Funktionsnamen aus Java-Quellcode ermöglicht.\\
+Syntaxbäumen und Funktionsnamen aus Java-Quellcode ermöglicht.
 
 Mit dem ASTminer von Kovalenko et al. können abstrakte Syntaxbäume und 
 Funktionsnamen extrahiert werden \cite{kovalenko2019pathminer}. 
 Das Tool wurde vom JetBrains Research Team entwickelt, um Quellcode
 in abstrakte Syntaxbäume (AST) zu 
-kodieren, die als Inputformat für maschinelles Lernen dienen.\\
+kodieren, die als Inputformat für maschinelles Lernen dienen.
 
 Die implementierung des \textit{Cod2Vec} Modells braucht ein bestimmtes
 Format, den der Datensatz aufweisen muss. Ein Trainingsbeispiel besteht
 jeweils aus einem 
 Funktionsnamen, dem Label und einer Liste von Kontexten, welche den AST 
 repräsentieren. Ein Kontext besteht aus einem Starttoken, einem Endtoken 
-und einer Pfadbeschreibung vom Starttoken bis zum Endtoken. \\
+und einer Pfadbeschreibung vom Starttoken bis zum Endtoken. 
 
 
 Dieses \textit{Code2Vec} Format kann durch eine zusätzliche Option in der
@@ -1295,7 +1303,7 @@ Nummern wieder zu den passenden Token umgewandelt werden.
   \begin{center}
     \includegraphics[scale=0.2]{abb/ast-extraction-example.drawio.png}
   \end{center}
-  \caption{Extrahierung eines Kontexts}
+  \caption{Extrahierung eines Kontexts aus einer C-Quellcode}
 \end{figure}
 Da es unterschiedliche Konventionen für Funktionsnamen gibt, wie z.B.
 \verb|CamelCase| und \verb|Snakecase|, normalisiert der \textit{ASTminer} 
@@ -1304,11 +1312,11 @@ jeweiligen Quellcodekonventionen.
 \begin{example}
   \hfill
   \begin{center}
-    Snakecase: \verb|funktions_name| $\to$ {\bf funktions\text{\textbar}name } \\
+    Snakecase: \verb|funktions_name| $\to$ {\bf funktions\text{\textbar}name }\\
     Camelcase: \verb|funktionsName| $\to$ {\bf funktions\text{\textbar}name}
   \end{center}
 \end{example}
-Code2Vec kann nach dem Training für jede Funktion einen hochdimensionalen 
+Code2Vec kann nach dem Training für jede Funktion einen hochdimensionalen
 Vektor ausgeben, der die Semantik der Funktion beschreiben soll.
 Um mit Code2Vec diesen Vektor generieren zu können, muss der abstrakte 
 Syntaxbaum eingegeben werden. Die abstrakten Syntaxbäume können nur durch 
@@ -1320,7 +1328,7 @@ Cod2Vec mit anderen Ansätzen wie z.b. Funktionskommentaren ist es notwendig,
 die normalisierten Namen wieder zu den ursprünglichen Namen zurückzuführen.
 Aufgrund dessen mussten im Quellcode von astminer Änderungen vorgenommen 
 werden, sodass zu jeder Position eines Trainingsbeispiels im Datensatz der 
-ursprüngliche Funktionsname zugeordnet werden kann. \\
+ursprüngliche Funktionsname zugeordnet werden kann. 
 
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
@@ -1339,12 +1347,16 @@ Auch der kleine Datensatz, mit $n = 5155 $ Datenpunkten, ist zwar für die
 Güte des Modells problematisch, jedoch nicht für die resultierenden 
 semantischen Vektoren. Selbst wenn das Modell nur die passenden 
 Funktionsnamen auswendig lernt, entstehen dabei Vektoren, die gewisse 
-Informationen des Namens widerspiegeln. Nachdem das Trainingsszenario 
+Informationen des Namens widerspiegeln.
+
+\pagebreak
+
+Nachdem das Trainingsszenario 
 genau dasselbe wie im Paper ist, wurden alle Trainingsparameter gleich 
 gelassen. Die Ergebnisse nach der 84 Epoche sind: 
-{\bf Precision: $65.6$, F1: $65.1$,  Recall: $64.7$}. Diese Werte sind 
+{\bf Precision: $65.6$, $F_1$: $65.1$,  Recall: $64.7$}. Diese Werte sind 
 etwas über den Werten von den \textit{Code2Vec} Autoren, sie kamen beim 
-Full Test Set auf: {\bf Precision: $63.1$, F1: $58.4$,  Recall: $54.4$}. 
+Full Test Set auf: {\bf Precision: $63.1$, $F1$: $58.4$,  Recall: $54.4$}. 
 Dabei ist hervorzuheben, dass unser Test- und Trainings-Datensatz derselbe ist
 und der Test-Datensatz von Code2Vec verschieden ist von dem 
 Trainings-Datensatz. Die Vorgehensweise ist normalerweise grob fahrlässig,
@@ -1364,7 +1376,7 @@ Funktionsnamen, um die Semantik einer Funktion zu beschreiben.
 Die Extrahierung von Funktionsnamen ist keine schwierige Aufgabe.
 Hierfür wäre \textit{Tree-sitter} nicht unbedingt nötig, aber falls ein 
 Datensatz für eine andere Sprache wie Rust erstellt werden sollte,
-müsste der Parser jedes Mal angepasst werden.
+müsste der Parser immer wieder angepasst werden.
 Deswegen wurde hier für die einfache Erweiterung des Programms,
 Tree-sitter verwendet. \textit{Tree-sitter} bietet Parser für eine Vielzahl 
 von Sprachen an.
@@ -1375,12 +1387,15 @@ von Sprachen an.
 % wie Rust, C, Zig, usw. 
 % Ist es doch schwieriger
 % -> Treesitter
+
+\pagebreak
+
 \section{Coddelama-Erklärungen}
 \subsection{Motivation}
 Large Language Models werden immer besser, Quellcode selbst zuschreiben,
 zu verstehen und zusammenzufassen. Eine Zusammenfassung des Quellcodes
 in natürlicher Sprache spiegelt die Semantik des Quellcodes wider.
-So ist auch Code-Llama fähig, Quellcode zu erklären und somit einen 
+So ist auch Code Llama fähig, Quellcode zu erklären und somit einen 
 Text zu generieren, der die Semantik der Funktion enthält. Dieser 
 Ansatz verwendet wie Code2Vec jede Quellcodeinformation, da der 
 gesamte Quellcode als Eingabe genutzt wird.
@@ -1395,9 +1410,9 @@ Die Fragestellung wurde aus der Implementierung von \textit{Clap}
 \cite{wang2024claplearningtransferablebinary} übernommen,
 diese haben sich auch damit beschäftigt, wie die Fragestellung formuliert
 werden muss, um semantikreiche und präzise Quellcodeerklärungen zu 
-erhalten.\\
+erhalten.
 
-Damit der Code-Llama Output deterministisch ist,
+Damit der Code Llama Output deterministisch ist,
 muss der Temperaturparameter auf null gesetzt werden. 
 Der Parameter ist Teil einer Zufallskomponente bei der
 Auswahl des nächsten Tokens, ist dieser auf null,
@@ -1409,12 +1424,12 @@ wie die Studie von Astekin et al. heraus fand
 bei den vielen Fließkommaoperationen, die für die Berechnung
 eines Code Llama Outputs erforderlich sind,
 Rundungsfehler entstehen. Diese Erkenntnisse stammen aber 
-aus einem anderen Anwendungszweck.\\
+aus einem anderen Anwendungszweck.
 
 Die Stabilität mit Temperatur Null sollte daher für den
 Anwendungszweck dieser Arbeit getestet werden. Um das zu
 überprüfen, wurden von $n = ?$ Funktionen der Quellcode mit 
-Fragestellung $m = ?$ mal in Code Llama eingegeben, bei den 
+Fragestellung $m = ?$ Mal in Code Llama eingegeben, bei den 
 resultierenden Vektoren beträgt der höchste Abstand von zwei 
 Vektoren, die aus dem gleichen Quellcode resultiert sind, $d = ?$.
 Dieser Abstand ist ausreichend gering, um ihn in der Evaluation 
@@ -1465,35 +1480,18 @@ in dieser Arbeit ausreichend stabil.
 \end{itemize}
 $ I_{k}: \mathbf{N} \times \mathbf{N} \times \mathbf{N}^{k} \to [0,1]$
 \[ I_{k}(x,i,v) = \begin{cases*} 
-      1 & , $\exists j \in \mathbf{N}: x = v_j \land i = j$  \\
+1 & , $\exists j \in \mathbf{N}: x = v_j \land i = j$   \\
       \frac{1}{2} & , $\exists j \in \mathbf{N}: x = v_j \land i \neq j$\\
       0   & , \text{otherwise}
                 \end{cases*} \]
 $E_k: \nat^k \times \nat^k \to [0,1]$
 \[ E_k(u,v) = \frac{1}{G_k} \sum^{k}_{i=1} \frac{I_k(u_i,i,v_i)}{log_2(i+1)}\]
-wo $G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}$.\\\\
+wo $G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}$.\\
 $CMP_k: \mathbf{R}^{N\times l} \times \mathbf{R}^{N\times l} \times 
 \{ \mathbf{R}^l \times \mathbf{R}^{N\times l} \to \mathbf{N}^k \} 
 \times \{ \mathcal{P}([0,1]) \to [0,1] \} \to [0,1]$
 
 \[ CMP_k(X,Y,f_k,agg) = agg(\{E_k(f_k(X_{i,j},X),f_k(Y_{i,j},Y)) | j \in \{1,2,3, \dots N\}\})\]
-
-
-\section{Conclusion}
-
-\pagebreak
-
-\input{pages/appendix}
-
-\pagebreak
-
-\microtypesetup{protrusion=false}
-\listoffigures{}
-\listoftables{}
-\microtypesetup{protrusion=true}
-
-\clearpage
-\printglossaries
 
 \pagebreak
 
