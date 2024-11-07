@@ -304,9 +304,9 @@ der LMU München:
   Sei $x \in \mathbb{R}^{r_l}$, dann setze
   \[
     F_l(x) := \begin{pmatrix} 
-        f_1(x_1) 
-        \vdots
-        f_{r_l}(x_{r_l})
+        f_1(x_1) \\
+        \vdots\\
+        f_{r_l}(x_{r_l})\\
     \end{pmatrix}.
   \]
   Dann ist die Funktion $N: \mathbb{R}^q \to \mathbb{R}^p$ wie folgt definiert:
@@ -344,18 +344,18 @@ wird aber anschaulich anhand eines Beispiels.
   Mit den Knoten $(K^l_i)_{l=1,2,3, i = 1, \dots, r_l}$ und zufälligen
   Gewichten:
   \[
-    W_1 = \begin{pmatrix} 0.2 & 0.7 & 0.4  0 & 0.7 & 0.8 \end{pmatrix} 
+    W_1 = \begin{pmatrix} 0.2 & 0.7 & 0.4 \\  0 & 0.7 & 0.8 \end{pmatrix} 
     \in \mathbb{R}^{2 \times 3},
-    W_2 = \begin{pmatrix} 0.6 & 0 & 0.4  0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
+    W_2 = \begin{pmatrix} 0.6 & 0 & 0.4  \\ 0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
     \in \mathbb{R}^{3 \times 3},
-    W_3 = \begin{pmatrix} 0.2 & 0.45  0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
+    W_3 = \begin{pmatrix} 0.2 & 0.45 \\ 0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
     \in \mathbb{R}^{3 \times 2}.
   \]
   Für den Bias setzen wir:
   \[
-    B_2 = \begin{pmatrix} 0.1  0.2 \\ 0.3\end{pmatrix} \in \mathbb{R}^3,
-    B_3 = \begin{pmatrix} 0.4  0.5 \\ 0.6\end{pmatrix} \in \mathbb{R}^3,
-    B_4 = \begin{pmatrix} 0.7  0.8 \end{pmatrix} \in \mathbb{R}^2,
+    B_2 = \begin{pmatrix} 0.1  \\ 0.2 \\ 0.3\end{pmatrix} \in \mathbb{R}^3,
+    B_3 = \begin{pmatrix} 0.4  \\ 0.5 \\ 0.6\end{pmatrix} \in \mathbb{R}^3,
+    B_4 = \begin{pmatrix} 0.7  \\ 0.8 \end{pmatrix} \in \mathbb{R}^2,
   \]
   Außerdem setzen wir alle Aktivierungfunktionen:
   \[
@@ -366,20 +366,20 @@ wird aber anschaulich anhand eines Beispiels.
   \[
     N(x) = 
     {\color{green}
-    \text{tanh}(\begin{pmatrix} 0.2 & 0.45  0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
+    \text{tanh}(\begin{pmatrix} 0.2 & 0.45 \\ 0.1 & 0.23 \\ 1 & 0.33 \end{pmatrix}
     }
     {\color{blue}
-    \text{tanh}(\begin{pmatrix} 0.6 & 0 & 0.4  0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
+    \text{tanh}(\begin{pmatrix} 0.6 & 0 & 0.4 \\ 0.1 & 0.7 & 0.8 \\ 1 & 0.33 & 0.2 \end{pmatrix}
     }
     {\color{red}
-    \text{tanh}(\begin{pmatrix} 0.2 & 0.7 & 0.4  0 & 0.7 & 0.8 \end{pmatrix}x
+    \text{tanh}(\begin{pmatrix} 0.2 & 0.7 & 0.4 \\ 0 & 0.7 & 0.8 \end{pmatrix}x
       + \begin{pmatrix} 0.1  0.2 \\ 0.3\end{pmatrix})} 
     {\color{blue}
       + 
-    \begin{pmatrix} 0.4  0.5 \\ 0.6\end{pmatrix})}
+    \begin{pmatrix} 0.4 \\ 0.5 \\ 0.6\end{pmatrix})}
     { \color{green}
     +
-    \begin{pmatrix} 0.7  0.8 \end{pmatrix})
+    \begin{pmatrix} 0.7  \\ 0.8 \end{pmatrix})
     }
   \]
   \begin{figure}[H]
@@ -460,11 +460,11 @@ verwendet werden.
    Datensatz wie folgt aussehen:
    \[
      \mathbb{D} = \{
-     (\begin{pmatrix} 0.2  0.9 \\ 0.5 \\ \vdots \end{pmatrix}, \text{Hund}),
-     (\begin{pmatrix} 0.1  0.1 \\ 0.6 \\ \vdots \end{pmatrix}, \text{Hund}),
-     (\begin{pmatrix} 0.6  0.7 \\ 0 \\ \vdots \end{pmatrix}, \text{Katze}),
+     (\begin{pmatrix} 0.2 \\ 0.9 \\ 0.5 \\ \vdots \end{pmatrix}, \text{Hund}),
+     (\begin{pmatrix} 0.1 \\ 0.1 \\ 0.6 \\ \vdots \end{pmatrix}, \text{Hund}),
+     (\begin{pmatrix} 0.6 \\ 0.7 \\ 0 \\ \vdots \end{pmatrix}, \text{Katze}),
      \dots, 
-     (\begin{pmatrix} 0.4  0.3 \\ 0.9 \\ \vdots \end{pmatrix}, \text{Auto})
+     (\begin{pmatrix} 0.4 \\ 0.3 \\ 0.9 \\ \vdots \end{pmatrix}, \text{Auto})
     \}
    \]
 \end{example}
@@ -574,7 +574,8 @@ indem zwei Modellarchitekturen vorgestellt wurden. Mit diesen ein
 neuronales Netzwerk effizient lernen kann, semantische Embeddings
 zu produzieren.
 Mirkolov et al. haben eine Implementierung veröffentlicht die sie 
-\textit{Word2Vec} genannt haben.
+\textit{Word2Vec} \footnote{https://code.google.com/archive/p/word2vec/}
+genannt haben.
 In beiden Architekturen besteht das neuronale Netzwerk aus einem 
 Hidden-Layer, der nach dem Training die reellwertigen 
 Vektorrepräsentationen enthält.
@@ -832,7 +833,9 @@ Das Sentence-BERT \cite{reimers2019sentencebertsentenceembeddingsusing}
 Modell ist der aktuelle Stand der Technik im semantischen Codieren von 
 natürlicher Sprache in einem Vektorraum. Die Implementierung von 
 Reimers et al.
-ist unter dem Namen \textit{SentenceTransformer} bekannt. Die Motivation 
+ist unter dem Namen \textit{SentenceTransformer} 
+\footnote{https://sbert.net}
+bekannt. Die Motivation 
 hinter Sentence-BERT (SBERT) ist das effiziente semantische Vergleichen 
 von zwei Sätzen. Wenn man mit BERT herausfinden möchte, wie semantisch
 ähnlich zwei gegebene Sätze sind, dann muss man beide Sätze als Input 
@@ -1159,7 +1162,9 @@ bspw. alle Datenstrukturen, die in dem Quellcode definiert werden,
 aus dem Quellcode entfernen. Die Zerlegung und Umwandlung des
 Inputs in sinnvolle Teile wird Parsing genannt.
 
-In dieser Arbeit wurde {\bf Tree-sitter} als Parser verwendet, welcher
+In dieser Arbeit wurde {\bf Tree-sitter} 
+\footnote{https://tree-sitter.github.io/tree-sitter/} als 
+Parser verwendet, welcher
 alle populären Programmiersprachen in Syntaxbäume umwandeln kann.
 Ursprünglich wurde \textit{Tree-sitter} für den Texteditor Atom
 entwickelt und wird heute noch in vielen Texteditoren bspw. 
@@ -1260,7 +1265,8 @@ Bei dieser Herangehensweise, semantische Vektoren zu erzeugen, wird
 also kein \textit{SentenceTransformer}
 verwendet, sondern die Vektorraum werden durch Training des
 \textit{Code2Vec} Modells als Nebenprodukt erzeugt. Wie in dem 
-Paper wird das Modell auch hier darauf trainiert, Funktionsnamen 
+\cite{alon2018code2veclearningdistributedrepresentations} wird
+das Modell auch hier darauf trainiert, Funktionsnamen 
 vorherzusagen. Die Implementierung des \textit{Code2Vec} Modells
 nutzte Java als Datensatz, weshalb einige Anpassungen notwendig waren,
 um das Modell auf C-Code zu trainieren.
@@ -1334,14 +1340,14 @@ ursprüngliche Funktionsname zugeordnet werden kann.
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % \textit{Code2Vec} erklären
 \subsection{Training}
-Das Ziel beim Training war es, dieselbe Qualität wie im Paper zu erhalten. 
+Das Ziel beim Training war es, dieselbe Qualität wie Alon et al. zu erhalten. 
 Das heißt, dieselben Ergebnisse für Java auch für C-Quellcode zu replizieren.
 Bei der Erstellung eines Datensatzes, der aus dem Modell resultiert, 
 können bestimmte Gütekriterien beim Trainieren von Modellen vernachlässigt 
 werden. Eine Problemstellung beim Trainieren von Modellen 
 ist es, inwiefern das Modell generalisiert, also wie leistungsfähig das 
 Modell auf neuen Daten im Gegensatz zu den Trainingsdaten ist.
-Die Problemstellung muss nicht berücksichtigt werden, da das Ergebnis kein 
+Diese Problemstellung muss nicht berücksichtigt werden, da das Ergebnis kein 
 fähiges Modell ist, sondern semantische Vektoren für den Datensatz. 
 Auch der kleine Datensatz, mit $n = 5155 $ Datenpunkten, ist zwar für die 
 Güte des Modells problematisch, jedoch nicht für die resultierenden 
@@ -1352,7 +1358,8 @@ Informationen des Namens widerspiegeln.
 \pagebreak
 
 Nachdem das Trainingsszenario 
-genau dasselbe wie im Paper ist, wurden alle Trainingsparameter gleich 
+genau dasselbe wie bei Alon et al. ist, wurden alle
+Trainingsparameter gleich 
 gelassen. Die Ergebnisse nach der 84 Epoche sind: 
 {\bf Precision: $65.6$, $F_1$: $65.1$,  Recall: $64.7$}. Diese Werte sind 
 etwas über den Werten von den \textit{Code2Vec} Autoren, sie kamen beim 
@@ -1364,8 +1371,9 @@ da wir nicht die Generalisierung des Modells messen. In diesem speziellen
 Anwendungszweck ist jedoch die Güte des Modells nicht von Bedeutung,
 sondern nur die Güte der erzeugten Vektoren. Diese werden von der 
 Verwendung des gleichen Datensatzes beim Testen nicht in
-Mitleidenschaft gezogen. Damit haben wir ähnliche Ergebnisse wie aus dem
-Paper und können diese mit den anderen vorgestellten Ansätzen vergleichen.
+Mitleidenschaft gezogen. Damit haben wir ähnliche Ergebnisse wie in
+\cite{alon2018code2veclearningdistributedrepresentations}
+und können diese mit den anderen vorgestellten Ansätzen vergleichen.
 %Parameterwahl und Ergebnisse
 % Ganzes engeneering und pain hinter code2vec
 \section{Funktionsnamen}
