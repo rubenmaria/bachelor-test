@@ -281,9 +281,9 @@ unterschiedlichen Lernmethoden zusammen.
 \subsubsection{Deep Learning}
 Vor der Betrachtung der Lernmethoden wird kurz auf Deep Learning eingegangen.
 Deep Learning ist ein neuronales Netzwerk, das über mehrere Layer zwischen
-Input und Output Layer verfügt. 
+Input und Output Layer verfügt.  
 Zunächst einmal müssen wir neuronale Netzwerke definieren, die folgende
- Definition ist inspiriert durch \cite{coinws2324}.
+ Definition ist inspiriert durch \cite{Kruse2022}. 
 
 \begin{definition}
   Ein neuronales Netzwerk (NN) ist eine Funktion $N: \mathbb{R}^q \to \mathbb{R}^p$,
@@ -1226,8 +1226,7 @@ für die Anwendung in dieser Arbeit ausreichend stabil.
 % Tabelle mit Ergebnissen der standardabweichungen
 %
 \pagebreak
-\section{Funktionskommentare}
-\subsection{Motivation}
+\subsection{Funktionskommentare}
 Bevor ein Programm kompiliert wurde, gibt es eine Menge an
 Informationen, die die Semantik der Funktion in natürlicher Sprache 
 beschreiben. Eine offensichtliche Quellcodeinformation, die im
@@ -1239,7 +1238,6 @@ SentenceTransformer  eingeben und  so in einen semantischen
 Vektorraum abbilden.
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
-\subsection{Methodik} 
 Das Parsen der Kommentare wurden mit \textit{Tree-sitter} realisiert,
 wie im Abschnitt zur Datenpipeline erwähnt. Dabei gab es eine große
 Designentscheidung zu treffen, welche Kommentare in einer Funktion
@@ -1257,8 +1255,7 @@ verliert er seine Allgemeingültigkeit.
 % Probleme beim Parsen, wo sucht man nach Kommentaren?
 % Keine einheitliche Konvention
 % -> Unterschiedliche Code Base Unterschiedliche Kommentar Konventionen
-\section{Code2Vec}
-\subsection{Motivation} 
+\subsection{Code2Vec}
 Das Besondere an \textit{Code2Vec} ist, dass der Quellcode in einem
 abstrakten Syntaxbaum kodiert wird. Dies ermöglicht die Verwendung aller
 Quellcodeinformationen, die im Quellcode enthalten sind. Anschließend wird
@@ -1279,7 +1276,7 @@ Da das \textit{Code2Vec} Modell auf überwachtem Lernen basiert,
 muss der Datensatz vor dem Training zunächst aus dem rohen Quellcode 
 aufbereitet werden.
 % Warum könnte \textit{Code2Vec} semantisch gute Vektoren produzieren
-\subsection{Adaption auf C}
+\subsubsection{Adaption auf C}
 Um das \textit{Cod2Vec} Modell zu trainieren, ist es notwendig,
 aus dem rohen Quellcode einer Funktion jeweils einen abstrakten 
 Syntaxbaum und den
@@ -1343,7 +1340,7 @@ ursprüngliche Funktionsname zugeordnet werden kann.
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % \textit{Code2Vec} erklären
-\subsection{Training}
+\subsubsection{Training}
 Das Ziel beim Training war es, dieselbe Qualität wie Alon et al. zu erhalten. 
 Das heißt, dieselben Ergebnisse für Java auch für C-Quellcode zu replizieren.
 Bei der Erstellung eines Datensatzes, der aus dem Modell resultiert, 
@@ -1380,7 +1377,7 @@ Mitleidenschaft gezogen. Damit haben wir ähnliche Ergebnisse wie in
 und können diese mit den anderen vorgestellten Ansätzen vergleichen.
 %Parameterwahl und Ergebnisse
 % Ganzes engeneering und pain hinter code2vec
-\section{Funktionsnamen}
+\subsection{Funktionsnamen}
 Eine andere Quellinformation, die in jedem Quellcode enthalten ist,
 sind die Funktionsnamen. Funktionsnamen sollen in wenigen Wörtern 
 den Kerninhalt der Funktion widerspiegeln. Dadurch eignen sich 
@@ -1402,8 +1399,7 @@ von Sprachen an.
 
 \pagebreak
 
-\section{Coddelama-Erklärungen}
-\subsection{Motivation}
+\subsection{Code-Llama-Erklärungen}
 Large Language-Models werden immer besser, Quellcode selbst zuschreiben,
 zu verstehen und zusammenzufassen. Eine Zusammenfassung des Quellcodes
 in natürlicher Sprache spiegelt die Semantik des Quellcodes wider.
@@ -1415,7 +1411,6 @@ gesamte Quellcode als Eingabe genutzt wird.
 % Wir erzeugen uns eine zusammenfassung vom code
 % "optimale" Kommentare
 % Was ist Codellama und warum benutzten wir es?
-\subsection{Methodik}
 Code Llama generiert Quellcodeerklärungen, indem Code Llama eine präzise 
 Fragestellung und den gesamten Quellcode einer Funktion erhält.
 Die Fragestellung wurde aus der Implementierung von CLAP \cite{clap} übernommen, 
@@ -1447,13 +1442,14 @@ Dieser Abstand ist ausreichend gering, um ihn in der Evaluation
 zu vernachlässigen. Code Llama ist also für die Anwendung 
 in dieser Arbeit ausreichend stabil.
 
+\section{Ergebnisse}
 % Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
 % Ergebnisse der Standardabweichung mit Temperatur 0 \section{Ergebnisse} \subsection{Evaluierung durch Experten}
-\subsubsection{Methodik}
+\subsection{Methodik}
 % Aufbau des Fragebogens und
 % Stichproben Größe, vlt. Vorstellung der Experten
-\subsubsection{Auswertung und Ergebnisse}
+\subsection{Auswertung und Ergebnisse}
 % Diskussion der Ergebnisse
 % Folgerungen das CodeLlamma "gute" Embeddings produziert 
 \subsection{Qualitative Evaluierung} 
@@ -1466,7 +1462,6 @@ in dieser Arbeit ausreichend stabil.
 % Formel erklären und rechtfertigen
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
 % embeddings zu verwenden
-\section{Limitation}
 \section{Diskussion}
 %copy Evaluation
 % Zusammenfassung der jeweiligen Resultate
@@ -1476,7 +1471,8 @@ in dieser Arbeit ausreichend stabil.
 % \textit{Code2Vec} -> Kommt nur knapp an mit benutzuten Daten an Names ran also nicht 
 % geignet
 \section{Fazit}
-\section{Results: Comparing natural language supervised methods for creating Rich Binary Labels}
+
+Results: Comparing natural language supervised methods for creating Rich Binary Labels
 \begin{itemize}
   \item Stabilität von Sentence Transformer
   \item Kommentare von Funktionen um Embeddings zu generieren
