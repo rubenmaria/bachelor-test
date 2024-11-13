@@ -95,9 +95,9 @@ resultierenden Vektoren erlauben es, neuronale Netzwerke in diversen
 Anwendungsbereichen zu trainieren, wie beispielsweise
 \textit{Spam Detection} \cite{Ball2019}.  
 Zu den bekanntesten Modellen, die natürliche Sprache in Vektoren abbilden, gehören 
-\textit{Word2Vec} \cite{mikolov2013efficientestimationwordrepresentations},
+\textit{Word2Vec} \cite{word2vec},
 \textit{WordPiece} \cite{wu2016googlesneuralmachinetranslation} und
-\textit{SentenceTransformer} \cite{reimers2019sentencebertsentenceembeddingsusing}. 
+\textit{SentenceTransformer} \cite{reimers-2019-sentence-bert}. 
 
 Diese Fortschritte dienen als Motivation, auch Assembler Quellcode auf einen 
 Vektor abzubilden, der die Semantik des Quellcodes codiert. Die resultierenden
@@ -107,9 +107,9 @@ diverse Anwendungen zu trainieren, wie beispielsweise
 \textit{Function-Boundary-Detection} \cite{190918},
 \textit{Function-Type-Inference}\cite{203650},
 \textit{Binary Code-Search} \cite{9345532},
-Reverse Engineering \cite{lacomis2019direneuralapproachdecompiled},
+Reverse Engineering \cite{reverse-engeneering},
 oder das Klassifizieren von 
-Maleware in der Maschinensprache\cite{raff2017malwaredetectioneatingexe}.
+Maleware in der Maschinensprache\cite{maleware-detection}.
 
 Um ein Modell mittels überwachtes Lernen zu trainieren, das Assemblercode in 
 semantische Vektoren abbildet, ist für jede Assembler-Funktion ein Vektor 
@@ -571,7 +571,7 @@ hohen Abstand haben können.
 \end{example}
 \subsubsection{Word2Vec}
 Im Jahr 2013 veröffentlichten Mikolov et al.  
-\cite{mikolov2013efficientestimationwordrepresentations},
+\cite{word2vec},
 zwei Modellarchitekturen, mit der ein
 neuronales Netzwerk effizient lernen kann, semantische Embeddings
 zu produzieren.
@@ -832,7 +832,7 @@ um das Modell für bestimmte Probleme in NLP anzupassen
 (engl. fine tuning).
 
 \subsubsection{Sentence Transformer}
-Das Sentence-BERT \cite{reimers2019sentencebertsentenceembeddingsusing}
+Das Sentence-BERT \cite{reimers-2019-sentence-bert}
 Modell ist der aktuelle Stand der Technik im semantischen Codieren von 
 natürlicher Sprache in einem Vektorraum. Die Implementierung von 
 Reimers et al.
@@ -875,7 +875,7 @@ sich die Gewichte.
     \includegraphics[scale=0.3]{abb/SBERT.png}
   \end{center}
   \caption{
-    SBERT-Architektur entnommen aus \cite{reimers2019sentencebertsentenceembeddingsusing}. 
+    SBERT-Architektur entnommen aus \cite{reimers-2019-sentence-bert}. 
     Beide BERT-Modelle teilen sich dieselben Gewichte. 
   }
 \end{figure}
@@ -1431,11 +1431,11 @@ wird der Token mit dem höchsten Score gewählt, dieser
 bleibt bei gleicher Eingabe immer derselbe. Leider ist der
 Determinismus trotzdem nicht garantiert, 
 wie die Studie von Astekin et al. heraus fand
-\cite{llmstable}. Laut Astekin et al. ist der Grund dafür, dass
-bei den vielen Fließkommaoperationen, die für die Berechnung
+\cite{llmstable}. Laut Astekin et al. könnte ein Grund dafür sein,
+dass bei den vielen Fließkommaoperationen, die für die Berechnung
 eines Code-Llama-Outputs erforderlich sind,
 Rundungsfehler entstehen. Diese Erkenntnisse stammen aber 
-aus einem anderen Anwendungszweck.
+aus einem anderen Anwendungszweck, nämlich für Log-Parsing.
 
 Die Stabilität mit Temperatur Null sollte daher für den
 Anwendungszweck dieser Arbeit getestet werden. Um das zu
@@ -1449,9 +1449,7 @@ in dieser Arbeit ausreichend stabil.
 
 % Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
-% Ergebnisse der Standardabweichung mit Temperatur 0
-\section{Ergebnisse}
-\subsection{Evaluierung durch Experten}
+% Ergebnisse der Standardabweichung mit Temperatur 0 \section{Ergebnisse} \subsection{Evaluierung durch Experten}
 \subsubsection{Methodik}
 % Aufbau des Fragebogens und
 % Stichproben Größe, vlt. Vorstellung der Experten
@@ -1511,6 +1509,7 @@ $CMP_k: \mathbf{R}^{N\times l} \times \mathbf{R}^{N\times l} \times
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography} %bib-filename
+\printglossary
 
 \nocite{*} %List all bib-entries
 
