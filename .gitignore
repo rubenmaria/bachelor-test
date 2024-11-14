@@ -11,7 +11,7 @@ glibc
 glibc-most
 */examples_output/
 */output/
-*/*.csv
+#*/*.csv
 */log.txt
 astminer-config.yaml
 .classpath

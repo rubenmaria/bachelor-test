@@ -7,6 +7,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 
+
 def get_named_embeddings_from_cluster(
     cluster_path: str,
     summary_path: str
@@ -89,3 +90,13 @@ def write_dict_to_csv(table: list[list[str]], csv_path: str) -> None:
         writer = csv.writer(csv_file)
         for key, values in enumerate(table):
            writer.writerow([key] + [v for v in values])
+
+def read_results_csv(csv_path: str) -> tuple[list[str], list[str], list[str]]:
+    with open(csv_path, 'r') as csv_file:
+        results_reader = csv.reader(csv_file, delimiter=";")
+        keys = next(results_reader)
+        results_one = next(results_reader)
+        results_two = next(results_reader)
+        return (keys, results_one, results_two)
+
+read_results_csv("data/glibc-function-similarity-survey-results.csv")
