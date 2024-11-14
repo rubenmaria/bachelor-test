@@ -91,6 +91,30 @@ def write_dict_to_csv(table: list[list[str]], csv_path: str) -> None:
         for key, values in enumerate(table):
            writer.writerow([key] + [v for v in values])
 
+
+def evaluate_survey_results(csv_path: str) -> tuple[float, float, float]:
+    META_DATA_ENTRIES_COUNT = 17
+    (keys, results_one, results_two) = read_results_csv(csv_path)
+    results_cleaned = filter(
+        lambda x: x[1].startswith("F") and x[1][-1].isdigit(),
+        enumerate(keys)
+    )
+    sample_size = len(keys) - META_DATA_ENTRIES_COUNT
+    code_llama_correct_count = 0
+    function_names_correct_count = 0
+    code2vec_corrcect_count = 0
+    for result in results_one + results_two:
+        pass
+    print(f"keys raw: {keys}")
+    print(list(results_cleaned))
+    print(sample_size)
+    return (
+            code_llama_correct_count / sample_size,
+            function_names_correct_count / sample_size,
+            code2vec_corrcect_count / sample_size
+    )
+
+
 def read_results_csv(csv_path: str) -> tuple[list[str], list[str], list[str]]:
     with open(csv_path, 'r') as csv_file:
         results_reader = csv.reader(csv_file, delimiter=";")
@@ -99,4 +123,5 @@ def read_results_csv(csv_path: str) -> tuple[list[str], list[str], list[str]]:
         results_two = next(results_reader)
         return (keys, results_one, results_two)
 
-read_results_csv("data/glibc-function-similarity-survey-results.csv")
+
+evaluate_survey_results("data/glibc-function-similarity-survey-results.csv")
