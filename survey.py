@@ -91,27 +91,59 @@ def write_dict_to_csv(table: list[list[str]], csv_path: str) -> None:
         for key, values in enumerate(table):
            writer.writerow([key] + [v for v in values])
 
+def get_data_range(keys: list[str]) -> tuple[int, int]:
+    data_indecies = list(
+        map( 
+            lambda x: x[0],
+            filter(
+                lambda x: x[1].startswith("F") and x[1][-1].isdigit(),
+                enumerate(keys)
+            )
+        )
+    )
+    return (min(data_indecies), max(data_indecies))
 
 def evaluate_survey_results(csv_path: str) -> tuple[float, float, float]:
     META_DATA_ENTRIES_COUNT = 17
     (keys, results_one, results_two) = read_results_csv(csv_path)
-    results_cleaned = filter(
-        lambda x: x[1].startswith("F") and x[1][-1].isdigit(),
-        enumerate(keys)
-    )
+    (min, max) = get_data_range(keys)
+    data_one = results_one[min : max + 1]
+    data_two = results_two[min : max + 1]
     sample_size = len(keys) - META_DATA_ENTRIES_COUNT
     code_llama_correct_count = 0
     function_names_correct_count = 0
     code2vec_corrcect_count = 0
-    for result in results_one + results_two:
-        pass
-    print(f"keys raw: {keys}")
-    print(list(results_cleaned))
-    print(sample_size)
+    code_llama_sample_size = sample_size
+    function_names_sample_size = sample_size
+    code2vec_sample_size = sample_size
+
+    
+    assert len(data_one) == sample_size
+    assert len(data_two) == sample_size
+
+    for (index, result) in enumerate(data_one + data_two):
+        if result == "":
+            if index % 3 == 0:
+                code_llama_sample_size -= 1
+            elif index % 3 == 1:
+                function_names_sample_size -= 1
+            else:
+                code2vec_sample_size -= 1
+            continue
+
+        is_result_correct_number = int(result) % 2
+
+        if index % 3 == 0:
+            code_llama_correct_count += is_result_correct_number
+        elif index % 3 == 1:
+            function_names_correct_count += is_result_correct_number
+        else:
+            code2vec_corrcect_count += is_result_correct_number
+    
     return (
-            code_llama_correct_count / sample_size,
-            function_names_correct_count / sample_size,
-            code2vec_corrcect_count / sample_size
+            code_llama_correct_count / code_llama_sample_size,
+            function_names_correct_count / function_names_sample_size,
+            code2vec_corrcect_count / code2vec_sample_size
     )
 
 
@@ -122,6 +154,3 @@ def read_results_csv(csv_path: str) -> tuple[list[str], list[str], list[str]]:
         results_one = next(results_reader)
         results_two = next(results_reader)
         return (keys, results_one, results_two)
-
-
-evaluate_survey_results("data/glibc-function-similarity-survey-results.csv")
