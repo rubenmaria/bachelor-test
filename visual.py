@@ -210,8 +210,16 @@ def plot_compare_embedding_over_k(
     fig.show()
 
     if save_to_file:
-        fig.write_html(save_file_path)
-
+        fig.write_html(save_file_path + ".html")
+        write_to_pgf_plot_format(save_file_path + ".dat", x_axis, y_axis)
+        
+def write_to_pgf_plot_format(file_path: str, x: list[int], y: list[float]) -> None:
+    assert len(x) == len(y)
+    pgf = "x y\n"
+    for i in range(len(x)):
+        pgf += f"{x[i]} {y[i]}\n"
+    with open(file_path, "w") as f:
+        f.write(pgf)
 
 def plot_compare_from_file(
     path_x: str,
@@ -223,7 +231,7 @@ def plot_compare_from_file(
     named_embeddings_y = load_embeddings(path_y)
     x_name = path_x.removesuffix(".json").split("/")[-1]
     y_name = path_y.removesuffix(".json").split("/")[-1]
-    output_file_path = f"data/{x_name}-{y_name}.html"
+    output_file_path = f"data/{x_name}-{y_name}-compare"
     x, y = make_embedding_spaces_comparable(
         named_embeddings_x,
         named_embeddings_y,
