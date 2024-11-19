@@ -231,7 +231,7 @@ def plot_compare_from_file(
     named_embeddings_y = load_embeddings(path_y)
     x_name = path_x.removesuffix(".json").split("/")[-1]
     y_name = path_y.removesuffix(".json").split("/")[-1]
-    output_file_path = f"data/{x_name}-{y_name}-compare"
+    output_file_path = f"data/{x_name}-{y_name}-compare{max_count}"
     x, y = make_embedding_spaces_comparable(
         named_embeddings_x,
         named_embeddings_y,
@@ -252,7 +252,7 @@ def plot_compare_random(path: str,save_to_file: bool, max_count: int = 0) -> Non
     embeddings = np.array(list(named_embeddings.values())[:count])
     dimension = embeddings[0].shape[0]
     x = np.array(normalize(np.random.random((count, dimension))))
-    output_path = f"data/random-compare-plot-{count}x{dimension}.html"
+    output_path = f"data/random-compare-plot-{count}x{dimension}"
     plot_compare_embedding_over_k(x, embeddings, save_to_file, output_path)
 
 

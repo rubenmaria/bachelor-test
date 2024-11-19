@@ -11,7 +11,7 @@ def main():
         "name": generate_function_names,
         "comment": generate_function_comments,
         "definition-at": get_definition_at,
-        "comment-at": get_comment_at
+        "comment-at": get_comment_at,
     })
 
 
@@ -58,20 +58,39 @@ def generate_function_names(
     with open(output_path, 'w') as f:
         json.dump({name: name for name in functions}, f, indent=2)
 
-
-def generate_function_comments(
+def generate_deduction_function_comments(
     src_path: str,
     filter_path: str,
     output_path: str,
-    deduction: bool = True
 ) -> None:
     print(f"Generating {output_path}...")
     src_files = get_src_files(src_path)
     valid_symbols = get_symbols(filter_path)
-    if not deduction:
-        comments = get_all_comments(src_files, valid_symbols)
-    else:
-        comments = get_all_comments_deduction(src_files, valid_symbols)
+    comments = get_all_comments_deduction(src_files, valid_symbols)
+    with open(output_path, 'w') as f:
+        json.dump(comments, f, indent=2)
+
+
+def generate_function_comments_filter(
+    src_path: str,
+    filter_path: str,
+    output_path: str,
+) -> None:
+    print(f"Generating {output_path}...")
+    src_files = get_src_files(src_path)
+    valid_symbols = get_symbols(filter_path)
+    comments = get_all_comments_filter(src_files, valid_symbols)
+
+    with open(output_path, 'w') as f:
+        json.dump(comments, f, indent=2)
+
+
+def generate_function_comments(src_path: str, output_path: str) -> None:
+    print(f"Generating {output_path}...")
+    src_files = get_src_files(src_path)
+    comments = get_all_comments(src_files)
+    comments = {k : v for k, v in comments.items() if v != ""}
+    print(comments)
     with open(output_path, 'w') as f:
         json.dump(comments, f, indent=2)
 
@@ -91,8 +110,21 @@ def get_src_files(src_path: str) -> list[str]:
                 src_files.append(current_file_path)
     return src_files
 
+def get_all_comments(src_files: list[str]) -> dict[str, list[str]]:
+    comments = {}
+    parser = setup_parser()
+    for src_file in src_files:
+        try:
+            root_node = parse_src_file(parser, src_file)
+            comments = dict(
+                comments,
+                **get_function_comments(root_node)
+            )
+        except RuntimeError as msg:
+            print(msg)
+    return {key: value for key, value in comments.items()}
 
-def get_all_comments(
+def get_all_comments_filter(
     src_files: list[str],
     symbols: list[str]
 ) -> dict[str, list[str]]:
