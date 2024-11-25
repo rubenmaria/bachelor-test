@@ -11,6 +11,7 @@
 \usepackage{float}
 \usepackage{svg}
 \usepackage{cite}
+\usepackage{bookmark}
 \usetikzlibrary{
   decorations.pathmorphing,
   automata, positioning, arrows, matrix,
@@ -1443,25 +1444,30 @@ zu vernachlässigen. Code Llama ist also für die Anwendung
 in dieser Arbeit ausreichend stabil.
 
 \section{Ergebnisse}
+Um die Frage zu beantworten welche der vorgestellten strategien 
+(Funktionsnamen, Funktionskommentare, \textit{Code2Vec} und 
+Code-Llama-Erklärungen)
+zu erzeugung
+von Quellcode-Embeddings, die besten semantischen Embeddings liefern, wurden
+drei verschiedene Evaluierungsmehtoden verwendet. 
 % Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
 % Ergebnisse der Standardabweichung mit Temperatur 0 \section{Ergebnisse} \subsection{Evaluierung durch Experten}
-\subsection{Methodik}
 % Aufbau des Fragebogens und
 % Stichproben Größe, vlt. Vorstellung der Experten
-\subsection{Auswertung und Ergebnisse}
+\subsection{Befragung von Experten}
 % Diskussion der Ergebnisse
 % Folgerungen das CodeLlamma "gute" Embeddings produziert 
-\subsection{Qualitative Evaluierung} 
-%  \textit{t-SNE} Plots
-% Vielleicht nochmal subsections mit Funktionsname, Funktionskommentare, 
-% Funktionserklärung, und \textit{Code2Vec} Vektoren
-% Probleme des jeweiligen Ansatzes mit drei Vektoren
 \subsection{Quantitative Evaluierung} 
 % Formel um zwei Embedding spaces zu vergleichen
 % Formel erklären und rechtfertigen
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
 % embeddings zu verwenden
+\subsection{Qualitative Evaluierung} 
+%  \textit{t-SNE} Plots
+% Vielleicht nochmal subsections mit Funktionsname, Funktionskommentare, 
+% Funktionserklärung, und \textit{Code2Vec} Vektoren
+% Probleme des jeweiligen Ansatzes mit drei Vektoren
 \section{Diskussion}
 %copy Evaluation
 % Zusammenfassung der jeweiligen Resultate
@@ -1505,7 +1511,7 @@ $CMP_k: \mathbf{R}^{N\times l} \times \mathbf{R}^{N\times l} \times
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography} %bib-filename
-\printglossary
+%\printglossary
 
 \nocite{*} %List all bib-entries
 
