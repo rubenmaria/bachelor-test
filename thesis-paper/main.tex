@@ -1442,20 +1442,38 @@ Vektoren, die aus dem gleichen Quellcode resultiert sind, $d = ?$.
 Dieser Abstand ist ausreichend gering, um ihn in der Evaluation 
 zu vernachlässigen. Code Llama ist also für die Anwendung 
 in dieser Arbeit ausreichend stabil.
-
+\pagebreak
 \section{Ergebnisse}
-Um die Frage zu beantworten welche der vorgestellten strategien 
-(Funktionsnamen, Funktionskommentare, \textit{Code2Vec} und 
-Code-Llama-Erklärungen)
-zu erzeugung
-von Quellcode-Embeddings, die besten semantischen Embeddings liefern, wurden
-drei verschiedene Evaluierungsmehtoden verwendet. 
+Im letzten Kapitel wurden vier verschiedene Strategien vorgestellt,
+eine C-Quellcodefunktion in einen semantischen Vektorraum abzubilden.
+Zum einen die Verwendung von Funktionsnamen und Funktionskommentaren 
+direkt aus dem C-Quellcode, um diese mittels \textit{SentenceTransformer}
+in Vektoren umzuwandeln. Zum anderen aus dem gesamten C-Quellcode einer
+Funktion Erklärungen von Code Llama generieren zu lassen, um diese 
+Erklärung wieder mittels \textit{SentenceTransformer} in Embeddings
+umzuwandeln. Und schließlich \textit{Code2Vec} darauf zu trainieren,
+bei gegebenem C-Quellcode einen Funktionsnamen vorherzusagen, dann 
+daraus die Vektoren zu extrahieren, die für die Inferenz des Namens
+bei gegebenem C-Quellcode verwendet werden.\\
+Nun soll in diesem Kapitel untersucht werden, welche der vier Strategien
+die besten semantischen Embeddings erzeugt und wie ähnlich oder verschieden
+die anderen semantischen Vektorräume zu dem Vektorraum der besten Strategie
+sind.\\
+Um diese Frage zu beantworten, welche der vorgestellten Strategien
+die besten semantischen Embeddings liefern, wurde eine Expertenbefragung 
+durchgeführt. Anschließend werden die erzeugten Vektorräume quantitativ
+mittels einer Formel, die die Nachbarschaftsverhältnisse beschreiben soll,
+verglichen. Zum Schluss wird qualitativ die durch \textit{t-SNE} erzeugten
+zwei dimensionalen Streudiagramme verglichen.
 % Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
 % Ergebnisse der Standardabweichung mit Temperatur 0 \section{Ergebnisse} \subsection{Evaluierung durch Experten}
 % Aufbau des Fragebogens und
 % Stichproben Größe, vlt. Vorstellung der Experten
 \subsection{Befragung von Experten}
+Um die Befragung von Experten durchzuführen musste zunächst ein Fragebogen
+erstellt werden, dafür wurde die von der LMU bereitgestellte Internetseite
+verwendet\footnote{\url{https://survey.ifkw.lmu.de/}}.
 % Diskussion der Ergebnisse
 % Folgerungen das CodeLlamma "gute" Embeddings produziert 
 \subsection{Quantitative Evaluierung} 
