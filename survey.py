@@ -65,6 +65,38 @@ def generate_survey_csv(
     named_neighbors = [n[::-1] for n in named_neighbors]
     write_dict_to_csv(named_neighbors, csv_path)
 
+def append_survey_to_csv(
+    csv_path: str,
+    cluster_path: str,
+    embeddings_path: str,
+    sample_size: int,
+    neares_neigbor_count: int
+) -> None:
+    named_embeddings = get_named_embeddings_from_cluster(
+        cluster_path,
+        embeddings_path
+    )
+    print(f"Population size: {len(named_embeddings)}")
+    sample = dict(random.sample(list(named_embeddings.items()), sample_size))
+    named_neighbors = get_named_neigbors(
+        neares_neigbor_count,
+        named_embeddings,
+        list(sample.values())
+    )
+    named_neighbors = [n[::-1] for n in named_neighbors]
+    append_dict_to_csv(named_neighbors, csv_path)
+
+def append_dict_to_csv(table: list[list[str]], csv_path: str) -> None:
+    current_key = 0
+    with open(csv_path, 'r') as csv_file:
+        last_line = csv_file.readlines()[-1]
+        current_key = int(last_line.split(",")[0])
+    print(current_key)
+    with open(csv_path, 'a') as csv_file:
+        writer = csv.writer(csv_file)
+        for key, values in enumerate(table):
+           writer.writerow([current_key + key + 1] + [v for v in values])
+
 
 def get_named_neigbors(
     k: int,
@@ -117,7 +149,6 @@ def evaluate_survey_results(csv_path: str) -> tuple[float, float, float]:
     function_names_sample_size = sample_size
     code2vec_sample_size = sample_size
 
-    
     assert len(data_one) == sample_size
     assert len(data_two) == sample_size
 

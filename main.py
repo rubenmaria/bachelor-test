@@ -7,7 +7,7 @@ from embeddings import (calculate_standard_deviation_from_embeddings, calculate_
     calculate_standard_deviation_sentence_transfomer, generate_high_dimensional, 
     calculate_standard_deviation_from_embeddings, calculate_standard_deviation_llm, 
     generate_llm_TSNE, compare_embeddings_simple, calculate_max_deviation_sentence_transfomer)
-from survey import generate_survey_csv, generate_surveys_csv, evaluate_survey_results
+from survey import generate_survey_csv, generate_surveys_csv, evaluate_survey_results, append_survey_to_csv
 from code2vec_api import generate_vectors
 from visual import (plot_clusters_from_path, plot_compare_random,
     plot_compare_from_file)
@@ -34,6 +34,7 @@ def main():
         "plot-compare-random": plot_compare_random,
         "generate-survey": generate_survey_csv,
         "generate-surveys": generate_surveys_csv,
+        "append-to-survey": append_survey_to_csv,
         "max-deviation-st": calculate_max_deviation_sentence_transfomer,
         "eval-survey": evaluate_survey_results
     })

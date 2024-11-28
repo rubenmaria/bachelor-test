@@ -1471,21 +1471,21 @@ zwei dimensionalen Streudiagramme verglichen.
 % Aufbau des Fragebogens und
 % Stichproben Größe, vlt. Vorstellung der Experten
 \subsection{Befragung von Experten}
-Um die Befragung von Experten durchzuführen musste zunächst ein Fragebogen
-erstellt werden, dafür wurde die von der LMU bereitgestellte Internetseite
-verwendet\footnote{\url{https://survey.ifkw.lmu.de/}}. In dem Fragebogen
-konnten die Funktionskommentare nicht mit einbezogen werden, da die Anzahl
-der Funktionskommentare zu gering ist. Der Grund dafür ist das nur ein 
-kleiner Anteil der Funktionen aus der C-GNU-Standard-Bibliothek mit einen
-Kommentar, wie in dieser Arbeit definiert, versehen ist. \\
-Der Fragebogen besteht aus $n=282$ Fragen, wobei jede Frage aus einer 
-Funktion und die vier nächsten Nachbarn der Funktion im Embedding-Raum 
-besteht. Jede Funktion stammt zufällig aus einer der Embedding-Räumen von
-den drei Strategien \textit{Code2Vec}, Funktionsnamen, oder
-Code-Llama-Erklärungen.
-Die Fragestellung ist nun, ob die vier nächsten Nachbarn der 
-gegebenen Funktion semantisch ähnlich sind oder nicht. In Abbildung
-$4.1$ sind zwei auszüge aus dem Fragebogen dargestellt.
+Um die Befragung von Experten durchzuführen, musste zunächst ein
+Fragebogen erstellt werden, dafür wurde die von der 
+Ludwig-Maximilians-Universität bereitgestellte Internetseite
+verwendet\footnote{\url{https://survey.ifkw.lmu.de/}}. Der 
+Fragebogen besteht aus $n=564 $ Fragen, wobei jede Frage aus
+einer Funktion und den vier nächsten Nachbarn der Funktion im
+Embedding-Raum besteht. Davon sind jeweils $k = 141$ Fragen, um
+einen Embedding-Raum zu untersuchen. Also wurden, um einen
+Embedding-Raum zu untersuchen, $k$ zufällige Funktionen und ihre
+vier nächsten Nachbarn verwendet. Die vier Embedding-Räume
+stammen aus den vier Strategien (\textit{Code2Vec}, Funktionsnamen,
+Funktionskommentare und Code-Llama-Erklärungen) Embeddings zu 
+erzeugen. Die Fragestellung ist nun, ob die vier nächsten Nachbarn 
+der gegebenen Funktion semantisch ähnlich sind oder nicht.
+In Abbildung $4.1$ sind zwei Auszüge aus dem Fragebogen dargestellt.
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.3]{abb/survey-example-positive.png}
@@ -1497,39 +1497,57 @@ $4.1$ sind zwei auszüge aus dem Fragebogen dargestellt.
     beatwortet wurde.
   }
 \end{figure}
-In dem Beispiel ist gut zu erkennen, was in diesen Kontext mit semantischer
-Ähnlichkeit gemeint ist. In dem positiv Besipiel, ist eine Funktion gegeben
-die das Maximum zweier Fließkommazahlen berechnet und die vier
-nächsten Nachbarn sind jeweils Variationen von Funktionen die das
-Minimum von zwei fließkommazahlen berechnen. Diese Funktionen sind
-semantisch ähnlich, da sie fast äquivalente Funktionen aus dem
-Mathematikmodul sind. Im negativ Beispiel kreirt die 
-gegebene Funktionen einen neuen Prozess, dagegen haben die nächsten
-Nachbarn zwar einen sehr ähnlichen Namen, aber es sidn wieder Funktionen
-aus dem Mathematikmodul.\\
+Die Auswertungsstrategie ist, dass jede Instanz einer Frage, die positiv
+beantwortet wurde, einen Punkt gibt. Um einen Score für jede Strategie
+zu berechnen, werden die Punkte summiert und dann anschließend durch die
+$k$ zu erreichenden Punkte geteilt. Das Resultat ist ein normalisierter 
+Score, der bei $\verb|score| = 1$ impliziert, dass alle Fragen positiv 
+beantwortet wurden und bei $\verb|score| = 0$ impliziert, dass keine 
+Frage positiv beantwortet wurde. Diese Auswertungsstrategie liefert 
+folgendes Resultat:
 \begin{center}
-\begin{tabular}{||c c c c||} 
- \hline
- Col1 & Col2 & Col2 & Col3 \\ [0.5ex] 
- \hline\hline
- 1 & 6 & 87837 & 787 \\ 
- \hline
- 2 & 7 & 78 & 5415 \\
- \hline
- 3 & 545 & 778 & 7507 \\
- \hline
- 4 & 545 & 18744 & 7560 \\
- \hline
- 5 & 88 & 788 & 6344 \\ [1ex] 
- \hline
-\end{tabular}
-\end{center}
-
-
-
+  \begin{tabular}{ |p{1.3cm}||p{3.8cm}|p{3cm}|p{1.8cm}|p{4.5cm}|  }
+  \hline
+  \multicolumn{5}{|c|}{Ergebnisse der Expertenbefragung} \\
+  \hline
+  Strategie & Funktionskommentare &  Funktionsnamen & \textit{Code2Vec} & Code-Llama-Erklärungen\\
+  \hline
+  Score   &  0                    &        0        &   0               & 0\\
+  \hline
+  \end{tabular}
+\end{center} 
+\hfill\\
+Die Strategie mit dem höchsten Score ist demnach die, die Code-Llama-Erklärungen
+verwendet hat. Da nun die beste Strategie identifiziert ist, 
+werden im Folgenden die anderen Strategien mit dieser quantitativ verglichen.
 % Diskussion der Ergebnisse
 % Folgerungen das CodeLlamma "gute" Embeddings produziert 
 \subsection{Quantitative Evaluierung} 
+Im Folgenden wird eine Formel vorgestellt die zwei Datenmengen
+auf Ähnlichket untersuchen soll. Dabei ist Ähnlichkeit hier,
+ähnliche Nachbarschaftsbeziehungen zu besitzten. Im Folgenden
+wird eine Datenmenge als Matrix 
+$\mathbf{D} \in \mathbb{R}^{N\times l}$ beschrieben. Dabei 
+ist $l \in \mathbb{N}$ die Dimension eines Datenpunkts und
+$N \in \mathbb{N}$ die Anzahl der Datenpunkte. Folglich
+besitzt jeder Datenpunkt $x \in \mathbb{R}^l$ einen eindeutigen
+Index und zwar die $j$-te Zeile, für die gilt: $x = \mathbf{D}_j$, 
+wobei $\mathbf{D}_j$ der $j$-te Zeilenvektor ist.\\
+Zunächst wird eine Methode benötigt um Nachbarn von einen gegebenen
+Punkt zu erlangen, dafür wird hier der 
+\textit{K-Nearest-Neighbor-Algorithmus} verwendet. Dieser
+gibt bei gegebenen Punkt die $k$ nächsten Nachbarn zurück. 
+Also eine Funktion mit der Signatur: 
+$NN_k: \mathbb{R}^{N\times l} \times \mathbb{R}^{l} \to \mathbb{N}^k$. 
+Also wrid ein Datenmenge und ein Datenpunkt aus der Menge eingeben
+und ein Vektor aus indizes zurückgegeben.
+Der Output-Vektor enthält die indezes der nächsten Nachbarn. Diese sind 
+aufsteigend sotiert, nach dem euklidischen Abstand von dem eingegeben
+Punkt. Nun ist es möglich ein Nachbarschaftsverhältnis von einem Punkt
+und seiner $k$ Nachbarn zu erhalten, in der Form des Vektors 
+$v \in \mathbb{N}^k$.
+
+
 % Formel um zwei Embedding spaces zu vergleichen
 % Formel erklären und rechtfertigen
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
@@ -1540,6 +1558,17 @@ aus dem Mathematikmodul.\\
 % Funktionserklärung, und \textit{Code2Vec} Vektoren
 % Probleme des jeweiligen Ansatzes mit drei Vektoren
 \section{Diskussion}
+
+In dem Beispiel ist gut zu erkennen, was in diesen Kontext mit semantischer
+Ähnlichkeit gemeint ist. In dem positiven Besipiel, ist eine Funktion gegeben
+die das Maximum zweier Fließkommazahlen berechnet und die vier
+nächsten Nachbarn sind jeweils Variationen von Funktionen die das
+Minimum von zwei fließkommazahlen berechnen. Diese Funktionen sind
+semantisch ähnlich, da sie fast äquivalente Funktionen aus dem
+Mathematikmodul sind. Im negativ Beispiel kreirt die 
+gegebene Funktionen einen neuen Prozess, dagegen haben die nächsten
+Nachbarn zwar einen sehr ähnlichen Namen, aber es sidn wieder Funktionen
+aus dem Mathematikmodul.\\
 %copy Evaluation
 % Zusammenfassung der jeweiligen Resultate
 % Funktionnamen -> Nicht geignet, da zu wenig informationen und abkürzungen
@@ -1573,7 +1602,7 @@ $CMP_k: \mathbf{R}^{N\times l} \times \mathbf{R}^{N\times l} \times
 \{ \mathbf{R}^l \times \mathbf{R}^{N\times l} \to \mathbf{N}^k \} 
 \times \{ \mathcal{P}([0,1]) \to [0,1] \} \to [0,1]$
 
-\[ CMP_k(X,Y,f_k,agg) = agg(\{E_k(f_k(X_{i,j},X),f_k(Y_{i,j},Y)) | j \in \{1,2,3, \dots N\}\})\]
+\[ CMP_k(X,Y,f_k,agg) = agg(\{E_k(f_k(X_j,X),f_k(Y_j,Y)) | j \in \{1,2,3, \dots N\}\})\]
 
 \pagebreak
 
