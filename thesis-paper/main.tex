@@ -1485,7 +1485,8 @@ stammen aus den vier Strategien (\textit{Code2Vec}, Funktionsnamen,
 Funktionskommentare und Code-Llama-Erklärungen) Embeddings zu 
 erzeugen. Die Fragestellung ist nun, ob die vier nächsten Nachbarn 
 der gegebenen Funktion semantisch ähnlich sind oder nicht.
-In Abbildung $4.1$ sind zwei Auszüge aus dem Fragebogen dargestellt.
+Diese Fragen wurden dann Experten aus dem Bereich Reverse Engineering
+vorgelegt.
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.3]{abb/survey-example-positive.png}
@@ -1493,7 +1494,7 @@ In Abbildung $4.1$ sind zwei Auszüge aus dem Fragebogen dargestellt.
   \end{center}
   \caption{
     Auf der linken Seite eine Frage aus dem Fragebogen die positiv
-    beatwortet wurde und rechts eine Frage aus dem Fragebogen die Negativ
+    beatwortet wurde und rechts eine Frage die negativ
     beatwortet wurde.
   }
 \end{figure}
@@ -1532,20 +1533,41 @@ ist $l \in \mathbb{N}$ die Dimension eines Datenpunkts und
 $N \in \mathbb{N}$ die Anzahl der Datenpunkte. Folglich
 besitzt jeder Datenpunkt $x \in \mathbb{R}^l$ einen eindeutigen
 Index und zwar die $j$-te Zeile, für die gilt: $x = \mathbf{D}_j$, 
-wobei $\mathbf{D}_j$ der $j$-te Zeilenvektor ist.\\
+wobei $\mathbf{D}_j$ der $j$-te Zeilenvektor von $\mathbf{D}$ ist.\\
 Zunächst wird eine Methode benötigt um Nachbarn von einen gegebenen
 Punkt zu erlangen, dafür wird hier der 
 \textit{K-Nearest-Neighbor-Algorithmus} verwendet. Dieser
 gibt bei gegebenen Punkt die $k$ nächsten Nachbarn zurück. 
 Also eine Funktion mit der Signatur: 
 $NN_k: \mathbb{R}^{N\times l} \times \mathbb{R}^{l} \to \mathbb{N}^k$. 
-Also wrid ein Datenmenge und ein Datenpunkt aus der Menge eingeben
-und ein Vektor aus indizes zurückgegeben.
+Das heißt es die gesamte Datenmenge und ein Datenpunkt aus der Menge
+eingeben und der Output ist ein Vektor aus indizes.
 Der Output-Vektor enthält die indezes der nächsten Nachbarn. Diese sind 
 aufsteigend sotiert, nach dem euklidischen Abstand von dem eingegeben
 Punkt. Nun ist es möglich ein Nachbarschaftsverhältnis von einem Punkt
 und seiner $k$ Nachbarn zu erhalten, in der Form des Vektors 
-$v \in \mathbb{N}^k$.
+$v \in \mathbb{N}^k$.\\
+Als nächstes wird eine Methode benötigt zwei 
+Nachbarschaftsverhältnisse in der Form von 
+zwei vektoren $u,v \in \mathbb{N}^k$ zu
+vergleichen. Hierfür wird folgende Formel
+verwendet:
+
+\[
+    \verb|compare|(u,v)_k = 
+      \frac{1}{G_k} \sum^{k}_{i=1} 
+      \frac{ \text{score}_{k}(u_i,i,v)}{log_2(i+1)}
+\]
+mit
+\[
+  \text{score}_k(x,i,v) = \begin{cases*} 
+      1 & , $\exists j \in \mathbf{N}: x = v_j \land i = j$   \\
+      \frac{1}{2} & , $\exists j \in \mathbf{N}: x = v_j \land i \neq j$\\
+      0   & , \text{otherwise}
+    \end{cases*}  \text{  und  }
+    G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
+\]
+
 
 
 % Formel um zwei Embedding spaces zu vergleichen
