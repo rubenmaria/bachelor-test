@@ -1551,8 +1551,13 @@ Als nächstes wird eine Methode benötigt zwei
 Nachbarschaftsverhältnisse in der Form von 
 zwei vektoren $u,v \in \mathbb{N}^k$ zu
 vergleichen. Hierfür wird folgende Formel
+mit Sigantur \\
+\begin{center}
+$\verb|compare|_k:\mathbb{N}^k \times \mathbb{N}^k \to [0,1]$ 
+und $\text{score}_k: \mathbb{N} \times \mathbb{N} \times
+\mathbb{N}^k \to \{0, \frac{1}{2}, 1\}$
+\end{center}
 verwendet:
-
 \[
     \verb|compare|(u,v)_k = 
       \frac{1}{G_k} \sum^{k}_{i=1} 
@@ -1560,13 +1565,58 @@ verwendet:
 \]
 mit
 \[
-  \text{score}_k(x,i,v) = \begin{cases*} 
-      1 & , $\exists j \in \mathbf{N}: x = v_j \land i = j$   \\
-      \frac{1}{2} & , $\exists j \in \mathbf{N}: x = v_j \land i \neq j$\\
+  \text{score}_k(l,i,v) = \begin{cases*} 
+      1 & , $\exists j \in \mathbb{N}: l = v_j \land i = j$   \\
+      \frac{1}{2} & , $\exists j \in \mathbb{N}: l = v_j \land i \neq j$\\
       0   & , \text{otherwise}
     \end{cases*}  \text{  und  }
     G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
 \]
+Die Formel ist stark durch den Normalised Discounted Comulative Gain
+aus \cite{ndcg} inpsiriert. \pagebreak\\
+Die Funktion $\verb|compare|_k$ iteriert über alle Nachbarn und berechnet
+für jeden einen $\text{score}_k$. Gruppierungen von Datenpunkte haben
+alle zu einander einen relativ geringen Abstand. Aus diesem Grund ist
+der Score von einen Nachbarn mit großen Abstand zum Bezugspunkt weniger
+bedeutsam als ein Nachbar mit geringen Abstand. Da die Nachbarn aufsteigend,
+nach Abstand zu einen gegeben Bezugspunkt sotiert sind, wird der Score
+durch einen Faktor geteilt der in jeder Iteration größer wird. Dadurch
+haben Nachbarn die weiter Weg sind, weniger einfluss auf die Summe.
+Am ende wird normalisiert indem durch dir höchste zu erreichenden
+Summe an Scores geteilt wird. \\
+Die Funktion $\text{score}_k$ berechnet wie ähnlich zwei
+Nachbarschaftsverhältnisse $u, v \in \mathbb{N}^k$ bei  gegebenen
+Nachbarn $l = u_i$ sind. Den 
+höchsten Wert $\text{score}_k(l, i, v) = 1$ bekommt ein 
+Nachbar $l = u_i$ der im Nachbarschaftsverhätniss von $v$
+enthalten ist und auf der selben position im abstands
+Ranking von $v$ ist. Den Wert 
+$\text{score}_k(l, i, v) = \frac{1}{2}$ bekommt ein 
+Nachbar $l = u_i$ der im Nachbarschaftsverhältniss
+$v$ enthalten ist, aber nicht auf 
+der selben Position im abstands Ranking von $v$ ist.
+Schiließlich erhält ein Nachbar $l = u_i$ den Score
+$\text{score}_k(l, i, v) = 0$, falls er nicht 
+im Nachbarschaftsverhältniss $v$ enthalten ist.\\
+Um nun zwei Datenmengen zu vergleichen müssen alle 
+möglichen Nachbarschaftsverhältnisse betrachtet 
+werden. Das motiviert folgende Formel mit Signatur
+$CMP: \mathbb{R}^{N\times l} \times  \mathbb{R}^{N\times l} \times \mathbb{N} \to [0,1]$, 
+wobei angennommen wird das $A,B \in \mathbb{R}^{N\times l}$ Datenmengen 
+sind, die aus unterschiedlichen Embedding-Prozessen enstanden sind, aber 
+von der gleichen Grundmenge. Bei einer Grundmenge $H \in F^N$, wobei $F$ eine beliebige 
+Menge ist und bei Embedding-Prozessen $E_1,E_2: F \to \mathbb{R}^{N\times l}$ 
+gilt dann: $A_j = E_1(H_j)$  und $B_j = E_2(H_j)$. Dadurch könen 
+Nachbarschaftsverhältnisse der Datenmengen $A,B$ verglichen werden,
+indem die Nachbarschaftsverhälnisse des selben Features in unterschiedlichen
+Embedding-Räumen verglichen werden:
+\[
+  CMP(A, B, k) = \frac{1}{N}\sum_{i = 1}^{N} \verb|compare|_k(NN_k(A_i,A),NN_k(B_i, B))
+\]
+Um einen Normalisierten Wert zu erhalten, wird hier das arithmetische Mittel der Resultate der 
+$\verb|compare|_k$ Funktion verwendet.\\
+Da die Wahl von k nicht offensichtlich ist, werden die Ergebnisse für alle $k = 1, 2, \dots, N$
+berechnet und in einen Graphen abgebildet. Daraus sind folgende Ergebnisse enstanden:
 
 
 
