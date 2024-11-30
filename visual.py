@@ -59,8 +59,14 @@ def plot_clusters_from_path(
         title=title
     )
     if save_file:
-        output_path = path.removesuffix(".json").replace("/", "-") + ".html"
-        fig.write_html(output_path)
+        output_path = path.removesuffix(".json").replace("/", "-")
+        fig.write_html(output_path + ".html")
+        write_to_pgf_plot_format(
+            output_path,
+            x_coordinates.to_list(),
+            y_coordinates.to_list()
+        )
+
     fig.show()
 
 
@@ -199,7 +205,7 @@ def plot_compare_embedding_over_k(
     assert x.shape == y.shape
     k_lower_limit = 2
     k_upper_limit = x.shape[0]
-    x_axis = [k for k in range(k_lower_limit, k_upper_limit + 1)]
+    x_axis = [float(k) for k in range(k_lower_limit, k_upper_limit + 1)]
     y_axis = [
         compare_embedding_spaces_k(k, x, y, k_nearest_neighbor_fast, np.mean)
         for k in progress_bar(x_axis)
@@ -213,7 +219,7 @@ def plot_compare_embedding_over_k(
         fig.write_html(save_file_path + ".html")
         write_to_pgf_plot_format(save_file_path + ".dat", x_axis, y_axis)
         
-def write_to_pgf_plot_format(file_path: str, x: list[int], y: list[float]) -> None:
+def write_to_pgf_plot_format(file_path: str, x: list[float], y: list[float]) -> None:
     assert len(x) == len(y)
     pgf = "x y\n"
     for i in range(len(x)):

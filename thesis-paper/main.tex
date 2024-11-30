@@ -1551,8 +1551,8 @@ $v \in \mathbb{N}^k$.\\
 Als nächstes wird eine Methode benötigt zwei 
 Nachbarschaftsverhältnisse in der Form von 
 zwei vektoren $u,v \in \mathbb{N}^k$ zu
-vergleichen. Hierfür wird folgende Formel
-mit Sigantur \\
+vergleichen. Hierfür wird folgende Funktionen
+mit Siganturen \\
 \begin{center}
 $\verb|compare|_k:\mathbb{N}^k \times \mathbb{N}^k \to [0,1]$ 
 und $\text{score}_k: \mathbb{N} \times \mathbb{N} \times
@@ -1573,9 +1573,9 @@ mit
     \end{cases*}  \text{  und  }
     G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
 \]
-Die Formel ist stark durch den Normalised Discounted Comulative Gain
-aus \cite{ndcg} inpsiriert. \pagebreak\\
-Die Funktion $\verb|compare|_k$ iteriert über alle Nachbarn und berechnet
+Die Funktion $\verb|compare|_k$ ist stark durch den Normalised Discounted Comulative Gain
+aus \cite{ndcg} inpsiriert.\\
+Die Funktion iteriert über alle Nachbarn und berechnet
 für jeden einen $\text{score}_k$. Gruppierungen von Datenpunkte haben
 alle zu einander einen relativ geringen Abstand. Aus diesem Grund ist
 der Score von einen Nachbarn mit großen Abstand zum Bezugspunkt weniger
@@ -1601,49 +1601,60 @@ $\text{score}_k(l, i, v) = 0$, falls er nicht
 im Nachbarschaftsverhältniss $v$ enthalten ist.\\
 Um nun zwei Datenmengen zu vergleichen müssen alle 
 möglichen Nachbarschaftsverhältnisse betrachtet 
-werden. Das motiviert folgende Formel mit Signatur
+werden. Das motiviert folgende Funktionen mit Signaturen
 $CMP: \mathbb{R}^{N\times l} \times  \mathbb{R}^{N\times l} \times \mathbb{N} \to [0,1]$, 
 wobei angennommen wird das $A,B \in \mathbb{R}^{N\times l}$ Datenmengen 
 sind, die aus unterschiedlichen Embedding-Prozessen enstanden sind, aber 
-von der gleichen Grundmenge. Bei einer Grundmenge $H \in F^N$, wobei $F$ eine beliebige 
-Menge ist und bei Embedding-Prozessen $E_1,E_2: F \to \mathbb{R}^{N\times l}$ 
-gilt dann: $A_j = E_1(H_j)$  und $B_j = E_2(H_j)$. Dadurch könen 
-Nachbarschaftsverhältnisse der Datenmengen $A,B$ verglichen werden,
+aus der gleichen Grundmenge sind. Bei einer Grundmenge $H \in F^N$, wobei
+$F$ eine beliebige Menge ist und bei Embedding-Prozessen $E_1,E_2: F \to \mathbb{R}^{l}$ 
+gilt dann: \[A_j = E_1(H_j)  \hspace{0.5cm }\text{und} \hspace{0.5cm } B_j = E_2(H_j).\]
+Dadurch könen Nachbarschaftsverhältnisse der Datenmengen $A,B$ verglichen werden,
 indem die Nachbarschaftsverhälnisse des selben Features in unterschiedlichen
 Embedding-Räumen verglichen werden:
 \[
   CMP(A, B, k) = \frac{1}{N}\sum_{i = 1}^{N} \verb|compare|_k(NN_k(A_i,A),NN_k(B_i, B))
 \]
-Um einen Normalisierten Wert zu erhalten, wird hier das arithmetische Mittel der Resultate der 
-$\verb|compare|_k$ Funktion verwendet.\\
-Da die Wahl von k nicht offensichtlich ist, werden die Ergebnisse für alle $k = 1, 2, \dots, N$
-berechnet und in einen Graphen abgebildet. Daraus sind folgende Ergebnisse enstanden:
-
-
+Um die Ergebnisse der $\verb|compare|_k$ Funktion zu aggregieren, wird hier das 
+arithmetische Mittel verwendet.\\
+Bei den verwendeten Embedding-Prozessen in dieser Arbeit, sind elemente der Grundmenge 
+Verloren gegangen. Die Grundmenge sind hier die Funktionen in der GNU-C-Standard-Biblithek.
+Die Dimensionen der resultierenden Datenmengen sind: 
+\[
+  \verb|Funktionsnamen| \leftrightarrow \mathbf{D}_1=\mathbb{R}^{1507\times 384},
+  \verb|Funktionskommentare| \leftrightarrow \mathbf{D}_3=\mathbb{R}^{487\times 384},
+\]
+\[ 
+  \verb|Code2Vec| \leftrightarrow \mathbf{D}_2=\mathbb{R}^{896\times 384} \hspace{0.3cm}\text{und}
+  \hspace{0.3cm} \verb|Code-Llama-Erklärungen| \leftrightarrow \mathbf{G}=\mathbb{R}^{1507\times 384}
+\]
+Um die Datenmengen vergleichen zu könenen wurde das minimum der Dimensionen genommen: 
+$N := 487$.
+Da die Wahl von $k$ nicht offensichtlich ist, werden die Ergebnisse für alle $k = 1, 2, \dots, N$
+berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstanden:
 \begin{tikzpicture}
-\begin{axis}[
-    xlabel=$k$,
-    ylabel=$\text{CMP}(A{,}B{,}k)$,
-    width=0.8\textwidth, 
-    height=0.6\textwidth
-]
+  \begin{axis}[
+      xlabel=$k$,
+      ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
+      width=0.8\textwidth, 
+      height=0.6\textwidth
+  ]
 
-\addplot[green, thick] table
-  {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
-\addplot[black, thick]
-  table {abb/random-compare-plot-487x384.dat};
-\addplot[blue, thick] 
-  table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
-\addplot[red, thick] 
-  table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
+  \addplot[green, thick] table
+    {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
+  \addplot[black, thick]
+    table {abb/random-compare-plot-487x384.dat};
+  \addplot[blue, thick] 
+    table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
+  \addplot[red, thick] 
+    table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
 
-\legend{
-  Funktionskommentare und Code-Llama-Erklärungen,
-  Zufällige Punkte und Code-Llama-Erklärungen,
-  Funktiosnamen und Code-Llama-Erklärungen,
-  \textit{Code2Vec} und Code-Llama-Erklärungen
-}
-\end{axis}
+  \legend{
+    Funktionskommentare und Code-Llama-Erklärungen,
+    Zufällige Punkte und Code-Llama-Erklärungen,
+    Funktiosnamen und Code-Llama-Erklärungen,
+    \textit{Code2Vec} und Code-Llama-Erklärungen
+  }
+  \end{axis}
 \end{tikzpicture}
 % Formel um zwei Embedding spaces zu vergleichen
 % Formel erklären und rechtfertigen
