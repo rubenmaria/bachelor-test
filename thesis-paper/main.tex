@@ -2,6 +2,7 @@
 \input{settings}
 \usepackage{babel}
 \usepackage{csquotes}
+\usepackage{pgfplots}
 \MakeOuterQuote{"}
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -1569,7 +1570,31 @@ mit
 \]
 
 
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel=$k$,
+    ylabel=$\text{CMP}(A{,}B{,}k)$,
+    width=0.8\textwidth, 
+    height=0.6\textwidth
+]
 
+\addplot[green, thick] table
+  {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
+\addplot[black, thick]
+  table {abb/random-compare-plot-487x384.dat};
+\addplot[blue, thick] 
+  table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
+\addplot[red, thick] 
+  table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
+
+\legend{
+  Funktionskommentare und Code-Llama-Erklärungen,
+  Zufällige Punkte und Code-Llama-Erklärungen,
+  Funktiosnamen und Code-Llama-Erklärungen,
+  \textit{Code2Vec} und Code-Llama-Erklärungen
+}
+\end{axis}
+\end{tikzpicture}
 % Formel um zwei Embedding spaces zu vergleichen
 % Formel erklären und rechtfertigen
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
