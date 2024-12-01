@@ -3,14 +3,22 @@
 \usepackage{babel}
 \usepackage{csquotes}
 \usepackage{pgfplots}
+\usepackage{tikz}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{colormaps}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{external} 
+\tikzexternalize
 \MakeOuterQuote{"}
+\usepackage{graphicx}
+\usepackage{epstopdf}
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage{tikz}
 \usepackage{chngcntr}
 \usepackage{float}
 \usepackage{svg}
+\usepackage{xcolor}
 \usepackage{cite}
 \usepackage{bookmark}
 \usetikzlibrary{
@@ -30,6 +38,29 @@
 }
 \newcommand{\nat}[0]{\mathbf{N}}
 \newtheorem{example}{Beispiel}[section]
+\newcommand{\mycomment}[1]{}
+
+
+\definecolor{SkyBlue}{RGB}{135, 206, 235}
+\definecolor{CrimsonRed}{RGB}{220, 20, 60}
+\definecolor{ForestGreen}{RGB}{34, 139, 34}
+\definecolor{Goldenrod}{RGB}{218, 165, 32}
+\definecolor{DeepPurple}{RGB}{75, 0, 130}
+\definecolor{Coral}{RGB}{255, 127, 80}
+\definecolor{Teal}{RGB}{0, 128, 128}
+\definecolor{Lavender}{RGB}{230, 230, 250}
+\definecolor{Amber}{RGB}{255, 191, 0}
+\definecolor{SlateGray}{RGB}{112, 128, 144}
+
+\definecolor{ContrastRed}{RGB}{230, 25, 75}   % Red
+\definecolor{ContrastGreen}{RGB}{60, 180, 75}   % Green
+\definecolor{ContrastBlue}{RGB}{0, 130, 200}   % Blue
+\definecolor{ContrastOrange}{RGB}{245, 130, 48}  % Orange
+\definecolor{ContrastPurple}{RGB}{145, 30, 180}  % Purple
+\definecolor{ContrastCyan}{RGB}{70, 240, 240}  % Cyan
+\definecolor{ContrastMagenta}{RGB}{240, 50, 230}  % Magenta
+\definecolor{ContrastLime}{RGB}{210, 245, 60}  % Lime
+\definecolor{ContrastPink}{RGB}{250, 190, 190} % Pink
 
 
 \begin{center}\uppercase{Ludwig-Maximilians-Universität München}\end{center}
@@ -1661,6 +1692,136 @@ berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstand
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
 % embeddings zu verwenden
 \subsection{Qualitative Evaluierung} 
+\pagebreak
+\begin{center}
+  \begin{tikzpicture}
+    \begin{groupplot}[
+          group style={
+              group size=3 by 2, % 3 plots in 4 row
+              horizontal sep=0.5cm, % Space between plots
+              vertical sep=1cm % Space if there are multiple rows
+          },
+          width=0.33\textwidth, % Width of each plot
+          height=0.33\textwidth, % Height of each plot 
+          scatter/classes={
+              0={mark=*,ContrastBlue},
+              1={mark=*,ContrastRed},
+              2={mark=*,ContrastGreen},
+              3={mark=*,ContrastOrange},
+              4={mark=*,ContrastPurple},
+              5={mark=*,ContrastPink},
+              6={mark=*,ContrastLime},
+              7={mark=*,ContrastCyan},
+              8={mark=*,Teal},
+              9={mark=*,SlateGray}
+          },
+          scatter,
+          xlabel={},
+          ylabel={},
+          xtick=\empty,
+          ytick=\empty,
+          legend style={
+            at={(-0.6,-0.1)},
+            legend columns=5,
+            fill=none,
+            draw=black,
+            anchor=north,
+            align=center,
+            row sep=0.1cm,
+            column sep=0.3cm,
+            legend cell align=left
+          },
+      ]
+        \nextgroupplot[title={\textit{Code2Vec}, $P=20$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-20.dat};
+        \nextgroupplot[title={\textit{Code2Vec}, $P=30$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
+        \nextgroupplot[title={\textit{Code2Vec}, $P=40$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-40.dat};
+
+        \nextgroupplot[title={Kommentare, $P=20$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-20.dat};
+        \nextgroupplot[title={Kommentare, $P=30$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
+        \nextgroupplot[title={Kommentare, $P=40$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-40.dat};
+      \end{groupplot}
+  \end{tikzpicture}
+\end{center}
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{groupplot}[
+          group style={
+              group size=3 by 2, % 3 plots in 4 row
+              horizontal sep=0.5cm, % Space between plots
+              vertical sep=1cm % Space if there are multiple rows
+          },
+          width=0.33\textwidth, % Width of each plot
+          height=0.33\textwidth, % Height of each plot 
+          scatter/classes={
+              0={mark=*,ContrastBlue},
+              1={mark=*,ContrastRed},
+              2={mark=*,ContrastGreen},
+              3={mark=*,ContrastOrange},
+              4={mark=*,ContrastPurple},
+              5={mark=*,ContrastPink},
+              6={mark=*,ContrastLime},
+              7={mark=*,ContrastCyan},
+              8={mark=*,Teal},
+              9={mark=*,SlateGray}
+          },
+          scatter,
+          xlabel={},
+          ylabel={},
+          xtick=\empty,
+          ytick=\empty,
+          legend style={
+            at={(-0.6,-0.1)},
+            legend columns=5,
+            fill=none,
+            draw=black,
+            anchor=north,
+            align=center,
+            row sep=0.1cm,
+            column sep=0.3cm,
+            legend cell align=left
+          },
+      ]
+
+        \nextgroupplot[title={Namen, $P=20$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-20.dat};
+        \nextgroupplot[title={Namen, $P=30$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
+        \nextgroupplot[title={Namen, $P=40$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-40.dat};
+
+        \nextgroupplot[title={\textit{Code Llama}, $P=20$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-20.dat};
+        \nextgroupplot[title={\textit{Code Llama}, $P=30$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-30.dat};
+        \nextgroupplot[title={\textit{Code Llama}, $P=40$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-40.dat};
+
+        \legend{
+          IO, Netzwerk, Speicher, Nebenläufig, Dateimanagement,
+          Prozesse, Signale, String, Mathematik, Sonstiges
+        }
+      \end{groupplot}
+  \end{tikzpicture}
+\end{center}
 %  \textit{t-SNE} Plots
 % Vielleicht nochmal subsections mit Funktionsname, Funktionskommentare, 
 % Funktionserklärung, und \textit{Code2Vec} Vektoren

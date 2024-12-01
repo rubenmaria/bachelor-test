@@ -33,11 +33,13 @@ def plot_clusters_from_path(
     embeddings = {k:v for k, v in load_embeddings(path).items() if k in cluster_names}
     
     labels: list[str] = []
+    labels_encoded: list[int] = []
     symbols: list[str] = []
     for label_name in embeddings.keys():
         for color_index, (category, names) in enumerate(cluster_data.items()):
             if label_name in names:
                 labels.append(colors[color_index])
+                labels_encoded.append(color_index)
                 symbols.append(category)
                 break
 
@@ -59,12 +61,14 @@ def plot_clusters_from_path(
         title=title
     )
     if save_file:
-        output_path = path.removesuffix(".json").replace("/", "-")
+        output_path = path.removesuffix(".json").replace("/", "-").replace("..","prev")
+        print(f"saved to: {output_path}")
         fig.write_html(output_path + ".html")
-        write_to_pgf_plot_format(
-            output_path,
-            x_coordinates.to_list(),
-            y_coordinates.to_list()
+        write_to_pgf_plot_scatter_format(
+            output_path + ".dat",
+            x_coordinates.tolist(),
+            y_coordinates.tolist(),
+            labels_encoded
         )
 
     fig.show()
@@ -218,6 +222,15 @@ def plot_compare_embedding_over_k(
     if save_to_file:
         fig.write_html(save_file_path + ".html")
         write_to_pgf_plot_format(save_file_path + ".dat", x_axis, y_axis)
+
+def write_to_pgf_plot_scatter_format(file_path: str, x: list[float], y: list[float], label: list[int]) -> None:
+    assert len(x) == len(y)
+    assert len(x) == len(label)
+    pgf = "x y\n"
+    for i in range(len(x)):
+        pgf += f"{x[i]} {y[i]} {label[i]}\n"
+    with open(file_path, "w") as f:
+        f.write(pgf)
         
 def write_to_pgf_plot_format(file_path: str, x: list[float], y: list[float]) -> None:
     assert len(x) == len(y)
