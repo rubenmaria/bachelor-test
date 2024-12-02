@@ -1652,52 +1652,78 @@ Verloren gegangen. Die Grundmenge sind hier die Funktionen in der GNU-C-Standard
 Die Dimensionen der resultierenden Datenmengen sind: 
 \[
   \verb|Funktionsnamen| \leftrightarrow \mathbf{D}_1=\mathbb{R}^{1507\times 384},
-  \verb|Funktionskommentare| \leftrightarrow \mathbf{D}_3=\mathbb{R}^{487\times 384},
+  \verb|Funktionskommentare| \leftrightarrow \mathbf{D}_2=\mathbb{R}^{487\times 384},
 \]
-\[ 
-  \verb|Code2Vec| \leftrightarrow \mathbf{D}_2=\mathbb{R}^{896\times 384} \hspace{0.3cm}\text{und}
+\[
+  \verb|Zufällige-Datenmenge|\leftrightarrow \mathbf{D}_3=\mathbb{R}^{1507\times 384},
+  \verb|Code2Vec| \leftrightarrow \mathbf{D}_4=\mathbb{R}^{896\times 384} \hspace{0.3cm}\text{und}
+\]
+\[
   \hspace{0.3cm} \verb|Code-Llama-Erklärungen| \leftrightarrow \mathbf{G}=\mathbb{R}^{1507\times 384}
 \]
 Um die Datenmengen vergleichen zu könenen wurde das minimum der Dimensionen genommen: 
 $N := 487$.
 Da die Wahl von $k$ nicht offensichtlich ist, werden die Ergebnisse für alle $k = 1, 2, \dots, N$
 berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstanden:
-\begin{tikzpicture}
-  \begin{axis}[
-      xlabel=$k$,
-      ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
-      width=0.8\textwidth, 
-      height=0.6\textwidth
-  ]
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel=$k$,
+        ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
+        width=0.8\textwidth, 
+        height=0.6\textwidth
+    ]
 
-  \addplot[green, thick] table
-    {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
-  \addplot[black, thick]
-    table {abb/random-compare-plot-487x384.dat};
-  \addplot[blue, thick] 
-    table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
-  \addplot[red, thick] 
-    table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
+    \addplot[ForestGreen, thick] table
+      {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
+    \addplot[black, thick]
+      table {abb/random-compare-plot-487x384.dat};
+    \addplot[SkyBlue, thick] 
+      table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
+    \addplot[CrimsonRed, thick] 
+      table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
 
-  \legend{
-    Funktionskommentare und Code-Llama-Erklärungen,
-    Zufällige Punkte und Code-Llama-Erklärungen,
-    Funktiosnamen und Code-Llama-Erklärungen,
-    \textit{Code2Vec} und Code-Llama-Erklärungen
-  }
-  \end{axis}
-\end{tikzpicture}
+    \legend{
+      Funktionskommentare und Code-Llama-Erklärungen,
+      Zufällige Punkte und Code-Llama-Erklärungen,
+      Funktiosnamen und Code-Llama-Erklärungen,
+      \textit{Code2Vec} und Code-Llama-Erklärungen
+    }
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
 % Formel um zwei Embedding spaces zu vergleichen
 % Formel erklären und rechtfertigen
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
 % embeddings zu verwenden
-\subsection{Qualitative Evaluierung} 
 \pagebreak
+\subsection{Qualitative Evaluierung} 
+Die qualitative Evaluierung wird in dieser Arbeit mittells
+\textit{t-SNE} durchgeführt. Dabei wird \textit{t-SNE} verwendet
+um die hochdimensionalen Vektoren $x \in \mathbb{R}^{384}$ in 
+einen zweidimensionalen Vektorraum zu projizieren. Bei der 
+Verwendung und Interpretation von \textit{t-SNE} gibt es 
+einiges zu beachten. \\
+Zum einen sollten bei der Verwendung mehrere Werte für 
+den Perplexity-Parameter $P \in \{2,3,\dots ,50\}$ ausprobiert werden.
+Zum anderen kann aus den zweidimensionalen Datenmengen nur 
+eine aussage über die Existenz von Clustern abgeleitet werden und
+nicht über die position und größe einer Gruppierung. Sogar 
+die Existenz eines Clusters in der niedrigdimensionalen
+Datenmenge ist zwar ein starkes indiz das ein Cluster
+in den hochdimensionalen Daten exisitiert, aber kein Beweis. \\
+Im folgenden werden die Werte $P \in \{20, 30, 40\}$, als 
+Perplexity-Parameter verwendet, um verschieden Werte auszuprobieren
+die jeweils nicht am Rand der empfohlenen Menge $\{2,3, \dots, 50\}$
+liegen.\\ 
+Um aussagekräftige Graphen zu erhalten wurden $1182$ Funktionen aus
+der GNU-Standard-C-Bibliothek in $10$ Kategorien unterteilt.\\
+Als erstes die Ergebnisse der \textit{Code2Vec} Vektoren:
 \begin{center}
   \begin{tikzpicture}
     \begin{groupplot}[
           group style={
-              group size=3 by 2, % 3 plots in 4 row
+              group size=3 by 1,
               horizontal sep=0.5cm, % Space between plots
               vertical sep=1cm % Space if there are multiple rows
           },
@@ -1742,24 +1768,23 @@ berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstand
         \addplot[scatter, only marks, scatter src=explicit symbolic]
           table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-40.dat};
 
-        \nextgroupplot[title={Kommentare, $P=20$}]
-        \addplot[scatter, only marks, scatter src=explicit symbolic]
-          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-20.dat};
-        \nextgroupplot[title={Kommentare, $P=30$}]
-        \addplot[scatter, only marks, scatter src=explicit symbolic]
-          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
-        \nextgroupplot[title={Kommentare, $P=40$}]
-        \addplot[scatter, only marks, scatter src=explicit symbolic]
-          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-40.dat};
+        \legend{
+          IO, Netzwerk, Speicher, Nebenläufigkeit, Dateimanagement,
+          Prozesse, Signale, String, Mathematik, Sonstiges
+        }
       \end{groupplot}
   \end{tikzpicture}
 \end{center}
-
+Die Grafik liefert bei jeden der Perplexity-Parameter ein 
+Indiz dafür, dass die Mathematik und IO Funktionen jeweils größtenteils
+in den hochdimensionalen Daten ein Cluster bilden. Sonst ist keine 
+weitere Gruppierung zu erkennen. \\
+Als nächstes die Ergebnisse aus den Funktionskommentaren:
 \begin{center}
   \begin{tikzpicture}
     \begin{groupplot}[
           group style={
-              group size=3 by 2, % 3 plots in 4 row
+              group size=3 by 1,
               horizontal sep=0.5cm, % Space between plots
               vertical sep=1cm % Space if there are multiple rows
           },
@@ -1794,7 +1819,69 @@ berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstand
             legend cell align=left
           },
       ]
+        \nextgroupplot[title={Kommentare, $P=20$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-20.dat};
+        \nextgroupplot[title={Kommentare, $P=30$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
+        \nextgroupplot[title={Kommentare, $P=40$}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-40.dat};
 
+        \legend{
+          IO, Netzwerk, Speicher, Nebenläufigkeit, Dateimanagement,
+          Prozesse, Signale, String, Mathematik, Sonstiges
+        }
+      \end{groupplot}
+  \end{tikzpicture}
+\end{center}
+Hier gibt es, wie im letzten Abschnitt beschrieben, deutlich weniger
+Punkte als bei den restlichen Strategien Embeddings zu erzeugen. In 
+den drei Graphen ist eine große Gruppierung in der Kategorie Dateimanagement
+und kleine Gruppierungen in den Kategorien Mathematik, String und Signale
+zu erkennen. \\
+Die Graphen der Funktionsnamen haben folgende Gestalt:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{groupplot}[
+          group style={
+              group size=3 by 1,
+              horizontal sep=0.5cm, % Space between plots
+              vertical sep=1cm % Space if there are multiple rows
+          },
+          width=0.33\textwidth, % Width of each plot
+          height=0.33\textwidth, % Height of each plot 
+          scatter/classes={
+              0={mark=*,ContrastBlue},
+              1={mark=*,ContrastRed},
+              2={mark=*,ContrastGreen},
+              3={mark=*,ContrastOrange},
+              4={mark=*,ContrastPurple},
+              5={mark=*,ContrastPink},
+              6={mark=*,ContrastLime},
+              7={mark=*,ContrastCyan},
+              8={mark=*,Teal},
+              9={mark=*,SlateGray}
+          },
+          scatter,
+          xlabel={},
+          ylabel={},
+          xtick=\empty,
+          ytick=\empty,
+          legend style={
+            at={(-0.6,-0.1)},
+            legend columns=5,
+            fill=none,
+            draw=black,
+            anchor=north,
+            align=center,
+            row sep=0.1cm,
+            column sep=0.3cm,
+            legend cell align=left
+          },
+      ]
         \nextgroupplot[title={Namen, $P=20$}]
         \addplot[scatter, only marks, scatter src=explicit symbolic]
           table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-20.dat};
@@ -1805,6 +1892,57 @@ berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstand
         \addplot[scatter, only marks, scatter src=explicit symbolic]
           table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-40.dat};
 
+        \legend{
+          IO, Netzwerk, Speicher, Nebenläufigkeit, Dateimanagement,
+          Prozesse, Signale, String, Mathematik, Sonstiges
+        }
+      \end{groupplot}
+  \end{tikzpicture}
+\end{center}
+In den Graphen ist zu erkennen, dass die Kategorien Nebenläufigkeit,
+Speicher, Mathematik und Signale eine Gruppierung bilden. Dagegen
+teilen sich die Kategorien Netzwerk, IO, String in mehrere 
+Untergruppierungen auf.\\
+Als letztes die Ergebnisse der Code-Llama-Erklärungen:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{groupplot}[
+          group style={
+              group size=3 by 1,
+              horizontal sep=0.5cm, % Space between plots
+              vertical sep=1cm % Space if there are multiple rows
+          },
+          width=0.33\textwidth, % Width of each plot
+          height=0.33\textwidth, % Height of each plot 
+          scatter/classes={
+              0={mark=*,ContrastBlue},
+              1={mark=*,ContrastRed},
+              2={mark=*,ContrastGreen},
+              3={mark=*,ContrastOrange},
+              4={mark=*,ContrastPurple},
+              5={mark=*,ContrastPink},
+              6={mark=*,ContrastLime},
+              7={mark=*,ContrastCyan},
+              8={mark=*,Teal},
+              9={mark=*,SlateGray}
+          },
+          scatter,
+          xlabel={},
+          ylabel={},
+          xtick=\empty,
+          ytick=\empty,
+          legend style={
+            at={(-0.6,-0.1)},
+            legend columns=5,
+            fill=none,
+            draw=black,
+            anchor=north,
+            align=center,
+            row sep=0.1cm,
+            column sep=0.3cm,
+            legend cell align=left
+          },
+      ]
         \nextgroupplot[title={\textit{Code Llama}, $P=20$}]
         \addplot[scatter, only marks, scatter src=explicit symbolic]
           table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-20.dat};
@@ -1816,13 +1954,80 @@ berechnet und in einen Graphen abgebildet. Daraus ist der folgende Graph enstand
           table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-40.dat};
 
         \legend{
-          IO, Netzwerk, Speicher, Nebenläufig, Dateimanagement,
+          IO, Netzwerk, Speicher, Nebenläufigkeit, Dateimanagement,
           Prozesse, Signale, String, Mathematik, Sonstiges
         }
       \end{groupplot}
   \end{tikzpicture}
 \end{center}
-%  \textit{t-SNE} Plots
+Hier ist festzustellen, dass die Kategorien Mathematik, Nebenläufigkeit,
+Speicher und Netzwerk Gruppierungen bilden. Die restlichen Kategorien
+bilden zwei oder mehr Untergruppierungen.\\
+Da nun mehrere Werte für den Perplexity-Parameter ausprobiert wurden
+ohne große unterschiede in den Gruppierungen zu erkennen, werden im 
+Folgenden die vier verschieden Strategien Embeddings zu erzeugen mit 
+$P = 30$ abgebildet, um sie qualitativ zu vergleichen.
+\begin{center}
+  \begin{tikzpicture}
+    \begin{groupplot}[
+          group style={
+              group size=4 by 1, % 3 plots in 4 row
+              horizontal sep=0.5cm, % Space between plots
+              vertical sep=1cm % Space if there are multiple rows
+          },
+          width=0.33\textwidth, % Width of each plot
+          height=0.33\textwidth, % Height of each plot 
+          scatter/classes={
+              0={mark=*,ContrastBlue},
+              1={mark=*,ContrastRed},
+              2={mark=*,ContrastGreen},
+              3={mark=*,ContrastOrange},
+              4={mark=*,ContrastPurple},
+              5={mark=*,ContrastPink},
+              6={mark=*,ContrastLime},
+              7={mark=*,ContrastCyan},
+              8={mark=*,Teal},
+              9={mark=*,SlateGray}
+          },
+          scatter,
+          xlabel={},
+          ylabel={},
+          xtick=\empty,
+          ytick=\empty,
+          legend style={
+            at={(-0.6,-0.1)},
+            legend columns=5,
+            fill=none,
+            draw=black,
+            anchor=north,
+            align=center,
+            row sep=0.1cm,
+            column sep=0.3cm,
+            legend cell align=left
+          },
+      ]
+        \nextgroupplot[title={\textit{Code2Vec}}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
+        \nextgroupplot[title={Kommentare}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
+        \nextgroupplot[title={Namen}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
+        \nextgroupplot[title={Code-Llama-Erklärungen}]
+        \addplot[scatter, only marks, scatter src=explicit symbolic]
+          table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-30.dat};
+      \end{groupplot}
+  \end{tikzpicture}
+\end{center}
+Die vier durch \textit{t-SNE} generierten Datenmengen, liefern 
+ein Indiz, dass die Anzahl der Gruppierungen zunehmen,
+in der Reihenfolge:
+\textit{Cod2Vec}, Kommentare, Namen und Code-Llama-Erklärungen.
+Das heißt auch die qualitative Evaluierung scheint den Trend zu 
+folgen das die qualtiät der Embeddings gleichermaßen angeordnet
+ist.
 % Vielleicht nochmal subsections mit Funktionsname, Funktionskommentare, 
 % Funktionserklärung, und \textit{Code2Vec} Vektoren
 % Probleme des jeweiligen Ansatzes mit drei Vektoren
