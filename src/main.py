@@ -9,7 +9,7 @@ from embeddings import (calculate_standard_deviation_from_embeddings, calculate_
     generate_llm_TSNE, compare_embeddings_simple, calculate_max_deviation_sentence_transfomer)
 from survey import generate_survey_csv, generate_surveys_csv, evaluate_survey_results, append_survey_to_csv
 from code2vec_api import generate_vectors
-from visual import (plot_clusters_from_path, plot_compare_random,
+from visual import (pgf_triple_from_path, plot_clusters_from_path, plot_compare_random,
     plot_compare_from_file)
 from labels import generate_labels, FuncData, LabelData
 
@@ -36,7 +36,8 @@ def main():
         "generate-surveys": generate_surveys_csv,
         "append-to-survey": append_survey_to_csv,
         "max-deviation-st": calculate_max_deviation_sentence_transfomer,
-        "eval-survey": evaluate_survey_results
+        "eval-survey": evaluate_survey_results,
+        "pgf-triple": pgf_triple_from_path
     })
 
 

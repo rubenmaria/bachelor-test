@@ -1,4 +1,5 @@
 from collections.abc import Generator
+import os
 from typing import Any
 import json
 import numpy as np
@@ -176,6 +177,23 @@ def cluster_missing(path: str, output_path: str) -> None:
     diffrence = list(all_names - names_in_cluster)
     with open (output_path, "w+") as f:
         json.dump({"functions: ": diffrence}, f, indent=2)
+
+def pgf_triple_from_path(
+    path: str,
+    triple_names: tuple[str,str,str],
+    output_dir: str,
+    output_name: str
+) -> None:
+    output_path = os.path.join(output_dir, output_name + ".dat")
+    named_embeddings = load_embeddings(path)
+    triplet = {k : v for k,v in named_embeddings.items() if k in triple_names}
+    pgf_format = [(v[0],v[1], k) for k,v in triplet.items()]
+    pgf_file_content = "x y\n"
+    for x, y, name in pgf_format:
+        pgf_file_content += f"{x} {y} {name}\n"
+    with open(output_path, "w") as f:
+        f.write(pgf_file_content)
+    
 
 
 def plot_triplet_from_path(
