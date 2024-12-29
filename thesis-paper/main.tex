@@ -611,22 +611,32 @@ negative.
 
 Die Problemstellung im maschinellen Lernen ist allgemein formuliert und abstrakt.
 Dies ist der Grund, warum maschinelles Lernen in vielen unterschiedlichen 
-Bereichen eingesetzt werden kann. Einer der Bereiche ist die linguistische
-Datenverarbeitung (engl. natural language processing), was uns zum nächsten 
-Begriff führt. Linguistische Datenverarbeitung wird im Folgenden mit NLP abgekürzt.
+Bereichen eingesetzt werden kann. Einer der Bereiche ist die natürliche
+Sprachverarbeitung (engl. natural language processing), was uns zum nächsten 
+Begriff führt. Natürliche Sprachverarbeitung wird im Folgenden 
+mit NLP abgekürzt.
 
 \subsection{Semantische Vekorräume}
 Das semantische Codieren von natürlicher Sprache in einem Vektorraum 
-ist ein bedeutsames Problem in NLP. %Referenz?
+ist ein bedeutsames Problem in NLP
+\cite{word2vec} ,\cite{reimers-2019-sentence-bert}.
 Der resultierende Vektorraum kann
 für verschiedene Problemstellungen (engl. downstream tasks) verwendet
 werden. Ein Beispiel ist die Klassifizierung von Spam Nachrichten 
-\cite{Ball2019}.
-Semantischer Vektorraum heißt hier, dass ähnliche Wörter, also Wörter 
-mit ähnlicher Bedeutung, im projizierten Vektorraum einen geringen 
-Abstand zueinander haben. Wir werden die Vektoren im Folgenden als
-Embeddings bezeichnen. In einem idealen semantischen Vektorraum würde 
-die Beziehung gelten, die in Figur 2.4 dargestellt wird.
+\cite{Ball2019}. Folgende Definitionen werden in dieser Arbeit 
+für semantische Vektorräume verwendet.
+\begin{definition}[Semantischer Vektorraum]
+  \hfill\\
+  Ein semantischer Vektorraum stellt Objekte als reelle Vektoren 
+  dar, in einer Weise, dass ähnliche Objekte im projizierten 
+  Vektorraum einen geringen Abstand zueinander haben.
+\end{definition}
+Hierfür muss vorher definiert werden, inwiefern zwei Objekte
+ähnlich sind und welchen Abstandsbegriff man im Vektorraum wählt.
+Der Begriff semantischer Vektorraum für natürliche Sprache heißt hier,
+dass ähnliche Wörter, also Wörter mit ähnlicher Bedeutung 
+im projizierten Vektorraum, einen geringen Abstand zueinander haben. Wir werden die Vektoren im Folgenden als Embeddings bezeichnen. In einem idealen semantischen Vektorraum würde 
+die Beziehung gelten, die in Figur 2.4 dargestellt wird.\\
 \begin{figure}[H]
   \begin{center}
       \begin{tikzpicture}
@@ -654,7 +664,7 @@ die Beziehung gelten, die in Figur 2.4 dargestellt wird.
   \caption{Optimaler fiktiver semantischer Vektorraum}
 \end{figure}
 \subsubsection{Bag-of-Words}
-Der naivste Ansatz ist es, jedem Wort im vorliegenden Text eine Zahl 
+Ein natürlicher Ansatz ist es, jedem Wort im vorliegenden Text eine Zahl 
 zuzuordnen. Dadurch können sowohl die Häufigkeit eines Wortes als auch
 die Sätze, in denen ein bestimmtes Wort vorkommt, effizient gefunden 
 werden. Die Bedeutung eines Wortes ist hier komplett unabhängig von 
@@ -690,7 +700,8 @@ Der Aufbau bei beiden Modellen ist in Figur 2.5 dargestellt.
 Es ist zu beachten, dass der Hidden Layer keine Aktivierungsfunktion 
 besitzt, da er nur als lineare Transformation von einer 
 One-Hot-Codierung zu einem reellwertigen Vektor dient.
-
+\hfill\\
+\pagebreak\\
 One-Hot-Codierung produziert für jedes aus n Wörtern einen Vektor
 $v \in \{0,1\}^n$. Dieser Vektor ist an einer Stelle mit einer Eins
 und sonst überall mit einer Null versehen. Jede Position, an der eine
@@ -698,8 +709,7 @@ Eins ist, gibt es nur einmal und codiert so durch die Position ein Wort.
 Der Output-Layer hat als Aktivierungsfunktion einen Softmax, der 
 Softmax gibt Werte zwischen 0 und 1 zurück. Der Output ist also ein 
 Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung 
-durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.
-
+durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.\\
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -764,20 +774,21 @@ durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.
     \caption{ Architektur des neuronalen Netzwerks von Word2Vec}
   \end{center}
 \end{figure}
+\hfill\\
 Es gibt nun zwei unterschiedliche Strategien, das neuronale Netzwerk
 zu trainieren. Die erste ist Skip-Gram, gegeben ein Wort, muss das
 Modell die naheliegenden Wörter vorhersagen. Das heißt, es muss einem
-Wort einen richtigen Kontext zuordnen. Das Modell wird die Fähigkeit
-entwickeln, Wörter mit ähnlichen Kontexten ähnlichen Embeddings
-zuzuordnen. 
-
+Wort einen richtigen Kontext zuordnen. Das Modell wird dadurch die
+Fähigkeit entwickeln, Wörter mit ähnlichen Kontexten ähnlichen 
+Embeddings zuzuordnen.\\
 Die zweite Methode ist Continous Bag-of-Words (CBOW),
-bei der das Modell Wörter nahe an einem bestimmten Wort als Input 
-erhält und versucht, dieses Wort vorherzusagen.Folglich muss das Wort,
-das in dem gegebenen Kontext verwendet wird, prädiziert werden.
+bei der das Modell den Kontext eines Wortes erhält,
+dass heißt es erhält die Wörter die links und rechts von dem Wort
+sind als Input. Die Aufgabe besteht nun darin das Wort vorherzusagen
+welches zum gegebenen Kontext passt.
+Folglich muss das Wort, das in dem gegebenen Kontext verwendet wird, prädiziert werden.
 Da ähnliche Wörter ähnliche Kontexte haben, neigt das Modell dazu,
-ähnliche Outputs für ähnliche Kontexte zu lernen. 
-
+ähnliche Outputs für ähnliche Kontexte zu lernen.\\
 Die Word2Vec-Embeddings sind dann ähnlich, wenn ihre Kontexte,
 in denen sie verwendet werden, ähnlich sind.  
 Die Kontexte haben eine feste Größe, die am Anfang ausgewählt wird.
@@ -787,20 +798,25 @@ oder Präpositionen. Wenn die Kontextgröße zu groß ist, können
 unterschiedliche Kontexte verschwimmen und ungenaue Ergebnisse entstehen.
 Folglich hat die Kontextgröße einen entscheidenden Einfluss auf den Erfolg 
 des Modells. Vaswani et al. lösen das Kontextproblem 
-durch die Transformer-Modellarchitektur  \cite{transformer}.
+durch die Transformer-Modellarchitektur \cite{transformer}.
+
+\pagebreak
 
 \subsubsection{Transformer}
 Die Transformer-Architektur \cite{transformer}
 ist ein Meilenstein im NLP Bereich.
-Die vorgestellte Deep Learning Architektur bildet die Basis für BERT,
-\textit{SentenceTransformer} und Large Language-Models (wie z.B. Chat-GPT).
-Das Modell wurde ursprünglich entwickelt, um bei einem gegebenen Satz 
-einen sinnvollen neuen Satz zu generieren. Die Donwstream Task auf die 
-eine Implementierung der Architektur trainiert wurde,
-ist das Übersetzen von Englisch zu Deutsch oder Französisch. 
+Die vorgestellte Deep Learning Architektur bildet die Basis
+für BERT, \textit{SentenceTransformer} und Large Language-Models
+(wie z.B. Chat-GPT).
+Das Modell wurde ursprünglich entwickelt, um bei einem gegebenen
+Satz 
+einen sinnvollen neuen Satz zu generieren. Die Donwstream Task auf
+die eine Implementierung der Architektur trainiert wurde,
+ist das Übersetzen von Englisch zu Deutsch und von
+English zu Französisch. 
 Der Transformer kann jedoch wieder zur Erzeugung semantischer Embeddings 
-verwendet werden, wie wir im Abschnitt zum \textit{SentenceTransformer} sehen 
-werden.
+verwendet werden, wie im Abschnitt zum \textit{SentenceTransformer} erläutert
+wird.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -820,34 +836,42 @@ werden.
   \end{center}
   \caption{Transformer-Architektur stark vereinfacht}
 \end{figure}
-Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6 zusehen
-sind. Der erste Block ist der Encoder, dieser erhält die Eingabe.
-Beim Übersetzen wäre das der zu übersetzende Text.
-Der Encoder codiert den Input in semantische Embeddings und gibt an,
-wie wichtig jedes Wort in dem Satz für ein gegebenes Wort ist.
-Es gibt keine Kontextgröße, sondern der Kontext ist die gesamte
-Eingabe.
+\hfill\\
+Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6
+zusehen sind. Der erste Block ist der Encoder, dieser erhält die
+Eingabe. Beim Übersetzen wäre das der zu übersetzende Text.
+Der Encoder codiert den Input in semantische Embeddings und gibt
+an, wie wichtig jedes Wort in dem Satz für ein anderes gegebenes
+Wort ist.
+Bei dieser Architektur gibt es keine Kontextgröße, sondern der
+Kontext ist die gesamte Eingabe. Somit ist das Problem der 
+Kontextgröße aus dem letzten Abschnitt gelöst.
 Der Encoder bestimmt, welche Wörter wichtig sind und welche eher 
 unwichtig sind in Bezug auf ein gegebenes Wort.
 Der Decoder erhält den von ihm selbst produzierten Output sowie 
 das Ergebnis des Encoders, um das nächste Wort zu generieren. 
 Außerdem startet dieser mit einem konstanten Start-Embedding und 
 um die Generierung zu stoppen, gibt er selbst ein konstantes 
-Stopp-Embedding aus. Es ist wichtig, dass mehrere Encoder und Decoder 
-gleichzeitig hintereinander geschaltet werden können.
-
-Die Architektur ist in Abbildung 2.7 dargestellt. Im Folgenden werden 
-die wichtigsten Bestandteile der Abbildung erläutert. {\bf Input-Embedding}
+Stopp-Embedding aus. Insbesondere ist es möglich, dass mehrere
+Encoder und Decoder gleichzeitig hintereinander geschaltet werden 
+können.\\
+Die Architektur ist in Abbildung 2.7 dargestellt. Im Folgenden 
+werden die wichtigsten Bestandteile der Abbildung erläutert.
+{\bf Input-Embedding}
 gibt dem Input, der in Textform vorliegt, eine Vektorrepräsentation.
-Danach wird auf dem Vektor ein {\bf Positional Encoding} darauf addiert.
+Danach wird auf dem Vektor ein {\bf Positional Encoding} darauf
+addiert.
 Der Transformer verarbeitet alle Wörter parallel, deswegen geht die 
-Positionsinformation verloren. Um diese Information trotzdem im Vektor 
-zu codieren, wird für jede Position ein einzigartiger Vektor darauf 
-addiert. Im Block {\bf Add \& Norm} werden zwei Inputs addiert und dann 
+Positionsinformation verloren. Um diese Information trotzdem im 
+Vektor 
+zu codieren, wird für jede Position ein einzigartiger Vektor auf
+das Wort-Embedding addiert. 
+Im Block {\bf Add \& Norm} werden zwei Inputs addiert und dann 
 normalisiert, damit die Werte in dem Modell nicht zu groß werden.
-Feed Forward ist einfach ein neuronales Netzwerk mit zwei Layern.
-Alle Wort-Embeddings werden nacheinander und identisch in das Netzwerk 
-eingegeben. Der erste Input-Layer hat als Aktivierungsfunktion ein 
+Feed Forward ist ein neuronales Netzwerk mit zwei Layern.
+Alle Wort-Embeddings werden nacheinander und identisch in das
+Netzwerk eingegeben. Der erste Input-Layer hat als 
+Aktivierungsfunktion ein 
 Softmax und der zweite hat die Identitätsfunktion.
 Dann gilt für das Netzwerk:
 \[
@@ -855,18 +879,21 @@ Dann gilt für das Netzwerk:
 \]
 Der {\bf Linear Block} ist wieder ein neuronales Netzwerk, mit allen
 Aktivierungsfunktionen: $ f_{i,j}(x) = x $. 
-Das {\bf Multi Head-Attention} Modul ist der wohl wichtigste Bestandteil der 
-Architektur. Dieses gibt die Korrelation zwischen einem Wort und allen
-Restlichen im Input aus. Der gesamte Input wird als Kontext betrachtet,
-aber das Modell lernt, auf welche Wörter es im Kontext viel oder wenig
-Aufmerksamkeit schenken sollte. Das {\bf Masked Multi Head-Attention}
-Modul ist nur beim Trainieren anders als das Multi Head-Attention-Modul.
+Das {\bf Multi Head-Attention} Modul ist der wohl wichtigste 
+Bestandteil der Architektur. Dieses gibt die Korrelation 
+zwischen einem Wort und allen
+Restlichen im Input aus. Der gesamte Input wird als Kontext 
+betrachtet, aber das Modell lernt, auf welche Wörter es im 
+Kontext viel oder wenig
+Aufmerksamkeit schenken soll. Das {\bf Masked Multi Head-Attention}
+Modul ist nur beim Trainieren anders als das Multi 
+Head-Attention-Modul.
 Beim Trainieren ist der Input des Decoders bereits der Satz,
 den das Modell vorhersagen soll. Daher müssen alle Wörter, 
 die es noch nicht vorhergesagt hat, verdeckt (engl. masked) werden.
-\begin{figure}[H]
+\begin{figure}
   \begin{center}
-    \includegraphics[scale=0.35]{abb/transformer-figure.png}
+    \includegraphics[scale=0.6]{abb/transformer-figure.png}
   \end{center}
   \caption{
       Transformer-Architektur entnommen aus \cite{transformer}.
@@ -1025,9 +1052,8 @@ Rozière et al. bei Meta AI im Jahre 2024 entwickelt
 {\bf Large Language-Models} sind Modelle, die auf
 einer großen Menge von Daten trainiert wurden, welche sich darin
 auszeichnen, natürliche Sprache verstehen sowie generieren zu
-können und deswegen in der Lage sind, eine Vielzahl von Aufgabe
-n im NLP-Bereich zu lösen.
-
+können und deswegen in der Lage sind, eine Vielzahl von Aufgaben
+im NLP-Bereich zu lösen.\\
 Meta AI optimiert das vorangegangene Llama-2-Modell auf
 Programmiersprachen spezifische Aufgaben. Das LLama-2-Model wird,
 um zum resultierenden Code Llama zu kommen, erneut auf einem neuen
