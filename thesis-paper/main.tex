@@ -907,7 +907,7 @@ als eines der ersten Large Language-Models betrachtet werden.
 Das Modell verbessert die Transformer-Architektur, 
 indem es die Token-Embeddings verbessert, zwei neue Trainingsaufgaben einführt
 und ausschließlich Encoder verwendet.
-\begin{figure}[H]
+\begin{figure}
   \begin{center}
     \includegraphics[scale=0.5]{abb/BERT-Tokens.png}
   \end{center}
@@ -919,69 +919,68 @@ und ausschließlich Encoder verwendet.
 In Abbildung 2.8 ist der Token-Embedding-Prozess abgebildet,
 der im Folgenden näher beschrieben wird. Zunächst muss erläutert werden, 
 was ein Token ist. Ein Token ist in diesem Fall ein Wort, 
-aber generell ist ein Token eine kleinere Zeichenkette, die aus einem 
-Text gewonnen wird und einer Bedeutung zugewiesen wird oder in eine 
-Zahl umgewandelt wird, um die Weiterverarbeitung zu vereinfachen.
-
+aber generell die kleinste bedeutungstragende Einheit im
+Sprachsystem. Die Aufteilung eines Textes in Tokens vereinfacht
+die weitere Verarbeitung.\\
 Das BERT Modell kombiniert drei unterschiedliche Informationen
-in Vektorform, um noch bessere Token-Embeddings zu generieren. BERT
-verwendet \textit{WordPiece} \cite{wu2016googlesneuralmachinetranslation},
-um die Token-Embeddings zu erhalten.
+in Vektorform, um noch bessere Token-Embeddings als die 
+Token-Embeddings von dem Transformer zu generieren. BERT
+verwendet \textit{WordPiece} 
+\cite{wu2016googlesneuralmachinetranslation},
+um die rohen Tokens in Vektoren umzuwandeln.
 Auf diese werden nun ein Segment-Embedding und schließlich die
-Position-Embeddings addiert. {\bf Segment-Embedding} codiert die Information,
-welche Tokens strukturell zusammen gehören (Bspw. ein Satz).
-Das {\bf Position-Embedding} codiert die sequenzielle Position im Input.
-
-
+Position-Embeddings addiert.
+Das {\bf Segment-Embedding} codiert die Information,
+welche Tokens zu welchen Satz gehören.
+Das {\bf Position-Embedding} codiert die globale sequenzielle
+Position im Input.\\
 Die beiden unterschiedlichen Trainingsaufgaben stellen das wichtigste
 Puzzleteil dar. Während der Transformer die Tokens von links nach rechts
 vorhersagt, wird BERT darauf trainiert, Wörter vorherzusagen, die auf
 beliebiger Position fehlen. Dadurch erhält das Modell Zugang zu dem
 Kontext, der sich links und rechts von dem zu prädizierenden Token befindet.
-Wu et al. benennen diese Trainingsform {\bf Masked Language-Modeling}.
+Diese Trainingsform wurde {\bf Masked Language-Modeling} von 
+Wu et al. benannt.
 Bei diesem Verfahren werden $15 \%$ der Input-Token entweder durch das
 \verb|[Mask]| Token oder durch einen zufälligen anderen Token ersetzt.
-Dabei werden $10 \%$ der Token, die maskiert werden sollten,
-unverändert bleiben. Weitere $10 \%$ werden durch ein zufälliges anderes
-Token ersetzt, während die restlichen $80 \%$ durch das \verb|[Mask]| Token 
-ersetzt werden.
-\pagebreak
-
+Dabei bleiben $10 \%$ der Token, die maskiert werden sollten,
+unverändert. Weitere $10 \%$ der Token, die maskiert werden sollten,
+werden durch ein zufälliges anderes Token ersetzt, während die
+restlichen $80 \%$ durch das \verb|[Mask]| Token ersetzt werden.\\
 Die zweite Trainingsaufgabe ist {\bf Next Sentence-Prediction} (NSP),
 bei dieser Aufgabe muss das BERT Modell bei der Eingabe von zwei Sätzen 
 entscheiden, ob diese sequenziell nacheinander kommen oder nicht.
 Bei der einen Hälfte der Daten handelt es sich um zwei Sätze, die nacheinander 
 auftreten. Bei der anderen Hälfte der Daten handelt es sich um zufällige,
-nicht sequenzielle Sätze. Zur Vorhersage, ob die Sätze nacheinander kommen 
-oder nicht, wird das konstante \verb|[cls]| Token-Embedding verwendet, 
-welches beim Input immer an erster Stelle steht. Der erste Output-Vektor 
-ist dann das Ergebnis des \verb|[cls]| Tokens und wird verwendet, um den Output
-\verb|isNext| oder \verb|notNext| zu produzieren.
-
-Nach dem Training erhält man aus BERT für jeden Input-Vektor genau einen 
-Output-Vektor, diesen kann man dann mit wenig Aufwand weiter verwenden,
-um das Modell für bestimmte Probleme in NLP anzupassen 
-(engl. fine tuning).
-
+nicht sequenzielle Sätze. Zur Inferenz des Modells, ob die Sätze
+nacheinander kommen oder nicht, wird ein Token \verb|[cls]| 
+eingeführt, welches beim Input immer an erster Stelle steht.
+Der erste Output-Vektor des BERT-Modells ist das Ergebnis des
+\verb|[cls]| Tokens und wird verwendet, um den Output
+\verb|isNext| oder \verb|notNext| zu produzieren.\\
+Nach dem Training erhält man aus dem BERT-Modell für jeden 
+Input-Vektor genau einen Output-Vektor. Die Output-Vektoren 
+codieren nun die Input-Tokens und können weiter verwendet werden,
+um mit wenig Aufwand ein Modell für bestimmte Probleme in NLP zu 
+kreieren.\\
 \subsubsection{Sentence Transformer}
-Das Sentence-BERT \cite{reimers-2019-sentence-bert}
-Modell ist der aktuelle Stand der Technik im semantischen Codieren von 
-natürlicher Sprache in einem Vektorraum. Die Implementierung von 
-Reimers et al.
+Das Sentence-BERT-Modell \cite{reimers-2019-sentence-bert}
+ist der aktuelle Stand der Technik im semantischen Codieren 
+von natürlicher Sprache in einem Vektorraum. Die Implementierung 
 ist unter dem Namen \textit{SentenceTransformer} 
-\footnote{https://sbert.net}
-bekannt. Die Motivation 
-hinter Sentence-BERT (SBERT) ist das effiziente semantische Vergleichen 
+\footnote{https://sbert.net} von Reimers et al. bekannt.
+Die Motivation hinter Sentence-BERT (SBERT) ist das effiziente
+semantische Vergleichen 
 von zwei Sätzen. Wenn man mit BERT herausfinden möchte, wie semantisch
 ähnlich zwei gegebene Sätze sind, dann muss man beide Sätze als Input 
 in das Modell eingeben. Das heißt, wenn man die Ähnlichkeit von allen
 $n$ Sätzen jeweils zueinander haben will, gibt es $\frac{n(n-1)}{2}$ 
 Eingaben in das BERT Modell, die man tätigen müsste.
 Bei SBERT kann dagegen jeder Satz einzeln eingegeben werden und der
-resultierende Output ist dann ein semantischer Vektorraum, indem jeder 
-Satz einen semantischen Vektor besitzt. Um die semantische Ähnlichkeit 
-zwischen zwei Vektoren zu erhalten, müssen beide Vektoren lediglich in 
-eine zu wählende Metrik eingesetzt werden. 
+resultierende Output ist dann ein semantischer Vektor. Um die
+semantische Ähnlichkeit zwischen zwei Vektoren zu erhalten,
+müssen beide Vektoren lediglich in eine zu wählende Metrik
+eingesetzt werden. 
 %wird die Kosinus-Ähnilichkeit verwendet: Sei $u,v \in \mathbb{R}^n$, dann setze
 %\[
 %  Kos(u,v) := cos(\phi) = \frac{u \cdot v}{\|u\|\|v\|} 
@@ -994,15 +993,13 @@ eine zu wählende Metrik eingesetzt werden.
 %  }.
 %\]
 Dies ermöglicht es, die semantische Ähnlichkeit zwischen zwei Vektoren 
-effizient zu berechnen.
-
+effizient zu berechnen.\\
 Die Modellarchitektur von SBERT wird als {\bf Siamese Neural Network }
 bezeichnet, da zwei unterschiedliche BERT-Modelle verwendet werden,
-um beide Sätze in einen Vektor umzuwandeln, aber beide Modelle teilen 
-sich die Gewichte.
-\pagebreak
-
-\begin{figure}[H]
+um beide Sätze in einen Vektor umzuwandeln, aber beide Modelle
+teilen sich die Gewichte. In der Abbildung 2.9 ist die Siamese 
+Neural Network zusehen.\\
+\begin{figure}
   \begin{center}
     \includegraphics[scale=0.3]{abb/SBERT.png}
   \end{center}
@@ -1011,75 +1008,85 @@ sich die Gewichte.
     Beide BERT-Modelle teilen sich dieselben Gewichte. 
   }
 \end{figure}
-Danach geht der Output von BERT in ein Pooling-Modul. 
-{\bf Pooling} ist das Transformieren von Output mit vielen Vektoren 
-in eine geringere Anzahl von Vektoren oder Dimensionen. In diesem Fall 
-werden die $n$ Output-Vektoren von BERT in einen einzigen Output-Vektor 
-transformiert. Das Default Pooling ist der Mittelwert, d.h. auf alle 
-Output-Vektoren von BERT wird das arithmetische Mittel angewendet.
+Die Output-Vektoren von den zwei BERT-Modellen werden schließlich 
+in ein Pooling-Modul eingeben. 
+{\bf Pooling} ist das zusammenfassen von vielen Vektoren 
+in eine geringere Anzahl von Vektoren oder Dimensionen. In diesem 
+Fall werden die $n$ Output-Vektoren von den zwei BERT-Modellen in
+einen einzigen Output-Vektor transformiert. Das Default Pooling
+von dem \textit{SentenceTransfomer} ist der Mittelwert, d.h.
+auf alle  Einträge der Output-Vektoren von den BERT-Modellen
+wird das arithmetische Mittel angewendet.
 Daraus erhält man einen Vektor mit den jeweiligen gemittelten 
-BERT-Output-Vektoren.
-
-Das BERT Modell wird an die spezielle Aufgabe 
+BERT-Output-Vektoren.\\
+Das BERT Modell wird  vorher an die spezielle Aufgabe 
 angepasst, zwei Vektoren semantisch zu vergleichen. 
 Dafür wird der SNLI Datensatz verwendet, dieser beinhaltet immer 
-zwei Sätze und eins von drei möglichen Labels: 
+zwei Sätze mit drei möglichen Labels: 
 \verb|contradiction|, \verb|neutral|, und \verb|entailment|.
-SBERT muss für zwei Sätze vorhersagen, ob sie sich inhaltlich widersprechen,
-neutral zueinander sind oder ob der eine Satz eine Fortsetzung des 
-anderen ist. Daraus lernt das Modell, ein semantisches Verständnis 
-für Sätze zu erlangen. Zur Ermittlung der Label-Vorhersage werden die 
-jeweiligen Vektoren und ihre Differenz konkateniert. Anschließend 
-werden diese mit einem, durch Training erlernten, Gewicht multipliziert,
-sodass ein 
-Vektor mit drei Dimensionen entsteht. Danach wird der Softmax auf das
-Ergebnis angewendet. Die Position in dem Vektor mit dem höchsten Wert 
-wird schließlich dem zugehörigen Label zugeordnet. Mathematisch:
-Sei $W \in \mathbb{R}^{n\times 3}$ das Gewicht und 
-$v \in \mathbb{R}^n$ Output-Vektor von dem Pooling, dann
+SBERT muss für zwei Sätze vorhersagen, ob sie sich inhaltlich
+widersprechen, neutral zueinander sind oder ob der eine Satz
+eine Fortsetzung des anderen ist. Daraus lernt das Modell,
+ein semantisches Verständnis für Sätze zu erlangen.\\
+Beim Training wird zur Ermittlung der Label-Vorhersage ein 
+neuer Output-Vektor kreiert, indem die beiden 
+Pooling-Output-Vektoren und ihre Differenz miteinander 
+konkateniert werden.
+Anschließend wird dieser neue Output-Vektor mit einer Matrix,
+welche durch das Training erlernte Gewichte enthält, multipliziert, 
+sodass ein Vektor mit drei Dimensionen entsteht.
+Danach wird der Softmax auf alle Einträge des finalen 
+Output-Vektors angewendet. Die Position in dem Vektor mit dem 
+höchsten Wert wird schließlich dem zugehörigen Label zugeordnet.
+Mathematisch:
+Sei $W \in \mathbb{R}^{3 \times (2\cdot n + 1)}$ die Matrix,
+die die Gewichte enthält, 
+$u,v \in \mathbb{R}^n$ die Output-Vektoren von dem Pooling-Modul,
+$\texttt{concat}$ die Funktion die drei Vektoren konkateniert und
+$|\cdot|$ eine beliebige Norm, dann
 \[
-  o = \text{softmax}(Wv).
+  o_i = \text{softmax}((W \cdot \texttt{concat}(u,v, |u-v|))_i).
 \]
-Nachdem Training bei der Inferenz wird der Vektor, nachdem Pooling 
-als Output-Vektor ausgeben. SBERT liefert uns also ein Tool, 
-um Sätze semantisch in einem Vektorraum abzubilden,
+Nachdem Training bei der Inferenz wird der Vektor, nachdem 
+Pooling-Modul als Output-Vektor ausgeben. SBERT liefert uns 
+also ein Tool, um Sätze semantisch in einem Vektorraum abzubilden,
 welches sich in späteren Kapiteln als sehr hilfreich herausstellt.
-\pagebreak
 \subsection{Code Llama}
-Die \textit{Code Llama} Familie an Large Language-Models wurde von 
-Rozière et al. bei Meta AI im Jahre 2024 entwickelt
+Die \textit{Code-Llama}-Familie an Large Language-Models wurde von 
+Rozière et al. im Jahre 2024 entwickelt
 \cite{rozière2024codellamaopenfoundation}.
 {\bf Large Language-Models} sind Modelle, die auf
 einer großen Menge von Daten trainiert wurden, welche sich darin
 auszeichnen, natürliche Sprache verstehen sowie generieren zu
 können und deswegen in der Lage sind, eine Vielzahl von Aufgaben
 im NLP-Bereich zu lösen.\\
-Meta AI optimiert das vorangegangene Llama-2-Modell auf
-Programmiersprachen spezifische Aufgaben. Das LLama-2-Model wird,
+Code Llama ist das auf Programmiersprachen 
+spezifische Aufgaben optimierte vorangegangene Llama-2-Modell.
+Das LLama-2-Model wird,
 um zum resultierenden Code Llama zu kommen, erneut auf einem neuen
 Datensatz trainiert. Dieser besteht aus drei verschiedenen 
-Kategorien von Daten. Der größte Teil im Datensatz, mit $85 \%$,
+Kategorien von Daten. Der größte Teil im Datensatz,
+mit $85 \%$ und $859$ GB Speicherplatz,
 ist mit Programmiersprachen spezifischen Aufgaben verbunden,
 indem das Modell darauf trainiert wird, fehlende Programmzeilen in 
 einer vergebenen Lücke zu füllen. Dabei kann es sich um Programmcode,
 aber auch um Kommentare handeln. Der zweitgrößte Teil im Datensatz,
-mit $8 \%$, besteht aus natürlicher Sprache, in der es um 
+mit $8 \%$ und $78$ GB Speicherplatz, besteht aus natürlicher Sprache, in der es um 
 Programmcode geht. Dieser Teil beinhaltet Diskussion über Quellcode
 sowie Fragen und Antworten, welche sich auf Quellcode beziehen. 
-Der kleinste Teil im Datensatz mit $7 \%$ besteht aus beliebiger 
-natürlicher Sprache, damit das Modell seine alten Fähigkeiten erhält. 
-
+Der kleinste Teil im Datensatz mit $7 \%$ und $3.5$ TB Speicherplatz 
+besteht aus beliebiger natürlicher Sprache, damit das Modell
+seine alten Fähigkeiten erhält.\\
 Das LLama-2-Modell ist eine Verbesserung des Llama-Modells.
-Dieses wurde auf neueren Daten trainiert und verwendet einen 
-$40 \%$ größeren Datensatz. Zudem wurde die maximale Anzahl 
-der gleichzeitig zu verarbeitenden Token verdoppelt. Außerdem 
+Dieses wurde auf neueren Daten trainiert und verwendet 
+$40 \%$ mehr Tokens von je nach Modell $1.0-1.4$ T zu $2.0$ T.
+Außerdem wurde die Kontextlänge verdoppelt und
 gab es eine Veränderung in der Llama-Transformer-Architektur. 
 In den Attention-Modulen werden zwei Werte, die normalerweise 
 immer wieder berechnet werden, geteilt, was bedeutet, dass 
 jedes Attention-Modul Zugriff auf die gleichen Werte hat.
 Dies führt zu geringfügig schlechteren Ergebnissen, jedoch zu
-einer deutlichen Leistungssteigerung.
-
+einer deutlichen Leistungssteigerung.\\
 Das Llama-Modell wiederum besteht aus einer Decoder-only-Transformer-Architektur.
 Der {\bf Decoder-only-Transformer}
 besteht lediglich aus Decoder-Transformer-Blöcken,
@@ -1088,15 +1095,13 @@ ist der anfängliche Input des Decoders die Eingabe des Nutzers.
 Auf diese Eingabe wird dann immer wieder das neu generierte Token
 drauf konkateniert. Auf diese Weise wird die Eingabe nicht explizit
 von dem bereits generierten getrennt, sondern beides wird als 
-gleicher Kontext verwendet.
-
+gleicher Kontext verwendet.\\
 Das Besondere an Llama ist, dass es nur auf frei verfügbaren
 Daten trainiert wurde und dass das Modell Open Source ist. Der
 Datensatz besteht aus English Common Crawl [$67\%$],
 f C4 [$15\%$],  Github [$4.5\%$],
 Wikipedia [$4.5\%$], Gutenberg and Books3 [$4.5\%$], 
-ArXiv [$2.5\%$], und Stack Exchange [$2\%$].
-
+ArXiv [$2.5\%$], und Stack Exchange [$2\%$].\\
 Code Llama ist eine Open Source-Software, die unter allen 
 verfügbaren Modellen am besten in multilingualen Benchmarks 
 abschneidet. Multilingual bedeutet die Verwendung mehrerer 
@@ -1114,7 +1119,7 @@ können dann wieder viele verschiedene Aufgaben gelöst werden.
 Das motivierende Beispiel bei \textit{Code2Vec} ist die Vorhersage 
 eines sinnvollen Namens für eine Funktion. Die Architektur, welche 
 in Abbildung 2.10 dargestellt ist, wird im Folgenden erläutert. 
-\begin{figure}[H]
+\begin{figure}
   \begin{center}
     \includegraphics[scale=0.3]{abb/code2vec.png}
   \end{center}
@@ -1148,9 +1153,6 @@ im Trainingssatz enthalten ist.
 Die Trainingsart ist demnach überwachtes Lernen, was eine Aufbereitung der
 Daten benötigt. Das Modell kann lediglich die Labels vorhersagen, die es 
 vorher im Training gesehen hat.
-
-\pagebreak
-
 \subsection{ T-Distributed Stochastic Nieigbor Embedding}
 {\bf T}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding
 ({\bf  t-SNE}) ist ein Algorithmus, welcher zum Visualisieren von
