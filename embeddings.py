@@ -139,7 +139,7 @@ def calculate_standard_deviation_llm(
     dump_standard_deviation(dev, output_dir, output_name)
     dump_mean(mean, output_dir, output_name)
 
-def calculate_max_standard_deviation_llm(
+def calculate_max_deviation_llm(
     model_name: str,
     output_dir: str,
     output_name: str,
