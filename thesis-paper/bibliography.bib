@@ -1,40 +1,65 @@
 %https://www.doi2bib.org/
-@misc{devlin2019bertpretrainingdeepbidirectional,
-      title={BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding}, 
-      author={Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
-      year={2019},
-      eprint={1810.04805},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/1810.04805}, 
+@inproceedings{conf/naacl/DevlinCLT19,
+  added-at = {2020-07-14T16:49:10.000+0200},
+  biburl = {https://www.bibsonomy.org/bibtex/243ecc85a87d189e44368e91fc5be7f4b/jonaskaiser},
+  title = {BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.},
+  booktitle = {NAACL-HLT (1)},
+  crossref = {conf/naacl/2019-1},
+  editor = {Burstein, Jill and Doran, Christy and Solorio, Thamar},
+  ee = {https://www.aclweb.org/anthology/N19-1423/},
+  interhash = {fc0c0c0264f63b06db4518c57ee21b9d},
+  intrahash = {43ecc85a87d189e44368e91fc5be7f4b},
+  isbn = {978-1-950737-13-0},
+  keywords = {},
+  pages = {4171-4186},
+  publisher = {Association for Computational Linguistics},
+  timestamp = {2020-07-14T16:49:10.000+0200},
+  author = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  year = {2019}
 }
-@misc{vaswani2023attentionneed,
-      title={Attention Is All You Need}, 
-      author={Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin},
-      year={2023},
-      eprint={1706.03762},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/1706.03762}, 
+
+@inproceedings{transformer,
+  author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, \L{}ukasz and Polosukhin, Illia},
+  title = {Attention is all you need},
+  year = {2017},
+  isbn = {9781510860964},
+  publisher = {Curran Associates Inc.},
+  address = {Red Hook, NY, USA},
+  abstract = {The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.0 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature.},
+  booktitle = {Proceedings of the 31st International Conference on Neural Information Processing Systems},
+  pages = {6000–6010},
+  numpages = {11},
+  location = {Long Beach, California, USA},
+  series = {NIPS'17}
 }
-@misc{wang2024claplearningtransferablebinary,
-      title={CLAP: Learning Transferable Binary Code Representations with Natural Language Supervision}, 
-      author={Hao Wang and Zeyu Gao and Chao Zhang and Zihan Sha and Mingyang Sun and Yuchen Zhou and Wenyu Zhu and Wenju Sun and Han Qiu and Xi Xiao},
-      year={2024},
-      eprint={2402.16928},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE},
-      url={https://arxiv.org/abs/2402.16928}, 
+
+@inproceedings{clap,
+  series = {ISSTA ’24},
+  title = {CLAP: Learning Transferable Binary Code Representations with Natural Language Supervision},
+  DOI = {10.1145/3650212.3652145},
+  booktitle = {Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis},
+  publisher = {ACM},
+  author = {Wang,  Hao and Gao,  Zeyu and Zhang,  Chao and Sha,  Zihan and Sun,  Mingyang and Zhou,  Yuchen and Zhu,  Wenyu and Sun,  Wenju and Qiu,  Han and Xiao,  Xi},
+  year = {2024},
+  month = sep,
+  pages = {503–515},
+  collection = {ISSTA ’24}
 }
-@misc{alon2018code2veclearningdistributedrepresentations,
-      title={code2vec: Learning Distributed Representations of Code}, 
-      author={Uri Alon and Meital Zilberstein and Omer Levy and Eran Yahav},
-      year={2018},
-      eprint={1803.09473},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/1803.09473}, 
+
+@article{code2vec,
+  title = {code2vec: learning distributed representations of code},
+  volume = {3},
+  ISSN = {2475-1421},
+  DOI = {10.1145/3290353},
+  number = {POPL},
+  journal = {Proceedings of the ACM on Programming Languages},
+  publisher = {Association for Computing Machinery (ACM)},
+  author = {Alon,  Uri and Zilberstein,  Meital and Levy,  Omer and Yahav,  Eran},
+  year = {2019},
+  month = jan,
+  pages = {1–29}
 }
+
 @misc{rozière2024codellamaopenfoundation,
       title={Code Llama: Open Foundation Models for Code}, 
       author={Baptiste Rozière and Jonas Gehring and Fabian Gloeckle and Sten Sootla and Itai Gat and Xiaoqing Ellen Tan and Yossi Adi and Jingyu Liu and Romain Sauvestre and Tal Remez and Jérémy Rapin and Artyom Kozhevnikov and Ivan Evtimov and Joanna Bitton and Manish Bhatt and Cristian Canton Ferrer and Aaron Grattafiori and Wenhan Xiong and Alexandre Défossez and Jade Copet and Faisal Azhar and Hugo Touvron and Louis Martin and Nicolas Usunier and Thomas Scialom and Gabriel Synnaeve},
@@ -45,18 +70,23 @@
       url={https://arxiv.org/abs/2308.12950}, 
 }
 % binary code similarity detection
-@misc{wang2022jtransjumpawaretransformerbinary,
-      title={jTrans: Jump-Aware Transformer for Binary Code Similarity}, 
-      author={Hao Wang and Wenjie Qu and Gilad Katz and Wenyu Zhu and Zeyu Gao and Han Qiu and Jianwei Zhuge and Chao Zhang},
-      year={2022},
-      eprint={2205.12713},
-      archivePrefix={arXiv}, primaryClass={cs.CR}, url={https://arxiv.org/abs/2205.12713}, 
+@inproceedings{jtrans,
+  series = {ISSTA ’22},
+  title = {jTrans: jump-aware transformer for binary code similarity detection},
+  DOI = {10.1145/3533767.3534367},
+  booktitle = {Proceedings of the 31st ACM SIGSOFT International Symposium on Software Testing and Analysis},
+  publisher = {ACM},
+  author = {Wang,  Hao and Qu,  Wenjie and Katz,  Gilad and Zhu,  Wenyu and Gao,  Zeyu and Qiu,  Han and Zhuge,  Jianwei and Zhang,  Chao},
+  year = {2022},
+  month = jul,
+  pages = {1–13},
+  collection = {ISSTA ’22}
 }
+
 @inproceedings{Charitsis2022,
   series = {L@S ’22},
   title = {Function Names: Quantifying the Relationship Between Identifiers and Their Functionality to Improve Them},
   volume = {28},
-  url = {http://dx.doi.org/10.1145/3491140.3528269},
   DOI = {10.1145/3491140.3528269},
   booktitle = {Proceedings of the Ninth ACM Conference on Learning @ Scale},
   publisher = {ACM},
@@ -66,14 +96,14 @@
   pages = {93–101},
   collection = {L@S ’22}
 }
-@inproceedings{10.1145/3643661.3643952,
+
+@inproceedings{llmstable,
 author = {Astekin, Merve and Hort, Max and Moonen, Leon},
 title = {An Exploratory Study on How Non-Determinism in Large Language Models Affects Log Parsing},
 year = {2024},
 isbn = {9798400705649},
 publisher = {Association for Computing Machinery},
 address = {New York, NY, USA},
-url = {https://doi.org/10.1145/3643661.3643952},
 doi = {10.1145/3643661.3643952},
 abstract = {Most software systems used in production generate system logs that provide a rich source of information about the status and execution behavior of the system. These logs are commonly used to ensure the reliability and maintainability of software systems. The first step toward automated log analysis is generally log parsing, which aims to transform unstructured log messages into structured log templates and extract the corresponding parameters.Recently, Large Language Models (LLMs) such as ChatGPT have shown promising results on a wide range of software engineering tasks, including log parsing. However, the extent to which non-determinism influences log parsing using LLMs remains unclear. In particular, it is important to investigate whether LLMs behave consistently when faced with the same log message multiple times.In this study, we investigate the impact of non-determinism in state-of-the-art LLMs while performing log parsing. Specifically, we select six LLMs, including both paid proprietary and free-to-use models, and evaluate their non-determinism on 16 system logs obtained from a selection of mature open-source projects. The results of our study reveal varying degrees of non-determinism among models. Moreover, they show that there is no guarantee for deterministic results even with a temperature of zero.},
 booktitle = {Proceedings of the ACM/IEEE 2nd International Workshop on Interpretability, Robustness, and Benchmarking in Neural Software Engineering},
@@ -83,6 +113,7 @@ keywords = {log parsing, large language model, robustness, non-determinism, cons
 location = {Lisbon, Portugal},
 series = {InteNSE '24}
 }
+
 @misc{touvron2023llamaopenefficientfoundation,
       title={LLaMA: Open and Efficient Foundation Language Models}, 
       author={Hugo Touvron and Thibaut Lavril and Gautier Izacard and Xavier Martinet and Marie-Anne Lachaux and Timothée Lacroix and Baptiste Rozière and Naman Goyal and Eric Hambro and Faisal Azhar and Aurelien Rodriguez and Armand Joulin and Edouard Grave and Guillaume Lample},
@@ -92,6 +123,7 @@ series = {InteNSE '24}
       primaryClass={cs.CL},
       url={https://arxiv.org/abs/2302.13971}, 
 }
+
 @misc{touvron2023llama2openfoundation,
       title={Llama 2: Open Foundation and Fine-Tuned Chat Models}, 
       author={Hugo Touvron and Louis Martin and Kevin Stone and Peter Albert and Amjad Almahairi and Yasmine Babaei and Nikolay Bashlykov and Soumya Batra and Prajjwal Bhargava and Shruti Bhosale and Dan Bikel and Lukas Blecher and Cristian Canton Ferrer and Moya Chen and Guillem Cucurull and David Esiobu and Jude Fernandes and Jeremy Fu and Wenyin Fu and Brian Fuller and Cynthia Gao and Vedanuj Goswami and Naman Goyal and Anthony Hartshorn and Saghar Hosseini and Rui Hou and Hakan Inan and Marcin Kardas and Viktor Kerkez and Madian Khabsa and Isabel Kloumann and Artem Korenev and Punit Singh Koura and Marie-Anne Lachaux and Thibaut Lavril and Jenya Lee and Diana Liskovich and Yinghai Lu and Yuning Mao and Xavier Martinet and Todor Mihaylov and Pushkar Mishra and Igor Molybog and Yixin Nie and Andrew Poulton and Jeremy Reizenstein and Rashi Rungta and Kalyan Saladi and Alan Schelten and Ruan Silva and Eric Michael Smith and Ranjan Subramanian and Xiaoqing Ellen Tan and Binh Tang and Ross Taylor and Adina Williams and Jian Xiang Kuan and Puxin Xu and Zheng Yan and Iliyan Zarov and Yuchen Zhang and Angela Fan and Melanie Kambadur and Sharan Narang and Aurelien Rodriguez and Robert Stojnic and Sergey Edunov and Thomas Scialom},
@@ -101,15 +133,27 @@ series = {InteNSE '24}
       primaryClass={cs.CL},
       url={https://arxiv.org/abs/2307.09288}, 
 }
-@misc{reimers2019sentencebertsentenceembeddingsusing,
-      title={Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks}, 
-      author={Nils Reimers and Iryna Gurevych},
-      year={2019},
-      eprint={1908.10084},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/1908.10084}, 
+
+@book{Kruse2022,
+  title = {Computational Intelligence: A Methodological Introduction},
+  ISBN = {9783030422271},
+  ISSN = {1868-095X},
+  DOI = {10.1007/978-3-030-42227-1},
+  journal = {Texts in Computer Science},
+  publisher = {Springer International Publishing},
+  author = {Kruse,  Rudolf and Mostaghim,  Sanaz and Borgelt,  Christian and Braune,  Christian and Steinbrecher,  Matthias},
+  year = {2022}
 }
+
+@inproceedings{reimers-2019-sentence-bert,
+    title = "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+    author = "Reimers, Nils and Gurevych, Iryna",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing",
+    month = "11",
+    year = "2019",
+    publisher = "Association for Computational Linguistics",
+}
+
 @article{JMLR:v9:vandermaaten08a,
   author  = {Laurens van der Maaten and Geoffrey Hinton},
   title   = {Visualizing Data using t-SNE},
@@ -118,17 +162,24 @@ series = {InteNSE '24}
   volume  = {9},
   number  = {86},
   pages   = {2579--2605},
-  url     = {http://jmlr.org/papers/v9/vandermaaten08a.html}
 }
-@misc{mikolov2013efficientestimationwordrepresentations,
-      title={Efficient Estimation of Word Representations in Vector Space}, 
-      author={Tomas Mikolov and Kai Chen and Greg Corrado and Jeffrey Dean},
-      year={2013},
-      eprint={1301.3781},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/1301.3781}, 
+
+@inproceedings{word2vec,
+  author       = {Tom{\'{a}}s Mikolov and
+                  Kai Chen and
+                  Greg Corrado and
+                  Jeffrey Dean},
+  title        = {Efficient Estimation of Word Representations in Vector Space},
+  booktitle    = {1st International Conference on Learning Representations, {ICLR} 2013,
+                  Scottsdale, Arizona, USA, May 2-4, 2013, Workshop Track Proceedings},
+  year         = {2013},
+  crossref     = {DBLP:conf/iclr/2013w},
+  timestamp    = {Mon, 28 Dec 2020 00:00:00 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-1301-3781.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
+
+
 @misc{wu2016googlesneuralmachinetranslation,
       title={Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation}, 
       author={Yonghui Wu and Mike Schuster and Zhifeng Chen and Quoc V. Le and Mohammad Norouzi and Wolfgang Macherey and Maxim Krikun and Yuan Cao and Qin Gao and Klaus Macherey and Jeff Klingner and Apurva Shah and Melvin Johnson and Xiaobing Liu and Łukasz Kaiser and Stephan Gouws and Yoshikiyo Kato and Taku Kudo and Hideto Kazawa and Keith Stevens and George Kurian and Nishant Patil and Wei Wang and Cliff Young and Jason Smith and Jason Riesa and Alex Rudnick and Oriol Vinyals and Greg Corrado and Macduff Hughes and Jeffrey Dean},
@@ -142,7 +193,6 @@ series = {InteNSE '24}
   title = {Development of content‐based SMS classification application by using Word2Vec‐based feature extraction},
   volume = {13},
   ISSN = {1751-8814},
-  url = {http://dx.doi.org/10.1049/iet-sen.2018.5046},
   DOI = {10.1049/iet-sen.2018.5046},
   number = {4},
   journal = {IET Software},
@@ -173,7 +223,6 @@ year = {2015},
 isbn = {978-1-939133-11-3},
 address = {Washington, D.C.},
 pages = {611--626},
-url = {https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/shin},
 publisher = {USENIX Association},
 month = aug
 }
@@ -186,30 +235,46 @@ year = {2017},
 isbn = {978-1-931971-40-9},
 address = {Vancouver, BC},
 pages = {99--116},
-url = {https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/chua},
 publisher = {USENIX Association},
 month = aug
 }
-% maleware classification
-@misc{raff2017malwaredetectioneatingexe,
-      title={Malware Detection by Eating a Whole EXE}, 
-      author={Edward Raff and Jon Barker and Jared Sylvester and Robert Brandon and Bryan Catanzaro and Charles Nicholas},
-      year={2017},
-      eprint={1710.09435},
-      archivePrefix={arXiv},
-      primaryClass={stat.ML},
-      url={https://arxiv.org/abs/1710.09435}, 
+
+@inproceedings{maleware-detection,
+  author       = {Edward Raff and
+                  Jon Barker and
+                  Jared Sylvester and
+                  Robert Brandon and
+                  Bryan Catanzaro and
+                  Charles K. Nicholas},
+  title        = {Malware Detection by Eating a Whole {EXE}},
+  booktitle    = {The Workshops of the The Thirty-Second {AAAI} Conference on Artificial
+                  Intelligence, New Orleans, Louisiana, USA, February 2-7, 2018},
+  series       = {{AAAI} Technical Report},
+  volume       = {{WS-18}},
+  pages        = {268--276},
+  publisher    = {{AAAI} Press},
+  year         = {2018},
+  timestamp    = {Mon, 04 Sep 2023 16:57:01 +0200},
+  biburl       = {https://dblp.org/rec/conf/aaai/RaffBSBCN18.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
-% reverse engeneering
-@misc{lacomis2019direneuralapproachdecompiled,
-      title={DIRE: A Neural Approach to Decompiled Identifier Naming}, 
-      author={Jeremy Lacomis and Pengcheng Yin and Edward J. Schwartz and Miltiadis Allamanis and Claire Le Goues and Graham Neubig and Bogdan Vasilescu},
-      year={2019},
-      eprint={1909.09029},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE},
-      url={https://arxiv.org/abs/1909.09029}, 
+
+@inproceedings{reverse-engeneering,
+  author = { Lacomis, Jeremy and Yin, Pengcheng and Schwartz, Edward and Allamanis, Miltiadis and Le Goues, Claire and Neubig, Graham and Vasilescu, Bogdan },
+  booktitle = { 2019 34th IEEE/ACM International Conference on Automated Software Engineering (ASE) },
+  title = {{ DIRE: A Neural Approach to Decompiled Identifier Naming }},
+  year = {2019},
+  volume = {},
+  ISSN = {},
+  pages = {628-639},
+  abstract = { The decompiler is one of the most common tools for examining binaries without corresponding source code. It transforms binaries into high-level code, reversing the compilation process. Decompilers can reconstruct much of the information that is lost during the compilation process (e.g., structure and type information). Unfortunately, they do not reconstruct semantically meaningful variable names, which are known to increase code understandability. We propose the Decompiled Identifier Renaming Engine (DIRE), a novel probabilistic technique for variable name recovery that uses both lexical and structural information recovered by the decompiler. We also present a technique for generating corpora suitable for training and evaluating models of decompiled code renaming, which we use to create a corpus of 164,632 unique x86-64 binaries generated from C projects mined from GitHub. Our results show that on this corpus DIRE can predict variable names identical to the names in the original source code up to 74.3% of the time. },
+  keywords = {Tools;Recurrent neural networks;Reverse engineering;Training;Software;Analytical models},
+  doi = {10.1109/ASE.2019.00064},
+  publisher = {IEEE Computer Society},
+  address = {Los Alamitos, CA, USA},
+  month =Nov
 }
+
 @article{wattenberg2016how,
   author = {Wattenberg, Martin and Viégas, Fernanda and Johnson, Ian},
   title = {How to Use t-SNE Effectively},
@@ -227,15 +292,21 @@ month = aug
   year={2019},
   organization={IEEE Press}
 }
-@inproceedings{Ma_2024,
-   series={ICSE ’24},
-   title={LLMParser: An Exploratory Study on Using Large Language Models for Log Parsing},
-   url={http://dx.doi.org/10.1145/3597503.3639150},
-   DOI={10.1145/3597503.3639150},
-   booktitle={Proceedings of the IEEE/ACM 46th International Conference on Software Engineering},
-   publisher={ACM},
-   author={Ma, Zeyang and Chen, An Ran and Kim, Dong Jae and Chen, Tse-Hsun and Wang, Shaowei},
-   year={2024},
-   month=apr, pages={1–13},
-   collection={ICSE ’24} 
+@article{ndcg,
+  author = {J\"{a}rvelin, Kalervo and Kek\"{a}l\"{a}inen, Jaana},
+  title = {Cumulated gain-based evaluation of IR techniques},
+  year = {2002},
+  issue_date = {October 2002},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {20},
+  number = {4},
+  issn = {1046-8188},
+  doi = {10.1145/582415.582418},
+  abstract = {Modern large retrieval environments tend to overwhelm their users by their large output. Since all documents are not of equal relevance to their users, highly relevant documents should be identified and ranked first for presentation. In order to develop IR techniques in this direction, it is necessary to develop evaluation approaches and methods that credit IR methods for their ability to retrieve highly relevant documents. This can be done by extending traditional evaluation methods, that is, recall and precision based on binary relevance judgments, to graded relevance judgments. Alternatively, novel measures based on graded relevance judgments may be developed. This article proposes several novel measures that compute the cumulative gain the user obtains by examining the retrieval result up to a given ranked position. The first one accumulates the relevance scores of retrieved documents along the ranked result list. The second one is similar but applies a discount factor to the relevance scores in order to devaluate late-retrieved documents. The third one computes the relative-to-the-ideal performance of IR techniques, based on the cumulative gain they are able to yield. These novel measures are defined and discussed and their use is demonstrated in a case study using TREC data: sample system run results for 20 queries in TREC-7. As a relevance base we used novel graded relevance judgments on a four-point scale. The test results indicate that the proposed measures credit IR methods for their ability to retrieve highly relevant documents and allow testing of statistical significance of effectiveness differences. The graphs based on the measures also provide insight into the performance IR techniques and allow interpretation, for example, from the user point of view.},
+  journal = {ACM Trans. Inf. Syst.},
+  month = oct,
+  pages = {422–446},
+  numpages = {25},
+  keywords = {Graded relevance judgments, cumulated gain}
 }
