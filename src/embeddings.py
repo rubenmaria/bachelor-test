@@ -188,6 +188,8 @@ def embed_summaries_n(
     missing_summaries = set()
     for summary in summaries:
         missing_summaries |= get_missing_summaries(summary)
+    
+    print(f"ignoring: {len(missing_summaries)}")
 
     for i, summary in enumerate(summaries):
         embedding_path = get_embeddings_path_n(input_dir, input_name, i)
@@ -203,7 +205,7 @@ def get_missing_summaries(summaries: dict[str, str]) -> set[str]:
     prompt = open(PROMPT_PATH, "r").read().strip()
     invalid = set()
     for name, summary in summaries:
-        if prompt == summary:
+        if summary.startswith(prompt):
             invalid |= {name}
     return invalid
 
