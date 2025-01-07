@@ -620,10 +620,12 @@ indem er die Loss Function minimiert.
 \begin{definition}{Backpropagation}
   \\
   Sei $N: \mathbb{R}^q \to \mathbb{R}^p$ ein neuronales Netzwerk 
-  mit differenzierbaren Aktivierungsfunktionen und eine
-  differenzierbare Loss function 
-  $\mathcal{L}: \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$.
-  Definiere folgende Abkürzungen:
+  mit differenzierbaren Aktivierungsfunktionen und $n$ Layern.
+  Außerdem sei
+  $\mathcal{L}: \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$
+  eine
+  differenzierbare Loss function.
+  Im weiteren Verlauf werden folgende Abkürzungen verwendet:
   \[
     \texttt{net}_j(x) := W_j \cdot x + B_{j+1} \text{ und }
     o_j(x) := F_j(\texttt{net}_{j-1}(x))
@@ -635,9 +637,22 @@ indem er die Loss Function minimiert.
   der Kettenregel:
     \[
       \frac{\partial \mathcal{L}}{\partial W_{i,j}} = 
-        \frac{\partial E}{\partial o_j} \cdot
+      \frac{\partial \mathcal{L}}{\partial o_j} \cdot
         \frac{\partial o_j}{\partial net_j} \cdot
         \frac{\partial net_j}{\partial W_{i,j}}
+    \]
+    Daraus ergibt sich folgende Änderung für die Gewichte:
+    \[ \Delta W_{i,j} = -\eta \cdot o_i  \cdot \delta_j \]
+    wobei $\eta$ die Lernrate ist, die festlegt wie schnell 
+    oder vorsichtig die Gewichte in Richtung des Minimums
+    der Loss Function wandern sollen und $\delta_{i,j}$ 
+    wie folgt definiert ist:
+    \[
+      \delta_j =
+        \begin{cases}
+          1,& \text{ falls } 1 < j < n  \\
+          0,& \text{ sonst}
+        \end{cases}
     \]
 \end{definition}
 Der entscheidende Aspekt ist, dass wir das richtige Verhalten unseres Modells 
