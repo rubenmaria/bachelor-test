@@ -406,7 +406,8 @@ Zunächst einmal müssen wir neuronale Netzwerke definieren:
   besitzt ein Gewicht $W_{i,j}^l$, wobei $l \in \{1,\dots, n-1\}$ und 
   das Gewicht der Verbindung $K^l_i \to K^{l+1}_j$ zugeordnet ist.
   Daraus ergibt sich eine Familie von Matrizen 
-  $(W_l)_{l=1,\dots, n-1}$, wobei $ W_l\in \mathbb{R}^{r_l\times r_{l+1}}$.
+  $(W_l)_{l=1,\dots, n-1}$, wobei 
+  $ W_l\in \mathbb{R}^{r_{l+1}\times r_{l}}$.
   Nun hat jeder Layer noch ein sogenannten Bias $(B_l)_{l = 2,\dots,n}$,
   dieser ist ein Zeilenvektor $B_l \in \mathbb{R}^{r_l}$.
   Schließlich braucht jeder Knoten eine Aktivierungsfunktion, dass heißt
@@ -454,7 +455,8 @@ Deep Learning ist ein Hypothesenraum, da alle neuronalen Netzwerke
 höherdimensionale reellwertige Funktionen sind, gilt für den
 Hypothesenraum:
 \[
-  H_\text{DL} = \{\mathbb{R}^n \to \mathbb{R}^k\}, \text{ wobei } n,k \in \mathbb{N}
+  H_\text{DL} = \{\mathbb{R}^n \to \mathbb{R}^k\}, 
+    \text{ wobei } n,k \in \mathbb{N}
 \]
 
 
@@ -596,9 +598,48 @@ verwendet werden.
     \}
    \]
 \end{example}
-\subsubsection{Loss Function}
-
-\subsubsection{Backpropagation}
+Für den Trainingsprozess muss nun noch die Größe des Fehlers 
+quantifiziert werden, dies geschieht mittels einer sogenannten
+Loss Function.
+\begin{definition}{Loss Function}
+  \\
+  Sei Y eine beliebige Menge der Outputs, dann
+  ist die Loss Function definiert als:
+  \[ \mathcal{L}: Y \times Y \to \mathbb{R}, 
+  \hspace{0.5cm} \mathcal{L}(y,t) = \epsilon, \]
+  wobei $y$ der Output des Modells ist, $t$ der erwünschte Output
+  des Modells und $\epsilon$ der Fehler bzw. die Abweichung zwischen 
+  den beiden Objekten.
+\end{definition}
+\pagebreak
+Das besondere am überwachten Lernen ist es, dass diese 
+Lernmethode in Kombination mit einen neuronalen Netzwerk
+einen weitverbreiteten Algorithmus besitzt. Dieser 
+Algorithmus nähert das Modell an die gesuchte Zielfunktion an,
+indem er die Loss Function minimiert.
+\begin{definition}{Backpropagation}
+  \\
+  Sei $N: \mathbb{R}^q \to \mathbb{R}^p$ ein neuronales Netzwerk 
+  mit differenzierbaren Aktivierungsfunktionen und eine
+  differenzierbare Loss function 
+  $\mathcal{L}: \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$.
+  Definiere folgende Abkürzungen:
+  \[
+    \texttt{net}_j(x) := W_j \cdot x + B_{j+1} \text{ und }
+    o_j(x) := F_j(\texttt{net}_{j-1}(x))
+  \]
+  Der Algorithmus verwendet die Ableitung der Loss Function, um
+  die Gewichte des neuronalen Netzwerk schrittweise anzupassen,
+  sodass die Loss Function sich einen Minimum nähert. Für die 
+  Ableitung der Loss Function bzgl. der Gewichte gilt, wegen
+  der Kettenregel:
+    \[
+      \frac{\partial \mathcal{L}}{\partial W_{i,j}} = 
+        \frac{\partial E}{\partial o_j} \cdot
+        \frac{\partial o_j}{\partial net_j} \cdot
+        \frac{\partial net_j}{\partial W_{i,j}}
+    \]
+\end{definition}
 Der entscheidende Aspekt ist, dass wir das richtige Verhalten unseres Modells 
 kennen und deshalb direkt wissen, wenn es Fehler macht. Beim selbst-überwachten
 Lernen werden die richtigen Lösungen aus gegebenen Daten generiert. 
