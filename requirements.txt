@@ -12,3 +12,4 @@ pandas
 angr
 tensorflow
 ollama
+tf-keras

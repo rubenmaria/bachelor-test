@@ -3,6 +3,7 @@ import os
 from typing import Callable
 from random import sample
 import numpy as np
+from numpy.linalg import norm
 from numpy._typing import NDArray
 from sentence_transformers import SentenceTransformer
 from sklearn.manifold import TSNE
@@ -12,6 +13,7 @@ from transformers import AutoModel, AutoTokenizer
 from llm import get_summaries, PROMPT_PATH, get_embbeding_from_llama
 from metric import compare_embedding_spaces_k, k_nearest_neighbor_fast
 from collections import OrderedDict
+from metric import k_nearest_neighbor_slow
 import torch
 import random
 
@@ -326,9 +328,19 @@ def get_pairwise_distance_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
         distance_vectors.append(distances)
     return distance_vectors
 
+def get_distance_between(
+    name: str,
+    path: str,
+    other_name: str,
+    other_path: str
+) -> float:
+    embedding = load_embeddings(path)[name]
+    other_embedding = load_embeddings(other_path)[other_name]
+    return 1 - np.dot(embedding, other_embedding) / (norm(embedding) * norm(other_embedding))
+
+
+
 def get_pairwise_distance_same_text_n(embeddings: list[list[NDArray]]) -> list[NDArray]:
-    # Currently calculating distance in one file 
-    # should calculate distance over one text in diffrent files
     embeddings = [[row[i] for row in embeddings] for i in range(len(embeddings[0]))]
     distance_vectors: list[NDArray] = []
     for vectors in embeddings:
@@ -452,5 +464,23 @@ def sentences_to_embedding(function: str) -> NDArray:
     print(len(embedding))
     return embedding
 
+
 def chunks(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+
+def get_nearest_neigbors(k: int, name: str, path: str) -> list[str]:
+    named_embeddings = load_embeddings(path)
+    point = named_embeddings[name]
+    return get_k_nearst_neigbor_names(k, point, named_embeddings)
+
+
+def get_k_nearst_neigbor_names(
+    k: int,
+    point: NDArray,
+    named_embeddings: dict[str, NDArray]
+) -> list[str]:
+    embeddings = np.array(list(named_embeddings.values()))
+    names = list(named_embeddings.keys())
+    neighbor_indecies = k_nearest_neighbor_slow(k, point, embeddings)
+    return [names[index] for index in neighbor_indecies]

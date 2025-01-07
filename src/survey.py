@@ -1,4 +1,5 @@
 from visual import load_cluster, load_embeddings
+from embeddings import get_k_nearst_neigbor_names
 from metric import k_nearest_neighbor_slow
 from typing import Any
 import random
@@ -104,17 +105,6 @@ def get_named_neigbors(
     sample: list[NDArray]
 ) -> list[list[str]]:
     return [get_k_nearst_neigbor_names(k, s, named_embeddings) for s in sample]
-
-
-def get_k_nearst_neigbor_names(
-    k: int,
-    point: NDArray,
-    named_embeddings: dict[str, NDArray]
-) -> list[str]:
-    embeddings = np.array(list(named_embeddings.values()))
-    names = list(named_embeddings.keys())
-    neighbor_indecies = k_nearest_neighbor_slow(k, point, embeddings)
-    return [names[index] for index in neighbor_indecies]
 
 
 def write_dict_to_csv(table: list[list[str]], csv_path: str) -> None:
