@@ -6,6 +6,7 @@
 \usepackage{tikz}
 \usepackage{minted}
 \usepackage{subcaption}
+\usepackage{physics}
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{colormaps}
 \usepgfplotslibrary{groupplots}
@@ -403,11 +404,11 @@ Zunächst einmal müssen wir neuronale Netzwerke definieren:
   $l \in \{1, \dots, n\}$ und $r_l \in \mathbb{N}$ die Anzahl der Knoten im
   Layer $L_l$. Jeder Koten im Layer $L_l$ ist mit jedem Knoten im 
   Layer $L_{l+1}$ verbunden, mit $l \in \{1,\dots, n-1\}$. Jede Verbindung
-  besitzt ein Gewicht $W_{i,j}^l$, wobei $l \in \{1,\dots, n-1\}$ und 
-  das Gewicht der Verbindung $K^l_i \to K^{l+1}_j$ zugeordnet ist.
+  besitzt ein Gewicht $W_{i,j}^{(l)}$, wobei $l \in \{1,\dots, n-1\}$ und 
+  das Gewicht der Verbindung $K^l_j \to K^{l+1}_i$ zugeordnet ist.
   Daraus ergibt sich eine Familie von Matrizen 
-  $(W_l)_{l=1,\dots, n-1}$, wobei 
-  $ W_l\in \mathbb{R}^{r_{l+1}\times r_{l}}$.
+  $(W^{(l)})_{l=1,\dots, n-1}$, wobei 
+  $ W^{(l)}\in \mathbb{R}^{r_{l+1}\times r_{l}}$.
   Nun hat jeder Layer noch ein sogenannten Bias $(B_l)_{l = 2,\dots,n}$,
   dieser ist ein Zeilenvektor $B_l \in \mathbb{R}^{r_l}$.
   Schließlich braucht jeder Knoten eine Aktivierungsfunktion, dass heißt
@@ -434,7 +435,7 @@ Zunächst einmal müssen wir neuronale Netzwerke definieren:
   \[
     h_l(x) = 
       \begin{cases}
-        h_{l+1}(F_{l+1}(W_lx + B_{l+1}))& ,  \text{if } l < n  \\
+        h_{l+1}(F_{l+1}(W^{(l)}x + B_{l+1}))& ,  \text{if } l < n  \\
         x & , \text{sonst}
       \end{cases}.
   \]
@@ -614,21 +615,32 @@ Loss Function.
 \pagebreak
 Das besondere am überwachten Lernen ist es, dass diese 
 Lernmethode in Kombination mit einen neuronalen Netzwerk
-einen weitverbreiteten Algorithmus besitzt. Dieser 
-Algorithmus nähert das Modell an die gesuchte Zielfunktion an,
-indem er die Loss Function minimiert.
+einen weitverbreiteten Algorithmus besitzt, welcher
+sich an die gesuchte Zielfunktion annähert,
+indem er die Loss Function minimiert. Im folgenden 
+wird der Backpropagation-Algorithmus skizziert:
 \begin{definition}{Backpropagation}
   \\
   Sei $N: \mathbb{R}^q \to \mathbb{R}^p$ ein neuronales Netzwerk 
   mit differenzierbaren Aktivierungsfunktionen und $n$ Layern.
   Außerdem sei
   $\mathcal{L}: \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$
-  eine
-  differenzierbare Loss function.
+  eine differenzierbare Loss Function und
+  $(x,y)\in \mathbb{R}^q \times \mathbb{R}^p $ ein Trainingsbeispiel
+  aus dem Datensatz, wobei $x$ der Input ist und $y$ der Erwartete
+  Output bei der Eingabe von $x$ ist.
   Im weiteren Verlauf werden folgende Abkürzungen verwendet:
   \[
-    \texttt{net}_j(x) := W_j \cdot x + B_{j+1} \text{ und }
-    o_j(x) := F_j(\texttt{net}_{j-1}(x))
+    o(l) := h_{1,l}(x) \hspace{0.5cm}\text{ und } \hspace{0.5cm}
+    \texttt{net}(l) := W^{(l-1)}\cdot o(l-1) + B_l
+  \],
+  wobei
+  \[
+    h_{l,j}(x) = 
+      \begin{cases}
+        h_{l+1,j}(F_{l+1}(W^{(l)}x + B_{l+1}))& ,  \text{if } l < j  \\
+        x & , \text{sonst}
+      \end{cases}.
   \]
   Der Algorithmus verwendet die Ableitung der Loss Function, um
   die Gewichte des neuronalen Netzwerk schrittweise anzupassen,
@@ -636,28 +648,40 @@ indem er die Loss Function minimiert.
   Ableitung der Loss Function bzgl. der Gewichte gilt, wegen
   der Kettenregel:
     \[
-      \frac{\partial \mathcal{L}}{\partial W_{i,j}} = 
-      \frac{\partial \mathcal{L}}{\partial o_j} \cdot
-        \frac{\partial o_j}{\partial net_j} \cdot
-        \frac{\partial net_j}{\partial W_{i,j}}
+      \frac{\partial \mathcal{L}}{\partial W_{j,i}^{(l)}} = 
+      \frac{\partial \mathcal{L}}{\partial o(l)_j} \cdot
+        \frac{\partial o(l)_j}{\partial net(l)_j} \cdot
+        \frac{\partial net(l)_j}{\partial W_{j,i}^{(l)}}
     \]
     Daraus ergibt sich folgende Änderung für die Gewichte:
-    \[ \Delta W_{i,j} = -\eta \cdot o_i  \cdot \delta_j \]
-    wobei $\eta$ die Lernrate ist, die festlegt wie schnell 
-    oder vorsichtig die Gewichte in Richtung des Minimums
-    der Loss Function wandern sollen und $\delta_{i,j}$ 
-    wie folgt definiert ist:
+    \[ \Delta W_{j,i}^{(l)} = -\eta \cdot o_i  \cdot \delta_j^{(l)} \]
+    wobei $\eta > 0$ die Lernrate ist, die festlegt wie schnell 
+    die Gewichte in Richtung des Minimums
+    der Loss Function wandern sollen und $\delta_{j}^{(l)}$ ist
+    wie folgt definiert:
     \[
-      \delta_j =
+      \delta_j^{(l)} = 
+        \frac{\partial \mathcal{L}}{\partial o(l)_j}
+        \frac{\partial o(l)_j}{\partial net(l)_j}
+        =
         \begin{cases}
-          1,& \text{ falls } 1 < j < n  \\
-          0,& \text{ sonst}
+          (\sum_{k=1}^{r_{l+1}} W^{(l+1)}_{k,j}\cdot \delta_k^{(l+1)}) 
+          \dv{(F_l)_j(net_j)}{net_j},& \text{ falls } l < n  \\
+          \frac{\partial \mathcal{L}(o(n)_j, y)}{\partial o(n)_j}
+          \cdot 
+          \dv{(F_n)_j(net_j)}{net_j}
+          ,& \text{ falls } l = n
+        
         \end{cases}
     \]
+    Bei mehrfacher Iteration über alle Datensatzpaare,
+    nähern sich die Gewichte einen Minimum der Loss Function.
 \end{definition}
+\hfill
+\\\\
 Der entscheidende Aspekt ist, dass wir das richtige Verhalten unseres Modells 
 kennen und deshalb direkt wissen, wenn es Fehler macht. Beim selbst-überwachten
-Lernen werden die richtigen Lösungen aus gegebenen Daten generiert. 
+Lernen werden bspw. die richtigen Lösungen aus den gegebenen Daten generiert. 
 Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich erscheint,
 nicht selbstverständlich.
 \subsubsection{Unüberwachtes Lernen}
