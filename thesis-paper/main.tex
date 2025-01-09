@@ -645,18 +645,30 @@ wird der Backpropagation-Algorithmus skizziert:
   Der Algorithmus verwendet die Ableitung der Loss Function, um
   die Gewichte des neuronalen Netzwerk schrittweise anzupassen,
   sodass die Loss Function sich einen Minimum nähert. Für die 
-  Ableitung der Loss Function bzgl. der Gewichte gilt, wegen
-  der Kettenregel:
+  Ableitung der Loss Function bzgl. der Gewichte und dem Bias 
+  gilt, wegen der Kettenregel:
     \[
       \frac{\partial \mathcal{L}}{\partial W_{j,i}^{(l)}} = 
       \frac{\partial \mathcal{L}}{\partial o(l)_j} \cdot
         \frac{\partial o(l)_j}{\partial net(l)_j} \cdot
         \frac{\partial net(l)_j}{\partial W_{j,i}^{(l)}}
     \]
-    Daraus ergibt sich folgende Änderung für die Gewichte:
-    \[ \Delta W_{j,i}^{(l)} = -\eta \cdot o_i  \cdot \delta_j^{(l)} \]
-    wobei $\eta > 0$ die Lernrate ist, die festlegt wie schnell 
-    die Gewichte in Richtung des Minimums
+    und 
+    \[
+      \frac{\partial \mathcal{L}}{\partial (B_l)_j} = 
+      \frac{\partial \mathcal{L}}{\partial o(l)_j} \cdot
+        \frac{\partial o(l)_j}{\partial net(l)_j} \cdot
+        \frac{\partial net(l)_j}{\partial (B_l)_{j}}.
+    \]
+    Daraus ergibt sich folgende Änderung für die Gewichte 
+    und dem Bias:
+    \[ \Delta W_{j,i}^{(l)} = -\eta_w \cdot o_i  \cdot \delta_j^{(l)}
+      \hspace{0.2cm}
+      \text{und}
+      \hspace{0.2cm}
+     \Delta (B_l)_j = -\eta_b \cdot 1 \cdot \delta_j^{(l)}. \]
+    wobei $\eta_w, \eta_b > 0$ die Lernraten sind, die festlegen
+    wie schnell die Gewichte und der Bias in Richtung des Minimums
     der Loss Function wandern sollen und $\delta_{j}^{(l)}$ ist
     wie folgt definiert:
     \[
@@ -675,7 +687,8 @@ wird der Backpropagation-Algorithmus skizziert:
         \end{cases}
     \]
     Bei mehrfacher Iteration über alle Datensatzpaare,
-    nähern sich die Gewichte einen Minimum der Loss Function.
+    nähern sich die Gewichte und der Bias einen Minimum
+    der Loss Function an.
 \end{definition}
 \hfill
 \\\\
@@ -685,14 +698,15 @@ Lernen werden bspw. die richtigen Lösungen aus den gegebenen Daten generiert.
 Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich erscheint,
 nicht selbstverständlich.
 \subsubsection{Unüberwachtes Lernen}
-Das unüberwachte Lernen ist der Extremfall, da der Lernalgorithmus
+Das unüberwachte Lernen ist ein Spezialfall, da der Lernalgorithmus
 ausschließlich die Input-Werte erhält.
 \[\mathbb{D} = (x_1, x_2, x_3, \dots, x_n) \subset X\]
-Der Lernalgorithmus erhält keine Hinweise darauf, was richtig oder falsch 
-ist. Unüberwachtes Lernen ist eine Methode, um in Daten Strukturen und 
-Muster zu identifizieren. Ein Beispiel ist die Cluster-Analyse, hier
-bekommt der Lernalgorithmus eine Menge von Daten und gruppiert diese in
-Teilmengen. In der Abbildung 2.3 ist ein Beispiel für das Resultat einer
+Der Lernalgorithmus erhält keine Hinweise darauf, was richtig oder 
+falsch ist. Das unüberwachte Lernen ist eine Methode, um in Daten,
+Strukturen und Muster zu identifizieren. Ein Beispiel ist die
+Cluster-Analyse, hier bekommt der Lernalgorithmus eine Menge von 
+Daten und gruppiert diese in Teilmengen. In der Abbildung 2.3 ist 
+ein Beispiel für das Resultat einer
 möglichen Cluster-Analyse dargestellt.
 \begin{figure}[H]
   \centering
@@ -702,24 +716,35 @@ möglichen Cluster-Analyse dargestellt.
 \end{figure}
 
 \subsubsection{Reinforcement Learning}
-Das Reinforcement Learning ist nicht so extrem wie das unüberwachte Lernen. 
 Bei diesem Paradigma liegen dem Lernalgorithmus zwar nicht die korrekten 
 Output-Werte vor, aber der Lernalgorithmus erhält für jeden vorhergesagten Wert 
-eine Rückmeldung, wie erwünscht dieser Wert ist. Ein Beispiel ist ein Modell,
+eine Rückmeldung, wie erwünscht dieser Wert ist. 
+\[ 
+  \mathbf{D} = (x_1, x_2, x_3, \dots, x_n) \subset X 
+  \hspace{0.5cm}
+  \text{und}
+  \hspace{0.5cm}
+  \texttt{score}: X \times Y \to \mathbb{R},
+  \hspace{0.5cm}
+  \texttt{score}(x_i, o_i) = s
+\]
+Wobei $x_i$ ein Input-Wert ist, $o_i$ der Output-Wert bei der 
+Eingabe von $x_i$ ist und \texttt{score} eine Funktion die 
+den Output $o_i$ bei gegeben $x_i$ bewertet.\\
+Ein Beispiel ist ein Modell,
 das mittels eines Lernalgorithmus darauf trainiert wird, ein Videospiel zu 
 gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Umgebung und gibt dem 
 Spiel einen Input, welcher eine Aktion zufolge hat. Falls nun die Aktion dazu 
 beiträgt, den Spieler in eine gute Position zu bringen oder gar das Spiel zu
 gewinnen, bekommt die Aktion eine positive Bewertung, andernfalls eine
-negative. 
-
+negative.\\\\
 Die Problemstellung im maschinellen Lernen ist allgemein formuliert und abstrakt.
 Dies ist der Grund, warum maschinelles Lernen in vielen unterschiedlichen 
 Bereichen eingesetzt werden kann. Einer der Bereiche ist die natürliche
 Sprachverarbeitung (engl. natural language processing), was uns zum nächsten 
 Begriff führt. Natürliche Sprachverarbeitung wird im Folgenden 
 mit NLP abgekürzt.
-
+\pagebreak
 \subsection{Semantische Vekorräume}
 Das semantische Codieren von natürlicher Sprache in einem Vektorraum 
 ist ein bedeutsames Problem in NLP
@@ -738,11 +763,13 @@ für semantische Vektorräume verwendet.
 Hierfür ist es erforderlich vorher zu definieren, inwiefern zwei
 Objekte ähnlich sind und welchen Abstandsbegriff man im Vektorraum 
 wählt.
-Der Begriff semantischer Vektorraum für natürliche Sprache heißt hier,
-dass ähnliche Wörter, also Wörter mit ähnlicher Bedeutung 
-im projizierten Vektorraum, einen geringen Abstand zueinander haben. Wir werden die Vektoren im Folgenden als Embeddings bezeichnen. In einem idealen semantischen Vektorraum würde 
-die Beziehung gelten, die in Figur 2.4 dargestellt wird.\\
-\begin{figure}[H]
+Der Begriff semantischer Vektorraum für natürliche Sprache heißt
+hier, dass ähnliche Wörter, also Wörter mit ähnlicher Bedeutung 
+im projizierten Vektorraum, einen geringen Abstand zueinander haben.  
+In einem idealen semantischen Vektorraum würden
+die Beziehung gelten, die in der Figur 2.3 dargestellt sind.
+Wir werden die Vektoren im Folgenden als Embeddings bezeichnen.
+\begin{figure}
   \begin{center}
       \begin{tikzpicture}
         \draw[thin,gray!40] (-3,-3) grid (3,3);
@@ -775,7 +802,7 @@ die Sätze, in denen ein bestimmtes Wort vorkommt, effizient gefunden
 werden. Die Bedeutung eines Wortes ist hier komplett unabhängig von 
 der Wahl der zugewiesenen Zahl. Das führt dazu, dass sogar Synonyme einen
 hohen Abstand haben können.
-
+\pagebreak
 \begin{example}
   Sei $T = \{\text{Input}, \text{Mann}, \text{Frau},
    \text{Eingabe}\}$ eine Menge von Wörtern, dann ist die Zuordnung
@@ -789,33 +816,7 @@ hohen Abstand haben können.
   Obwohl Eingabe und Input semantisch sehr ähnlich sind, haben sie hier
   einen sehr unterschiedlichen Wert.
 \end{example}
-\subsubsection{Word2Vec}
-Im Jahr 2013 veröffentlichten Mikolov et al.  
-\cite{word2vec},
-zwei Modellarchitekturen, mit der ein
-neuronales Netzwerk effizient lernen kann, semantische Embeddings
-zu produzieren.
-Mirkolov et al. haben eine Implementierung veröffentlicht die sie 
-\textit{Word2Vec} \footnote{https://code.google.com/archive/p/word2vec/}
-genannt haben.
-In beiden Architekturen besteht das neuronale Netzwerk aus einem 
-Hidden Layer, der nach dem Training die reellwertigen 
-Vektorrepräsentationen enthält.
-Der Aufbau bei beiden Modellen ist in Figur 2.5 dargestellt.
-Es ist zu beachten, dass der Hidden Layer keine Aktivierungsfunktion 
-besitzt, da er nur als lineare Transformation von einer 
-One-Hot-Codierung zu einem reellwertigen Vektor dient.
-\hfill\\
-\pagebreak\\
-One-Hot-Codierung produziert für jedes aus n Wörtern einen Vektor
-$v \in \{0,1\}^n$. Dieser Vektor ist an einer Stelle mit einer Eins
-und sonst überall mit einer Null versehen. Jede Position, an der eine
-Eins ist, gibt es nur einmal und codiert so durch die Position ein Wort.
-Der Output-Layer hat als Aktivierungsfunktion einen Softmax, der 
-Softmax gibt Werte zwischen 0 und 1 zurück. Der Output ist also ein 
-Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung 
-durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.\\
-\begin{figure}[H]
+\begin{figure}
   \begin{center}
     \begin{tikzpicture}
     [inner sep=2mm,
@@ -879,7 +880,30 @@ durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.\\
     \caption{ Architektur des neuronalen Netzwerks von Word2Vec}
   \end{center}
 \end{figure}
-\hfill\\
+\subsubsection{Word2Vec}
+Im Jahr 2013 veröffentlichten Mikolov et al.  
+zwei Modellarchitekturen, mit der ein
+neuronales Netzwerk effizient lernen kann, semantische Embeddings
+zu produzieren
+\cite{word2vec}.
+Sie haben dazu auch eine Implementierung veröffentlicht die sie 
+\textit{Word2Vec} \footnote{https://code.google.com/archive/p/word2vec/}
+genannt haben.
+In beiden Architekturen besteht das neuronale Netzwerk aus einem 
+Hidden Layer, der nach dem Training die reellwertigen 
+Vektorrepräsentationen enthält.
+Der Aufbau bei beiden Modellen ist in Figur 2.4 dargestellt.
+Es ist zu beachten, dass der Hidden Layer keine Aktivierungsfunktion 
+besitzt, da er nur als lineare Transformation von einer 
+One-Hot-Codierung zu einem reellwertigen Vektor dient.
+One-Hot-Codierung produziert für jedes aus n Wörtern einen Vektor
+$v \in \{0,1\}^n$. Dieser Vektor ist an einer Stelle mit einer Eins
+und sonst überall mit einer Null versehen. Jede Position, an der eine
+Eins ist, gibt es nur einmal und codiert so durch die Position ein Wort.
+Der Output-Layer hat als Aktivierungsfunktion einen Softmax, der 
+Softmax gibt Werte zwischen 0 und 1 zurück. Der Output ist also ein 
+Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung 
+durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.\\
 Es gibt nun zwei unterschiedliche Strategien, das neuronale Netzwerk
 zu trainieren. Die erste ist Skip-Gram, gegeben ein Wort, soll das
 Modell die naheliegenden Wörter vorhersagen. Das heißt, es soll einem
@@ -905,25 +929,7 @@ unterschiedliche Kontexte verschwimmen und ungenaue Ergebnisse entstehen.
 Folglich hat die Kontextgröße einen entscheidenden Einfluss auf den Erfolg 
 des Modells. Vaswani et al. lösen das Kontextproblem 
 durch die Transformer-Modellarchitektur \cite{transformer}.
-
-\pagebreak
-
-\subsubsection{Transformer}
-Die Transformer-Architektur \cite{transformer}
-ist ein Meilenstein im NLP Bereich.
-Die vorgestellte Deep Learning Architektur bildet die Basis
-für BERT, \textit{SentenceTransformer} und Large Language-Models
-(wie z.B. Chat-GPT).
-Das Modell wurde ursprünglich entwickelt, um bei einem gegebenen
-Satz 
-einen sinnvollen neuen Satz zu generieren. Die Donwstream Task auf
-die eine Implementierung der Architektur trainiert wurde,
-ist das Übersetzen von Englisch zu Deutsch und von
-English zu Französisch. 
-Der Transformer kann jedoch wieder zur Erzeugung semantischer Embeddings 
-verwendet werden, wie im Abschnitt zum \textit{SentenceTransformer} erläutert
-wird.
-\begin{figure}[H]
+\begin{figure}
   \begin{center}
     \begin{tikzpicture}
       [inner sep=2mm,
@@ -942,8 +948,31 @@ wird.
   \end{center}
   \caption{Transformer-Architektur stark vereinfacht}
 \end{figure}
-\hfill\\
-Die Architektur hat zwei große Blöcke, die in der Abbildung 2.6
+\subsubsection{Transformer}
+Die Transformer-Architektur \cite{transformer}
+ist ein Meilenstein im NLP Bereich.
+Die vorgestellte Deep Learning Architektur bildet die Basis
+für BERT, \textit{SentenceTransformer} und Large Language-Models
+(wie z.B. Chat-GPT).
+Das Modell wurde ursprünglich entwickelt, um bei einem gegebenen
+Satz 
+einen sinnvollen neuen Satz zu generieren. Die Donwstream Task auf
+die eine Implementierung der Architektur trainiert wurde,
+ist das Übersetzen von Englisch zu Deutsch und von
+English zu Französisch. 
+Der Transformer kann jedoch wieder zur Erzeugung semantischer Embeddings 
+verwendet werden, wie im Abschnitt zum \textit{SentenceTransformer} erläutert
+wird.
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.5]{abb/transformer-figure.png}
+  \end{center}
+  \caption{
+      Transformer-Architektur entnommen aus \cite{transformer}.
+      Der linke Block ist der Encoder und der rechte Block der Decoder.
+  }
+\end{figure} 
+Die Architektur hat zwei große Blöcke, die in der Abbildung 2.5
 zusehen sind. Der erste Block ist der Encoder, dieser erhält die
 Eingabe. Beim Übersetzen wäre das der zu übersetzende Text.
 Der Encoder codiert den Input in semantische Embeddings und gibt
@@ -961,7 +990,7 @@ um die Generierung zu stoppen, gibt er selbst ein konstantes
 Stopp-Embedding aus. Insbesondere ist es möglich, dass mehrere
 Encoder und Decoder gleichzeitig hintereinander geschaltet werden 
 können.\\
-Die Architektur ist in Abbildung 2.7 dargestellt. Im Folgenden 
+Die Architektur ist in Abbildung 2.6 dargestellt. Im Folgenden 
 werden die wichtigsten Bestandteile der Abbildung erläutert.
 {\bf Input-Embedding}
 gibt dem Input, der in Textform vorliegt, eine Vektorrepräsentation.
@@ -997,15 +1026,6 @@ Head-Attention-Modul.
 Beim Trainieren ist der Input des Decoders bereits der Satz,
 den das Modell vorhersagen soll. Daher müssen alle Wörter, 
 die es noch nicht vorhergesagt hat, verdeckt (engl. masked) werden.
-\begin{figure}
-  \begin{center}
-    \includegraphics[scale=0.6]{abb/transformer-figure.png}
-  \end{center}
-  \caption{
-      Transformer-Architektur entnommen aus \cite{transformer}.
-      Der linke Block ist der Encoder und der rechte Block der Decoder.
-  }
-\end{figure} 
 \subsubsection{BERT}
 Das BERT-Modell \cite{conf/naacl/DevlinCLT19} 
 ist ein wichtiger Meilenstein im NLP-Bereich und kann 
@@ -1022,7 +1042,7 @@ und ausschließlich Encoder verwendet.
     \cite{conf/naacl/DevlinCLT19}.
   }
 \end{figure}
-In Abbildung 2.8 ist der Token-Embedding-Prozess abgebildet,
+In Abbildung 2.7 ist der Token-Embedding-Prozess abgebildet,
 der im Folgenden näher beschrieben wird. Zunächst ist es 
 notwendig zu erläutern, was ein Token ist. Ein Token ist in 
 diesem Fall ein Wort, 
@@ -1104,7 +1124,7 @@ effizient zu berechnen.\\
 Die Modellarchitektur von SBERT wird als {\bf Siamese Neural Network }
 bezeichnet, da zwei unterschiedliche BERT-Modelle verwendet werden,
 um beide Sätze in einen Vektor umzuwandeln, aber beide Modelle
-teilen sich die Gewichte. In der Abbildung 2.9 ist die Siamese 
+teilen sich die Gewichte. In der Abbildung 2.8 ist die Siamese 
 Neural Network zusehen.\\
 \begin{figure}
   \begin{center}
@@ -1152,10 +1172,10 @@ $u,v \in \mathbb{R}^n$ die Output-Vektoren von dem Pooling-Modul,
 $\texttt{concat}$ die Funktion die drei Vektoren konkateniert und
 $|\cdot|$ eine beliebige Norm, dann
 \[
-  o_i = \text{softmax}((W \cdot \texttt{concat}(u,v, |u-v|))_i).
+  o_i = \text{softmax}((W \cdot \texttt{concat}(u,v, |u-v|))_i), \text{ für } i = 1, 2, 3.
 \]
 Nachdem Training bei der Inferenz wird der Vektor, nachdem 
-Pooling-Modul als Output-Vektor ausgeben. SBERT liefert uns 
+Pooling-Modul als Output-Vektor ausgeben. SBERT liefert 
 also ein Tool, um Sätze semantisch in einem Vektorraum abzubilden,
 welches sich in späteren Kapiteln als sehr hilfreich herausstellt.
 \subsection{Code Llama}
@@ -1229,7 +1249,7 @@ Quellcode in semantischen Vektoren abzubilden. Mit diesen Vektoren
 können dann wieder viele verschiedene Aufgaben gelöst werden.
 Das motivierende Beispiel bei \textit{Code2Vec} ist die Vorhersage 
 eines sinnvollen Namens für eine Funktion. Die Architektur, welche 
-in Abbildung 2.10 dargestellt ist, wird im Folgenden erläutert. 
+in Abbildung 2.9 dargestellt ist, wird im Folgenden erläutert. 
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.3]{abb/code2vec.png}
