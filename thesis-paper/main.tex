@@ -121,10 +121,10 @@ verwendet werden, um ein neuronales Netzwerk mittels überwachten Lernens
 darauf zu trainieren, bei gegebener Funktion in Maschinensprache einen 
 Vektor vorherzusagen, der den Inhalt der Funktion widerspiegelt. 
 Die Embeddings werden zum einen aus Funktionsnamen, Funktionskommentaren 
-und Code-Llama-Erklärrungen \cite{rozière2024codellamaopenfoundation} 
+und Code-Llama-Erklärungen \cite{rozière2024codellamaopenfoundation} 
 erstellt, indem der rohe Text, mittels \textit{SentenceTransfomer} 
 \cite{reimers-2019-sentence-bert} in einen Vektor umgewandelt wird.
-Zum anderen wurden Inferenzvektoren aus dem 
+Zum anderen wurden Inferenz-Vektoren aus dem 
 \textit{Code2Vec} \cite{code2vec} Modell verwendet.  
 Um die Qualität der Code-Llama-Vektoren, \textit{Code2Vec}-Vektoren, 
 Funktionskommentar-Vektoren und Funktionsnamen-Vektoren einzuordnen,
@@ -187,7 +187,8 @@ and \textit{Code2Vec} vectors.
 \section{Einführung}
 In den letzten Jahren wurden wichtige Fortschritte in der natürlichen
 Sprachverarbeitung erzielt, ein wichtiger Faktor war die Codierung von
-natürlicher Sprache in reellwertigen Vektoren (engl. embeddings). Die hochdimensionalen Vektoren
+natürlicher Sprache in reellwertigen Vektoren (engl. embeddings). Die 
+hochdimensionalen Vektoren
 codieren die Semantik der ursprünglichen Wörter oder Sätze.
 Diese hochdimensionalen Vektoren, die die Semantik von
 Wörtern oder Sätzen codieren, erlauben es, neuronale
@@ -219,9 +220,9 @@ ein Vektor erforderlich, der den Inhalt der Funktion codiert.
 Dieser für das überwachte Lernen erforderlich Datensatz 
 kann aus C-Quellcode erzeugt werden, falls ein Tool vorliegt
 welches aus C-Quellcode-Funktionen einen Vektor generiert,
-welcher den Inhalt der Funktion wiederspiegelt. Um schließlich 
+welcher den Inhalt der Funktion widerspiegelt. Um schließlich 
 noch die Binärcode-Funktionen zu erhalten, werden die 
-C-Quellcode-Funktionen kompelliert.\\
+C-Quellcode-Funktionen kompiliert.\\
 Das Ziel dieser Arbeit ist es, verschiedene Methoden zu vergleichen
 aus C Quellcode Vektoren zu generieren, die den Inhalt von dem
 ursprünglichen Quellcode codieren, mithilfe von Werkzeugen aus der
@@ -244,10 +245,10 @@ die den Inhalt des Quellcodes codieren.
 \pagebreak
 \subsection{Stand der Technik}
 {\bf CLAP} ({\bf C}ontrastive {\bf L}anguage {\bf A}ssembly {\bf P}re-training) 
-\cite{clap} 
 setze Anfang 2024 einen neuen Stand der Technik, in
 \textit{Binary Code-Simillarity-Detection}
-mithilfe von natürlicher Sprachverarbeitung. Die Aufgabe bei 
+mithilfe von natürlicher Sprachverarbeitung\cite{clap}.
+Die Aufgabe bei 
 \textit{Binary Code-Simillarity-Detection}
 besteht darin, die Ähnlichkeit zwischen zwei gegebenen 
 Assemblercodes zu bestimmen.\\
@@ -261,7 +262,7 @@ Sprachverarbeitung namens \textit{SentenceTransformer} und trainieren dieses
 darauf, Assemblercode die passende Quellcodeerklärung  zuzuordnen. Dabei 
 erhalten sie die Quellcodeerklärungen durch ein Large  Language-Model, wie
 beispielsweise Chat-GPT.\\
-{\bf JTrans} \cite{jtrans}
+Das {\bf JTrans}-Modell \cite{jtrans} 
 baut auf einer Modellarchitektur aus der natürlichen 
 Sprachverarbeitung namens 
 Transformer \cite{transformer} auf. 
@@ -274,7 +275,7 @@ Stand der Technik in \textit{Binary Code Similarity Detection}.\\
 Die hauptsächlichen Leistungen dieser Arbeit sind:
 \begin{itemize}
   \item ein Tool, das einen Datensatz mit Assemblercode und
-    Vektoren, welche den Inhalt des Assemblercodes wiederspiegelm,
+    Vektoren, welche den Inhalt des Assemblercodes widerspiegeln,
     aus C-Quellcode und dem dazugehörigen Assemblercode generiert.
   \item eine qualitative Analyse durch 
     \textit{t-SNE} \cite{JMLR:v9:vandermaaten08a}, die die Verwendung von 
@@ -301,8 +302,8 @@ Die allgemeine Architektur des Tools und dessen Designentscheidungen werden im K
 beschrieben. Es werden die Auswahl des C-Quellcodes, die Datenpipeline und die 
 Stabilität des \textit{SentenceTransformers} erläutert.\\
 Kapitel 4, 5, 6 und 7 befassen sich mit den verschiedenen Methoden, Embeddings
-zu erzeugen. Also wie aus den Quellcodeinformationen über Funktionsnamen und
--kommentare ein Vektor erstellt werden kann. Außerdem wird erläutert, wie mit
+zu erzeugen. Also wie aus den Quellcode-Informationen über Funktionsnamen und
+Funktionskommentare ein Vektor erstellt werden kann. Außerdem wird erläutert, wie mit
 \textit{Code Llama} und  \textit{Code2Vec}  Vektoren produziert werden können.\\
 Die Ergebnisse werden in einer qualitativen und quantitativen Auswertung in 
 Kapitel 8 vorgestellt. Zuerst wird durch eine Experten-Evaluierung die beste
@@ -622,7 +623,7 @@ wird der Backpropagation-Algorithmus skizziert:
 \begin{definition}{Backpropagation}
   \\
   Sei $N: \mathbb{R}^q \to \mathbb{R}^p$ ein neuronales Netzwerk 
-  mit differenzierbaren Aktivierungsfunktionen und $n$ Layern.
+  mit differenzierbaren Aktivierungsfunktionen und $n$ Layer.
   Außerdem sei
   $\mathcal{L}: \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$
   eine differenzierbare Loss Function und
@@ -711,8 +712,9 @@ möglichen Cluster-Analyse dargestellt.
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{abb/t-sne-example.png}
-  \caption{Cluster Analyse angewendet auf 2-dimensionale Daten aus 
-  \cite{wattenberg2016how}.}
+  \caption{Cluster Analyse angewendet auf 2-dimensionale Daten von 
+    Wattenberg et al. \cite{wattenberg2016how}.
+  }
 \end{figure}
 
 \subsubsection{Reinforcement Learning}
@@ -959,7 +961,7 @@ Satz
 einen sinnvollen neuen Satz zu generieren. Die Donwstream Task auf
 die eine Implementierung der Architektur trainiert wurde,
 ist das Übersetzen von Englisch zu Deutsch und von
-English zu Französisch. 
+Englisch zu Französisch. 
 Der Transformer kann jedoch wieder zur Erzeugung semantischer Embeddings 
 verwendet werden, wie im Abschnitt zum \textit{SentenceTransformer} erläutert
 wird.
@@ -968,7 +970,8 @@ wird.
     \includegraphics[scale=0.5]{abb/transformer-figure.png}
   \end{center}
   \caption{
-      Transformer-Architektur entnommen aus \cite{transformer}.
+      Die Transformer-Architektur entnommen aus der Veröffentlichung 
+      von Vaswani et al. \cite{transformer}.
       Der linke Block ist der Encoder und der rechte Block der Decoder.
   }
 \end{figure} 
@@ -1027,9 +1030,10 @@ Beim Trainieren ist der Input des Decoders bereits der Satz,
 den das Modell vorhersagen soll. Daher müssen alle Wörter, 
 die es noch nicht vorhergesagt hat, verdeckt (engl. masked) werden.
 \subsubsection{BERT}
-Das BERT-Modell \cite{conf/naacl/DevlinCLT19} 
+Das BERT-Modell  
 ist ein wichtiger Meilenstein im NLP-Bereich und kann 
-als eines der ersten Large Language-Models betrachtet werden.
+als eines der ersten Large Language-Models betrachtet werden
+\cite{conf/naacl/DevlinCLT19}.
 Das Modell verbessert die Transformer-Architektur, 
 indem es die Token-Embeddings verbessert, zwei neue Trainingsaufgaben einführt
 und ausschließlich Encoder verwendet.
@@ -1038,7 +1042,8 @@ und ausschließlich Encoder verwendet.
     \includegraphics[scale=0.5]{abb/BERT-Tokens.png}
   \end{center}
   \caption{
-    Token-Embedding-Prozess entnommen aus 
+    Der Token-Embedding-Prozess entnommen aus der Veröffentlichung
+    von Devlin et al.
     \cite{conf/naacl/DevlinCLT19}.
   }
 \end{figure}
@@ -1086,10 +1091,7 @@ Der erste Output-Vektor des BERT-Modells ist das Ergebnis des
 \verb|[cls]| Tokens und wird verwendet, um den Output
 \verb|isNext| oder \verb|notNext| zu produzieren.\\
 Nach dem Training erhält man aus dem BERT-Modell für jeden 
-Input-Vektor genau einen Output-Vektor. Die Output-Vektoren 
-codieren nun die Input-Tokens und können weiter verwendet werden,
-um mit wenig Aufwand ein Modell für bestimmte Probleme in NLP zu 
-kreieren.\\
+Input-Vektor genau einen Output-Vektor. 
 \subsubsection{Sentence Transformer}
 Das Sentence-BERT-Modell \cite{reimers-2019-sentence-bert}
 ist der aktuelle Stand der Technik im semantischen Codieren 
@@ -1131,7 +1133,9 @@ Neural Network zusehen.\\
     \includegraphics[scale=0.3]{abb/SBERT.png}
   \end{center}
   \caption{
-    SBERT-Architektur entnommen aus \cite{reimers-2019-sentence-bert}. 
+    Die SBERT-Architektur entnommen aus der Veröffentlichung
+    von Reimers et al.
+    \cite{reimers-2019-sentence-bert}. 
     Beide BERT-Modelle teilen sich dieselben Gewichte. 
   }
 \end{figure}
@@ -1255,7 +1259,8 @@ in Abbildung 2.9 dargestellt ist, wird im Folgenden erläutert.
     \includegraphics[scale=0.3]{abb/code2vec.png}
   \end{center}
   \caption{
-    \textit{Code2Vec}-Architektur entnommen aus
+    Die \textit{Code2Vec}-Architektur entnommen aus der 
+    Veröffentlichung von Alon et al.
     \cite{code2vec}
   }
 \end{figure}
@@ -1273,7 +1278,10 @@ von dem Hidden Layer
 und $\alpha \in \mathbb{R}^n$ der Attention-Weights Vektor.
 \[
   \verb| code vector | v = \sum_{i = 1}^n \alpha_i \cdot h_i
-\]\\
+\]
+\\
+\pagebreak
+\hfill\\
 Mit dem \verb|Code-Vector| kann dann das gewünschte Label vorhergesagt 
 werden. Das Modell kann demnach darauf trainiert werden, bei gegebenem 
 \verb|Code-Vector| bzw. Quellcodeauszug ein bestimmtes Label in 
@@ -1298,23 +1306,23 @@ was bei der effektiven Verwendung von \textit{t-SNE} zu beachten ist. Die
 hochdimensionalen Datenpunkte werden mit $\mathbf{H}$ und die 
 niedrigdimensionalen Datenpunkte mit $\mathbf{N}$ bezeichnet. Der erste Schritt 
 des Algorithmus ist es, jedem Datenpunktpaar im Datensatz $\mathbf{H}$
-einen Ähnlichkeitsscore zuzuweisen. Dieser wird berechnet, indem man 
+einen Ähnlichkeit-Score zuzuweisen. Dieser wird berechnet, indem man 
 zuerst die euklidische Distanz von jedem Datenpaar berechnet und dann das 
 Ergebnis in eine Wahrscheinlichkeitsverteilung eingibt. Dies führt zu
 einer Normalisierung des Wertes. Das Ergebnis ist dann eine Tabelle mit 
-einem Ähnlichkeitsscore für jedes Datenpaar in $\mathbf{H}$.\\
+einem Ähnlichkeit-Score für jedes Datenpaar in $\mathbf{H}$.\\
 Als Nächstes werden die Datenpunkte zufällig in der niedrigen Dimension 
 $\mathbf{N}$ angeordnet. Die nachfolgenden zwei Schritte werden 
 $T\in \mathbb{N}$ 
 mal wiederholt, wobei $T$ ein Parameter ist, der wählbar ist.
 \begin{enumerate}
-  \item Berechne Ähnlichkeitsscore von $\mathbf{N}$, diesmal wird aber die
+  \item Berechne Ähnlichkeit-Score von $\mathbf{N}$, diesmal wird aber die
       studentische t-Verteilung als wahrscheinlichkeitsverteilung genommen. 
   \item Verschiebe die Datenpunkte von $\mathbf{N}$ um ein kleinen Wert in
-    die Richtung, die den Unterschied der Ähnlichkeitsscores von $\mathbf{H}$
+    die Richtung, die den Unterschied der Ähnlichkeit-Score von $\mathbf{H}$
     und $\mathbf{N}$ minimiert.
 \end{enumerate}
-Nach $T$ Wiederholung ist der Ähnlichkeitsscore von $\mathbf{N}$ und 
+Nach $T$ Wiederholung ist der Ähnlichkeit-Score von $\mathbf{N}$ und 
 $\mathbf{H}$ nahe bei einander, d.h. die Nachbarschaftsverhältnisse 
 von $\mathbf{N}$ und $\mathbf{H}$ sind nun ähnlich.\\
 Wattenberg et al. haben untersucht, wie man  \textit{t-SNE} sinnvoll
@@ -1446,7 +1454,7 @@ Sprache beschrieben und dann in den \textit{SentenceTransformer}
 eingegeben oder die Quellinformation wird direkt in den 
 \textit{SentenceTransformer} eingegeben. Schließlich erhält man
 wieder eine Datenmenge, die aus Tupeln besteht. Ein Tupel besteht
-aus dem Funktionsnamen und dem zugewiesenen semantischen Embedding. 
+aus dem Funktionsnamen und dem zugewiesenen Embedding. 
 Bei dieser Architektur kann mühelos jedes Tool ausgewechselt werden,
 solange die Ausgabeformate eingehalten werden. 
 % Treesitter erklären
@@ -1458,7 +1466,7 @@ Im vorherigen Abschnitt haben wir festgestellt, dass der endgültige
 Schritt für alle Daten der \textit{SentenceTransformer} ist, deshalb
 bildet 
 er das Herzstück der Datenpipeline. In dieser Arbeit sollen 
-verschiedene semantische Beschreibungen des Quellcodes in 
+verschiedene Beschreibungen des Quellcodes in 
 natürlicher Sprache verglichen werden. Es ist wichtig, dass alle 
 anderen Elemente in der Datenpipeline konstante Ergebnisse 
 liefern und nicht schwanken. Aus diesem Grund wird im Folgenden 
@@ -1499,13 +1507,13 @@ für die Anwendung in dieser Arbeit ausreichend stabil.
 
 \subsection{Funktionskommentare}
 Bevor ein Programm kompiliert wurde, gibt es eine Menge an
-Informationen, die die Semantik der Funktion in natürlicher Sprache 
-beschreiben. Eine offensichtliche Quellcodeinformation, die im
-Optimalfall die Semantik der Funktion in natürlicher Sprache 
+Informationen, die den Inhalt der Funktion in natürlicher Sprache 
+beschreiben. Eine offensichtliche Quellcode-Information, die im
+Optimalfall den Inhalt der Funktion in natürlicher Sprache 
 beschreibt, ist der Kommentar. Ein gelungener Kommentar zu einer
 Funktion beschreibt die Kernfunktion der Prozedur, d.h. den Input,
 den Output und die Umwandlung. Dieser Kommentar kann dann in den 
-SentenceTransformer eingeben werden und so in einen semantischen 
+\textit{SentenceTransformer} eingeben werden und so in einen
 Vektorraum abgebildet werden.\\
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
@@ -1514,11 +1522,11 @@ wie im Abschnitt zur Datenpipeline erwähnt. Dabei gab es eine große
 Designentscheidung zu treffen, welche Kommentare in einer Funktion
 berücksichtigt werden sollen.
 Im Rahmen dieser Arbeit werden ausschließlich Kommentare verwendet,
-die direkt  über der Funktion in stehen. Diese Designentscheidungen
+die direkt  über der Funktion in stehen. Diese Designentscheidung
 wurde unter der Hypothese getroffen, dass die einzeiligen
-Kommentare innerhalb der Funktion meistens keinen großen
-semantischen Wert haben, sondern auf Gefahren oder Designentscheidungen
-hinweisen.
+Kommentare innerhalb der Funktion meistens kein großen
+Informationsgehalt haben, sondern auf
+Gefahren oder Designentscheidungen hinweisen.
 %(Beleg maybe: A survey on Reasearh of code comment). 
 Hierbei sollte man aufpassen, dass der Prozess des Parsen nicht zu
 speziell an die vorliegenden Datensatz angepasst wird, sonst 
@@ -1529,24 +1537,25 @@ verliert er seine Allgemeingültigkeit.
 \subsection{Code2Vec}
 Das Besondere an \textit{Code2Vec} ist, dass der Quellcode in einem
 abstrakten Syntaxbaum kodiert wird. Dies ermöglicht die Verwendung aller
-Quellcodeinformationen, die im Quellcode enthalten sind. Anschließend wird
+Quellcode-Informationen, die im Quellcode enthalten sind. Anschließend wird
 das Modell darauf trainiert, eine Eigenschaft in natürlicher Sprache
 über den Quellcode vorherzusagen.\\
-Bei dieser Herangehensweise, semantische Vektoren zu erzeugen, wird
+Bei dieser Herangehensweise, Vektoren zu erzeugen, wird
 also kein \textit{SentenceTransformer}
 verwendet, sondern die Vektoren werden durch Training des
-\textit{Code2Vec} Modells als Nebenprodukt erzeugt. Wie in dem 
-\cite{code2vec} wird
-das Modell auch hier darauf trainiert, Funktionsnamen 
-vorherzusagen. Die Implementierung des \textit{Code2Vec} Modells
+\textit{Code2Vec} Modells als Nebenprodukt erzeugt. 
+Das Modell wird hier, wie in der Implementierung von 
+Alon et al., darauf trainiert Funktionsnamen vorherzusagen
+\cite{code2vec}.
+Die Implementierung des \textit{Code2Vec} Modells
 nutzte Java als Datensatz, weshalb einige Anpassungen notwendig waren,
 um das Modell auf C-Quellcode zu trainieren.\\
 Das \textit{Code2Vec}-Modell basiert auf überwachtem Lernen,
 deswegen wird der Datensatz vor dem Training zunächst aus
-dem rohen Quellcode aufbereitet.
+dem rohen Quellcode aufbereitet.\\
 % Warum könnte \textit{Code2Vec} semantisch gute Vektoren produzieren
-\subsubsection{Adaption auf C}
-Um das \textit{Cod2Vec}-Modell zu trainieren, ist es notwendig,
+Um das \textit{Cod2Vec}-Modell zu trainieren,
+ist es notwendig,
 aus dem rohen Quellcode einer Funktion jeweils einen abstrakten 
 Syntaxbaum und den
 Funktionsnamen zu extrahieren. Alon et al. stellen ein Tool 
@@ -1581,7 +1590,7 @@ umgewandelt wurde.
   \begin{center}
     \includegraphics[scale=0.2]{abb/ast-extraction-example.drawio.png}
   \end{center}
-  \caption{Extrahierung eines Kontexts aus einem C-Quellcode}
+  \caption{Die Extraktion eines Kontexts aus einem C-Quellcode}
 \end{figure}
 Da es unterschiedliche Konventionen für Funktionsnamen gibt, wie z.B.
 \verb|Camel-Case| und \verb|Snake-Case|, normalisiert der \textit{ASTminer} 
@@ -1596,7 +1605,7 @@ jeweiligen Quellcodekonventionen.
 \end{example}
 Das \textit{Code2Vec}-Modell kann nach dem Training für jede 
 Funktion einen hochdimensionalen
-Vektor ausgeben, der die Semantik der Funktion beschreiben soll.
+Vektor ausgeben, der den Inhalt der Funktion beschreiben soll.
 Um mit \textit{Code2Vec} diesen Vektor generieren zu können, ist 
 es notwendig den abstrakten Syntaxbaum als Input hinein zugegeben.
 Die abstrakten Syntaxbäume können nur durch 
@@ -1610,11 +1619,12 @@ es aber wichtig,
 die normalisierten Namen wieder zu den ursprünglichen Namen zurückzuführen.
 Aufgrund dessen wurden im Quellcode von \textit{ASTminer} Änderungen
 vorgenommen, sodass zu jeder Position eines Trainingsbeispiels im 
-Datensatz der ursprüngliche Funktionsname zugeordnet werden kann. 
+Datensatz der ursprüngliche Funktionsname zugeordnet werden kann. \\
+\pagebreak
+\hfill\\
 % Code ändern bei astminer um die Namen der Funktionen am ende zuzordnen zu können
 % da die Namen normalisiert werden und nicht mehr eindeutig zugeordnet werden können
 % \textit{Code2Vec} erklären
-\subsubsection{Training}
 Das Ziel beim Training war es, dieselbe Qualität wie Alon et al. zu erzielen. 
 Das heißt, dieselben Ergebnisse für Java auch für C-Quellcode zu 
 replizieren. Bei der Erstellung eines Datensatzes, der aus dem 
@@ -1625,10 +1635,11 @@ also wie leistungsfähig das Modell auf neuen Daten im Gegensatz zu
 den Trainingsdaten ist.
 Es ist nicht notwendig diese Problemstellung zu berücksichtigen,
 da das 
-Ergebnis kein fähiges Modell ist, sondern semantische Vektoren.
+Ergebnis kein fähiges Modell ist, sondern Vektoren, die den 
+Inhalt der Funktion codieren.
 Auch der kleine Datensatz, mit $n = 5155 $ Datenpunkten, ist zwar
 für die Güte des Modells problematisch, jedoch nicht für die
-resultierenden semantischen Vektoren. Selbst wenn das Modell nur 
+resultierenden Vektoren. Selbst wenn das Modell nur 
 die passenden Funktionsnamen auswendig lernt, entstehen dabei
 Vektoren, die gewisse Informationen des Namens widerspiegeln.\\
 Nachdem das Trainingsszenario 
@@ -1653,8 +1664,8 @@ und können diese mit den anderen vorgestellten Ansätzen vergleichen
 Eine andere Quellinformation, die in jedem Quellcode enthalten ist,
 sind die Funktionsnamen. Funktionsnamen sollen in wenigen Wörtern 
 den Kerninhalt der Funktion widerspiegeln. Dadurch eignen sich 
-Funktionsnamen, um die Semantik einer Funktion zu beschreiben. 
-Die Extrahierung von Funktionsnamen ist keine schwierige Aufgabe.
+Funktionsnamen, um den Inhalt einer Funktion zu beschreiben. 
+Die Extraktion von Funktionsnamen ist keine schwierige Aufgabe.
 Hierfür wäre \textit{Tree-sitter} nicht unbedingt nötig gewesen, 
 aber falls ein 
 Datensatz für eine andere Sprache wie Rust erstellt werden sollte,
@@ -1692,11 +1703,11 @@ eine Vielzahl von Sprachen anbietet.
 \subsection{Code-Llama-Erklärungen}
 Large Language-Models werden immer besser, Quellcode selbst
 zuschreiben, zu verstehen und zusammenzufassen. Eine Zusammenfassung des Quellcodes
-in natürlicher Sprache spiegelt die Semantik des Quellcodes wider.
+in natürlicher Sprache spiegelt den Inhalt des Quellcodes wider.
 So ist auch \textit{Code Llama} fähig, Quellcode zu erklären und
-somit einen Text zu generieren, der die Semantik der Funktion 
-enthält. Dieser Ansatz verwendet wie \textit{Code2Vec} 
-jede Quellcodeinformation, da der 
+somit einen Text zu generieren, der den Inhalt der Funktion 
+beschreibt. Dieser Ansatz verwendet wie \textit{Code2Vec} 
+jede Quellcode-Information, da der 
 gesamte Quellcode als Eingabe genutzt wird.\\
 % Warum LLM's gute Embeddings produzieren könnten.
 % Wir erzeugen uns eine zusammenfassung vom code
@@ -1746,14 +1757,15 @@ in dieser Arbeit ausreichend stabil.
   \end{center}
   \caption{
     Auf der linken Seite eine Frage aus dem Fragebogen die positiv
-    beatwortet wurde und rechts eine Frage die negativ
-    beatwortet wurde.
+    beantwortet wurde und rechts eine Frage die negativ
+    beantwortet wurde.
   }
 \end{figure}
 
 \section{Ergebnisse}
 Im letzten Kapitel wurden vier verschiedene Strategien vorgestellt,
-eine C-Quellcode-Funktion in einen semantischen Vektorraum abzubilden.
+eine C-Quellcode-Funktion in einen Vektorraum abzubilden, indem 
+die Vektoren den Inhalt der C-Quellcode-Funktion codieren.
 Zum einen die Verwendung von Funktionsnamen und Funktionskommentaren 
 die direkt aus dem C-Quellcode entnommen wurden, um diese mittels
 \textit{SentenceTransformer} in Vektoren umzuwandeln. Zum anderen
@@ -1765,12 +1777,13 @@ trainieren,
 bei gegebenem C-Quellcode einen Funktionsnamen vorherzusagen, dann 
 daraus die Vektoren zu extrahieren, die für die Inferenz des Namens
 bei gegebenem C-Quellcode verwendet werden.\\
-Nun soll in diesem Kapitel untersucht werden, welche der vier Strategien
+Nun soll in diesem Kapitel untersucht werden, welche der vier 
+Strategien
 die besten Embeddings erzeugt und wie ähnlich die anderen 
-semantischen Vektorräume zu dem Vektorraum der besten Strategie
+Vektorräume zu dem Vektorraum der besten Strategie
 sind.\\
 Um diese Frage zu beantworten, welche der vorgestellten Strategien
-die besten semantischen Embeddings liefern, wurde eine Expertenbefragung 
+die besten Embeddings liefern, wurde eine Expertenbefragung 
 durchgeführt. Anschließend werden die erzeugten Vektorräume quantitativ
 mittels einer Formel, die die Nachbarschaftsverhältnisse vergleicht, 
 ausgewertet.
@@ -1927,7 +1940,7 @@ im Nachbarschaftsverhältnis von $v$ enthalten ist.\\
       \legend{
         Funktionskommentare und Code-Llama-Erklärungen,
         Zufällige Punkte und Code-Llama-Erklärungen,
-        Funktiosnamen und Code-Llama-Erklärungen,
+        Funktionsnamen und Code-Llama-Erklärungen,
         \textit{Code2Vec} und Code-Llama-Erklärungen
       }
       \end{axis}
@@ -2106,8 +2119,8 @@ angeordnet ist.
   \end{center}
   \caption{
     Auf der linken Seite eine Frage aus dem Fragebogen die positiv
-    beatwortet wurde und rechts eine Frage die negativ
-    beatwortet wurde.
+    beantwortet wurde und rechts eine Frage die negativ
+    beantwortet wurde.
   }
 \end{figure}
 \section{Diskussion}
@@ -2147,7 +2160,7 @@ für zukünftige Forschung beschrieben.
 verwenden, um Embeddings zu erzeugen, ist sehr abhängig von 
 dem Quellcode. Selbst bei dem hochqualitativen Quellcode, 
 der GNU-C-Standard-Bibliothek entstehen Probleme, weil die 
-Namen die Semantik der Funktion nicht präzise beschreiben.
+Namen den Inhalt der Funktion nicht präzise beschreiben.
 Das folgende Problem zieht sich systematisch durch die 
 ganze Bibliothek durch. In der GNU-C-Standard-Bibliothek
 werden konsequent 
@@ -2193,8 +2206,8 @@ Funktion verwendet. In zukünftiger Forschung könnte untersucht
 werden, ob die Kommentare innerhalb der Funktion auch verwendet 
 werden könnten, um qualitativ hochwertigere Embeddings zu 
 produzieren.\\
-Auch bei den Funktionskommentaren ist das Problem, dass die 
-Semantik der Funktion sich nicht immer in dem Kommentar
+Auch bei den Funktionskommentaren ist das Problem, dass der 
+Inhalt der Funktion sich nicht immer in dem Kommentar
 widerspiegelt.
 \begin{example}
   Die Funktion \verb|rand| und die Funktion \verb|rand_r| sind 
@@ -2320,7 +2333,7 @@ folgt die nächste Verallgemeinerung:
     \hspace{0.1cm}|\hspace{0.1cm} i = 1,2, \dots N\})
 \]
 Die letzte Verallgemeinerung betrifft die $\verb|score|_k$
-funktion. 
+Funktion. 
 \[
   \text{score}_k(l,i,v) = \begin{cases*} 
       1 & , $\exists j \in \mathbb{N}: l = v_j \land i = j$   \\
@@ -2699,11 +2712,10 @@ trainiert werden.
 \pagebreak
 
 \addcontentsline{toc}{section}{Literatur}
-\pagestyle{fancy}
+%\pagestyle{fancy}
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography} %bib-filename
-%\printglossary
 
 \nocite{*} %List all bib-entries
 
