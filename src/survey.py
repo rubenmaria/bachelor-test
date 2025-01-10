@@ -125,53 +125,167 @@ def get_data_range(keys: list[str]) -> tuple[int, int]:
     )
     return (min(data_indecies), max(data_indecies))
 
-def evaluate_survey_results(csv_path: str) -> tuple[float, float, float]:
-    META_DATA_ENTRIES_COUNT = 17
-    (keys, results_one, results_two) = read_results_csv(csv_path)
-    (min, max) = get_data_range(keys)
-    data_one = results_one[min : max + 1]
-    data_two = results_two[min : max + 1]
-    sample_size = len(keys) - META_DATA_ENTRIES_COUNT
-    code_llama_correct_count = 0
-    function_names_correct_count = 0
+def evaluate_survey_seven(
+    data: list[str]
+) -> tuple[tuple[int, int, int, int], tuple[int, int, int, int]]:
+    comment_correct_count = 0
+    names_correct_count = 0
     code2vec_corrcect_count = 0
-    code_llama_sample_size = sample_size
-    function_names_sample_size = sample_size
-    code2vec_sample_size = sample_size
+    invalid_comment_sample = 0
+    invalid_name_sample = 0
+    invalid_code2vec_sample = 0
 
-    assert len(data_one) == sample_size
-    assert len(data_two) == sample_size
 
-    for (index, result) in enumerate(data_one + data_two):
+    for _ in range(47):
+        result = data.pop(0)
+        if result == "": 
+            invalid_name_sample += 1
+            continue
+        names_correct_count += int(result) % 2
+
+    for _ in range(24):
+        result = data.pop(0)
+        if result == "": 
+            invalid_code2vec_sample += 1
+            continue
+        code2vec_corrcect_count += int(result) % 2
+
+    for _ in range(23):
+        result = data.pop(0)
+        if result == "": 
+            invalid_comment_sample += 1
+            continue
+        comment_correct_count += int(result) % 2
+    
+    return (
+        (0, names_correct_count, comment_correct_count, code2vec_corrcect_count),
+        (0, invalid_name_sample, invalid_comment_sample, invalid_code2vec_sample)
+    )
+
+
+def evaluate_survey_eight(
+    data: list[str]
+) -> tuple[tuple[int, int, int, int], tuple[int, int, int, int]]:
+    comment_correct_count = 0
+    llama_correct_count = 0
+    code2vec_corrcect_count = 0
+    invalid_comment_sample = 0
+    invalid_llama_sample = 0
+    invalid_code2vec_sample = 0
+
+
+    for _ in range(47):
+        result = data.pop(0)
+        if result == "": 
+            invalid_llama_sample += 1
+            continue
+        llama_correct_count += int(result) % 2
+
+    for _ in range(24):
+        result = data.pop(0)
+        if result == "": 
+            invalid_code2vec_sample += 1
+            continue
+        code2vec_corrcect_count += int(result) % 2
+
+    for _ in range(23):
+        result = data.pop(0)
+        if result == "": 
+            invalid_comment_sample += 1
+            continue
+        comment_correct_count += int(result) % 2
+    
+    return (
+        (llama_correct_count, 0, comment_correct_count, code2vec_corrcect_count),
+        (invalid_llama_sample, 0, invalid_comment_sample, invalid_code2vec_sample)
+    )
+
+
+def evaluate_survey_three_two(
+    data: list[str]
+) -> tuple[tuple[int, int, int, int], tuple[int, int, int, int]]:
+    llama_correct_count = 0
+    names_correct_count = 0
+    code2vec_corrcect_count = 0
+    invalid_llama_sample = 0
+    invalid_name_sample = 0
+    invalid_code2vec_sample = 0
+
+    for (index, result) in enumerate(data):
         if result == "":
             if index % 3 == 0:
-                code_llama_sample_size -= 1
+                invalid_llama_sample += 1
             elif index % 3 == 1:
-                function_names_sample_size -= 1
+                invalid_name_sample += 1
             else:
-                code2vec_sample_size -= 1
+                invalid_code2vec_sample += 1
             continue
 
         is_result_correct_number = int(result) % 2
 
         if index % 3 == 0:
-            code_llama_correct_count += is_result_correct_number
+            llama_correct_count += is_result_correct_number
         elif index % 3 == 1:
-            function_names_correct_count += is_result_correct_number
+            names_correct_count += is_result_correct_number
         else:
             code2vec_corrcect_count += is_result_correct_number
     
     return (
-            code_llama_correct_count / code_llama_sample_size,
-            function_names_correct_count / function_names_sample_size,
-            code2vec_corrcect_count / code2vec_sample_size
+        (llama_correct_count, names_correct_count, 0, code2vec_corrcect_count),
+        (invalid_llama_sample, invalid_name_sample, 0, invalid_code2vec_sample)
     )
 
 
-def read_results_csv(csv_path: str) -> tuple[list[str], list[str], list[str]]:
+
+
+def evaluate_survey_results(csv_path: str) -> tuple[float, float, float, float]:
+    META_DATA_ENTRIES_COUNT = 17
+    results = read_results_csv(csv_path)
+    keys = results.pop(0)
+    sample_size = len(keys) - META_DATA_ENTRIES_COUNT
+    (min, max) = get_data_range(keys)
+
+    assert (max + 1) - min == sample_size
+    
+    print(len(results))
+    survey_three = results[0][min:max+1]
+    survey_two = results[1][min:max+1]
+    survey_seven = results[2][min:max+1]
+    survey_eight = results[3][min:max+1]
+
+    survey_results_two_three = evaluate_survey_three_two(survey_three + survey_two)
+    (
+        llama_correct_count, names_correct_count, comment_correct_count, code2vec_corrcect_count
+    ) = survey_results_two_three[0]
+    (
+        invalid_llama_sample, invalid_name_sample, invalid_comment_sample, invalid_code2vec_sample
+    ) = survey_results_two_three[1]
+    
+    survey_results_seven = evaluate_survey_seven(survey_seven)
+    survey_results_eight = evaluate_survey_eight(survey_eight)
+
+    llama_correct_count += survey_results_seven[0][0] + survey_results_eight[0][0]
+    names_correct_count += survey_results_seven[0][1] + survey_results_eight[0][1]
+    comment_correct_count += survey_results_seven[0][2] + survey_results_eight[0][2]
+    code2vec_corrcect_count += survey_results_seven[0][3] + survey_results_eight[0][3]
+    
+    invalid_llama_sample += survey_results_seven[1][0] + survey_results_eight[1][0]
+    invalid_name_sample += survey_results_seven[1][1] + survey_results_eight[1][1]
+    invalid_comment_sample += survey_results_seven[1][2] + survey_results_eight[1][2]
+    invalid_code2vec_sample += survey_results_seven[1][3] + survey_results_eight[1][3]
+
+    return (
+        llama_correct_count / (sample_size - invalid_llama_sample),
+        names_correct_count / (sample_size - invalid_name_sample),
+        comment_correct_count / (sample_size - invalid_comment_sample),
+        code2vec_corrcect_count / (sample_size - invalid_code2vec_sample)
+    )
+
+
+def read_results_csv(csv_path: str) -> list[list[str]]:
     with open(csv_path, 'r') as csv_file:
         results_reader = csv.reader(csv_file, delimiter=";")
-        keys = next(results_reader)
-        results_one = next(results_reader)
-        results_two = next(results_reader)
-        return (keys, results_one, results_two)
+        results = []
+        for result in results_reader:
+            results += [result]
+        return results
