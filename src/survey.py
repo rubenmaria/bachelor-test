@@ -134,7 +134,7 @@ def evaluate_survey_seven(
     invalid_comment_sample = 0
     invalid_name_sample = 0
     invalid_code2vec_sample = 0
-
+    size = len(data)
 
     for _ in range(47):
         result = data.pop(0)
@@ -150,16 +150,33 @@ def evaluate_survey_seven(
             continue
         code2vec_corrcect_count += int(result) % 2
 
-    for _ in range(23):
+    for _ in range(70):
         result = data.pop(0)
         if result == "": 
             invalid_comment_sample += 1
             continue
         comment_correct_count += int(result) % 2
     
+    print("="*20)
+    print("Survey Eight:")
+    print(f"size={size}")
+    print(
+        f"llama_correct={0}",
+        f"names_correct={names_correct_count}",
+        f"comment_correct={comment_correct_count}",
+        f"code2vec_corrcect={code2vec_corrcect_count}" 
+    )
+    print(
+        f"llama_invalid={0}",
+        f"names_invalid={invalid_name_sample}",
+        f"comment_invalid={invalid_comment_sample}",
+        f"code2vec_invalid={invalid_code2vec_sample}" 
+    )
+    print("="*20)
+
     return (
         (0, names_correct_count, comment_correct_count, code2vec_corrcect_count),
-        (0, invalid_name_sample, invalid_comment_sample, invalid_code2vec_sample)
+        (0, invalid_name_sample, invalid_comment_sample, invalid_code2vec_sample) 
     )
 
 
@@ -172,7 +189,7 @@ def evaluate_survey_eight(
     invalid_comment_sample = 0
     invalid_llama_sample = 0
     invalid_code2vec_sample = 0
-
+    size = len(data)
 
     for _ in range(47):
         result = data.pop(0)
@@ -188,12 +205,29 @@ def evaluate_survey_eight(
             continue
         code2vec_corrcect_count += int(result) % 2
 
-    for _ in range(23):
+    for _ in range(70):
         result = data.pop(0)
         if result == "": 
             invalid_comment_sample += 1
             continue
         comment_correct_count += int(result) % 2
+
+    print("="*20)
+    print("Survey Eight:")
+    print(f"size={size}")
+    print(
+        f"llama_correct={llama_correct_count}",
+        f"names_correct={0}",
+        f"comment_correct={comment_correct_count}",
+        f"code2vec_corrcect={code2vec_corrcect_count}" 
+    )
+    print(
+        f"llama_invalid={invalid_llama_sample}",
+        f"names_invalid={0}",
+        f"comment_invalid={invalid_comment_sample}",
+        f"code2vec_invalid={invalid_code2vec_sample}" 
+    )
+    print("="*20)
     
     return (
         (llama_correct_count, 0, comment_correct_count, code2vec_corrcect_count),
@@ -229,7 +263,23 @@ def evaluate_survey_three_two(
             names_correct_count += is_result_correct_number
         else:
             code2vec_corrcect_count += is_result_correct_number
-    
+    print("="*20)
+    print("Survey Three and Two:")
+    print(f"size={len(data)}")
+    print(
+        f"llama_correct={llama_correct_count}",
+        f"names_correct={names_correct_count}",
+        f"comment_correct={0}",
+        f"code2vec_corrcect={code2vec_corrcect_count}" 
+    )
+    print(
+        f"llama_invalid={invalid_llama_sample}",
+        f"names_invalid={invalid_name_sample}",
+        f"comment_invalid={0}",
+        f"code2vec_invalid={invalid_code2vec_sample}" 
+    )
+    print("="*20)
+
     return (
         (llama_correct_count, names_correct_count, 0, code2vec_corrcect_count),
         (invalid_llama_sample, invalid_name_sample, 0, invalid_code2vec_sample)
@@ -273,7 +323,6 @@ def evaluate_survey_results(csv_path: str) -> tuple[float, float, float, float]:
     invalid_name_sample += survey_results_seven[1][1] + survey_results_eight[1][1]
     invalid_comment_sample += survey_results_seven[1][2] + survey_results_eight[1][2]
     invalid_code2vec_sample += survey_results_seven[1][3] + survey_results_eight[1][3]
-
     return (
         llama_correct_count / (sample_size - invalid_llama_sample),
         names_correct_count / (sample_size - invalid_name_sample),
