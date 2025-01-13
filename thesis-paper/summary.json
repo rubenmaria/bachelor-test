@@ -1,0 +1,3 @@
+{
+  "factorial": "The function `factorial` takes in an integer `n` and returns the factorial of `n`. The factorial of `n` is defined as `n` multiplied by the factorial of `n-1`. The function uses a recursive approach to calculate the factorial of `n`."
+}

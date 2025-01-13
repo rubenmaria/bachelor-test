@@ -1423,7 +1423,8 @@ Menge an Daten in unterschiedliche Darstellungen umzuwandeln.
 Jeder Zwischenschritt wurde gespeichert, um nicht jede Darstellung 
 erneut generieren zu müssen. Im Folgenden wird die generelle Architektur,
 wie Daten verarbeitet werden (engl. pipeline), vorgestellt, um einen 
-Überblick über den praktischen Teil dieser Arbeit zu geben.
+Überblick über den praktischen Teil dieser Arbeit zu geben. Die 
+Datenpipeline ist in Abbildung 3.1 dargestellt.
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.35]{abb/data-pipeline-2.drawio.png}
@@ -1529,7 +1530,9 @@ Vektorraum abgebildet werden.\\
 % Warum könnten funktionskommentare dafür geignet sein die Semantik einer
 % Funktion zu beschreiben
 Das Parsen der Kommentare wurden mit \textit{Tree-sitter} realisiert,
-wie im Abschnitt zur Datenpipeline erwähnt. Dabei gab es eine große
+wie im Abschnitt zur Datenpipeline erwähnt. Die Extraktion ist in 
+Figur 3.2 dargestellt.\\
+Dabei gab es eine große
 Designentscheidung zu treffen, welche Kommentare in einer Funktion
 berücksichtigt werden sollen.
 Im Rahmen dieser Arbeit werden ausschließlich Kommentare verwendet,
@@ -1676,14 +1679,14 @@ Eine andere Quellinformation, die in jedem Quellcode enthalten ist,
 sind die Funktionsnamen. Funktionsnamen sollen in wenigen Wörtern 
 den Kerninhalt der Funktion widerspiegeln. Dadurch eignen sich 
 Funktionsnamen, um den Inhalt einer Funktion zu beschreiben. 
-Die Extraktion von Funktionsnamen ist keine schwierige Aufgabe.
+Die Extraktion von Funktionsnamen ist keine schwierige Aufgabe, 
+wie in Abbildung 3.4 zu sehen ist.
 Hierfür wäre \textit{Tree-sitter} nicht unbedingt nötig gewesen, 
 aber falls ein 
 Datensatz für eine andere Sprache wie Rust erstellt werden sollte,
 müsste der Parser immer wieder angepasst werden.
 Deswegen wurde hier für die einfache Erweiterung des Programms,
-\textit{Tree-sitter} verwendet, da \textit{Tree-sitter} Parser für 
-eine Vielzahl von Sprachen anbietet.
+\textit{Tree-sitter} verwendet. 
 % Motivation warum es gute semantische Vektoren erzeugen konnte
 % Parsen
 % Eigentlich einfach aber wenn man in Zukunft 
@@ -1711,6 +1714,35 @@ eine Vielzahl von Sprachen anbietet.
 \pagebreak
 \hfill\\
 
+\begin{figure}
+  \begin{center}
+    \begin{minipage}[c]{6cm}
+        \centering
+        \inputminted[fontsize=\footnotesize]{python}{prompt.py}
+    \end{minipage}
+  \end{center}
+  \caption{Die verwendete Prompt für das Code-Llama-Modell }
+\end{figure}
+
+
+\begin{figure}
+  \begin{center}
+    \begin{minipage}[c]{6cm}
+        \centering
+        \inputminted[fontsize=\scriptsize]{c}{summary.c}
+    \end{minipage}
+    \hspace{0.1cm}
+    \begin{minipage}[c]{6cm}
+        \centering
+        \inputminted[fontsize=\scriptsize,breaklines]{json}{summary.json}
+    \end{minipage}
+  \end{center}
+  \caption{
+  Links ein Quellcode-Beispiel und rechts die von 
+  Code Llama generierte Erklärung mit der in dieser 
+  Arbeit verwendeten Prompt.
+}
+\end{figure}
 \subsection{Code-Llama-Erklärungen}
 Large Language-Models werden immer besser, Quellcode selbst
 zuschreiben, zu verstehen und zusammenzufassen. Eine Zusammenfassung des Quellcodes
@@ -1724,9 +1756,11 @@ gesamte Quellcode als Eingabe genutzt wird.\\
 % Wir erzeugen uns eine zusammenfassung vom code
 % "optimale" Kommentare
 % Was ist Codellama und warum benutzten wir es?
-Code Llama generiert Quellcodeerklärungen, indem Code Llama eine präzise 
-Fragestellung und den gesamten Quellcode einer Funktion erhält.
-Die Fragestellung (engl. prompt) ist in Abbildung 3.5 dargestellt.\\
+Code Llama generiert Quellcodeerklärungen, indem Code Llama eine
+präzise  Fragestellung und den gesamten Quellcode einer 
+Funktion erhält.
+Die Fragestellung (engl. prompt) ist in Abbildung 3.5
+und die Extraktion ist in Figur 3.6 dargestellt.\\
 Damit der Code-Llama-Output deterministisch ist,
 ist es erforderlich, den Temperaturparameter auf null zu setzten. 
 Der Parameter ist Teil einer Zufallskomponente bei der
@@ -1742,23 +1776,12 @@ Rundungsfehler entstehen. Diese Erkenntnisse stammen aber
 aus einem anderen Anwendungszweck, nämlich für Log-Parsing, 
 geben aber ein Indiz auf eine mögliche Instabilität.\\
 Die Stabilität mit Temperatur Null sollte daher für den
-Anwendungszweck dieser Arbeit getestet werden. Um das zu
-überprüfen, wurden von $n = ?$ Funktionen der Quellcode mit 
-Fragestellung $m = ?$ Mal in Code Llama eingegeben, bei den 
-resultierenden Vektoren beträgt der höchste Abstand von zwei 
-Vektoren, die aus dem gleichen Quellcode resultiert sind, $d = ?$.
-Dieser Abstand ist ausreichend gering, um ihn in der Evaluation 
-zu vernachlässigen. Code Llama ist also für die Anwendung 
-in dieser Arbeit ausreichend stabil.
-\begin{figure}
-  \begin{center}
-    \begin{minipage}[c]{6cm}
-        \centering
-        \inputminted[fontsize=\small]{python}{prompt.py}
-    \end{minipage}
-  \end{center}
-  \caption{Die verwendete Prompt für das Code-Llama-Modell }
-\end{figure}
+Anwendungszweck dieser Arbeit getestet werden. Leider 
+konnte die Stabilität für diesen Anwendungszweck nicht 
+getestet werden, da das verwendete Tool \textit{ollama}
+\footnote{\url{https://ollama.com}}, bei gleicher
+Eingabe oftmals einfach die Prompt zurück gab.
+
 \pagebreak
 
 \begin{figure}
@@ -2263,9 +2286,8 @@ Eine weitere Problematik ist die Stabilität von Code Llama.
 Bei Schwankungen von Code-Llama-Erklärungen kann nicht garantiert 
 werden, dass die Erklärungen in der Praxis bei tatsächlicher 
 Anwendung von gleicher Qualität sind. Deswegen sollte in
-einer zukünftigen Forschung eine größere Untersuchung, 
-als in dieser Arbeit, über die Stabilität von Large 
-Language-Models durchgeführt werden.\\ 
+einer zukünftigen Forschung eine Untersuchung über die 
+Stabilität von Large Language-Models durchgeführt werden.\\ 
 Schließlich könnte in zukünftiger Forschung eine andere 
 Prompt ausprobiert werden, hier könnte bspw. die 
 Prompt von Wang et al. verwendet werden 
