@@ -335,19 +335,19 @@ zu einer Anwendung meiner Arbeit motiviert.
 \section{Grundlagen}
 \subsection{Maschinelles Lernen}
 Heutzutage ist maschinelles Lernen weitverbreitet und wird in nahezu jedem
-Bereich der Informatik verwendet.  Maschinelles Lernen wird überall dort 
-eingesetzt, wo eine analytische Lösung eines Problems zu aufwendig oder gar 
-überhaupt nicht existiert. Maschinelles Lernen sucht nach einer Lösung, indem 
+Bereich der Informatik verwendet.  Maschinelles Lernen wird überall
+eingesetzt, wo eine analytische Lösung eines Problems zu aufwendig
+ist oder überhaupt nicht existiert. Maschinelles Lernen sucht nach einer Lösung, indem 
 es aus den Daten ein Muster ableitet. Sind die Daten endlich, ist meist das 
 resultierende Modell nur eine Approximation der gesuchten Lösung. In diesem 
-Abschnitt wird zunächst maschinelles Lernen definiert und dann darauf aufbauend 
-grundlegende Trainingsarten vorgestellt.
+Abschnitt wird zunächst maschinelles Lernen definiert und dann
+darauf aufbauend werden grundlegende Trainingsarten vorgestellt.
  % Book: Learingin from data, page 1, row 6
 \subsubsection{Definition}
-Die folgenden Definitionen sind entweder entnommen oder inspiriert
+Die folgenden Definitionen sind entweder entnommen oder beeinflusst
 von Kruse et al. \cite{Kruse2022} und Abu-Mostafa et al. \cite{LFD}.
 Generell kann ein Problem, 
-das mit maschinellem Lernen gelöst wird, wie folgt definiert werden:
+das durch maschinellem Lernen gelöst wird, wie folgt definiert werden:
 \begin{definition}{Maschinelles Lernen}
   \\
   Sei $X$ eine beliebige Input Menge, $Y$ eine beliebige Output Menge,
@@ -380,7 +380,7 @@ fehlerhafte Approximation erzeugen.
     \node (F) at (-1,4) [transition] {Lösung  $f: X \to Y$};
     \node (D) at (-1,2) [transition] {Datenpunkte $\mathbb{D}$};
     \node (H) at (-1,0) [transition] {Hypothesenraum $H_1$};
-    \node (A) at (3,1) [place, label=Lernalgortihmus] {$A_1$};
+    \node (A) at (3,1) [place, label=Lernalgorithmus] {$A_1$};
     \node (FH) at (6,1) [transition, label=Approximation] {$g \approx f$};
     \draw [->] (H) .. controls +(up:8mm) and +(left:8mm)
                          .. (A)
@@ -396,7 +396,7 @@ fehlerhafte Approximation erzeugen.
 \end{figure}
 \pagebreak
 \hfill\\
-In der Figur 2.1 ist die Problembeschreibung noch einmal bildlich dargestellt.
+In der Abbildung 2.1 ist die Problembeschreibung noch einmal bildlich dargestellt.
 Beachtenswert ist, dass die Datenpunkte nicht immer in Abhängigkeit mit 
 $f: X \to Y$ stehen. Beispielsweise können die Datenpunkte einfach nur aus den
 Eingabewerten bestehen: $\mathbb{D} = \{x_1,x_2,x_2, \dots, x_n\} \subset X$.
@@ -404,9 +404,9 @@ Die Struktur des Datensatzes kann sehr unterschiedlich sein, das hängt auch mit
 unterschiedlichen Lernmethoden zusammen.
 \subsubsection{Deep Learning}
 Vor der Betrachtung der Lernmethoden wird kurz auf Deep Learning eingegangen.
-Deep Learning ist ein neuronales Netzwerk, das über mehrere Layer zwischen
-Input und Output Layer verfügt.  
-Zunächst einmal müssen wir neuronale Netzwerke definieren:
+Deep Learning befasst sich mit neuronalen Netzwerken, welche über
+mehrere Layer zwischen Input und Output Layer besitzen.  
+Zunächst einmal müssen neuronale Netzwerke definiert werden:
 \begin{definition}{Neuronales Netzwerk}
   \\
   Ein neuronales Netzwerk (NN) ist eine Funktion $N: \mathbb{R}^q \to \mathbb{R}^p$,
@@ -455,7 +455,7 @@ Zunächst einmal müssen wir neuronale Netzwerke definieren:
   $L_i$, mit $i \in \{2, \dots, n-1\}$, als Hidden Layer.
 \end{definition}
 \pagebreak
-Nun mit Neuronalen Netzwerken definiert, kann Deep Learning 
+Nun mit definierten Neuronalen Netzwerken, kann Deep Learning 
 definiert werden:
 \begin{definition}{Deep Learning}
   \\
@@ -616,7 +616,7 @@ quantifiziert werden, dies geschieht mittels einer sogenannten
 Loss Function.
 \begin{definition}{Loss Function}
   \\
-  Sei Y eine beliebige Menge der Outputs, dann
+  Sei Y eine beliebige Menge des Outputs, dann
   ist die Loss Function definiert als:
   \[ \mathcal{L}: Y \times Y \to \mathbb{R}, 
   \hspace{0.5cm} \mathcal{L}(y,t) = \epsilon, \]
@@ -625,12 +625,13 @@ Loss Function.
   den beiden Objekten.
 \end{definition}
 \pagebreak
-Das besondere am überwachten Lernen ist es, dass diese 
-Lernmethode in Kombination mit einen neuronalen Netzwerk
+Die Besonderheit am überwachten Lernen ist, dass diese 
+Lernmethode, in Kombination mit einen neuronalen Netzwerk,
 einen weitverbreiteten Algorithmus besitzt, welcher
 sich an die gesuchte Zielfunktion annähert,
-indem er die Loss Function minimiert. Im folgenden 
-wird der Backpropagation-Algorithmus skizziert:
+indem er die Loss Function minimiert. Dieser Algorithmus 
+ist der Backpropagation-Algorithmus, welcher im folgenden 
+skizziert wird:
 \begin{definition}{Backpropagation}
   \\
   Sei $N: \mathbb{R}^q \to \mathbb{R}^p$ ein neuronales Netzwerk 
@@ -656,7 +657,7 @@ wird der Backpropagation-Algorithmus skizziert:
   \]
   Der Algorithmus verwendet die Ableitung der Loss Function, um
   die Gewichte des neuronalen Netzwerk schrittweise anzupassen,
-  sodass die Loss Function sich einen Minimum nähert. Für die 
+  sodass die Loss Function sich einem Minimum nähert. Für die 
   Ableitung der Loss Function bzgl. der Gewichte und dem Bias 
   gilt, wegen der Kettenregel:
     \[
@@ -681,7 +682,7 @@ wird der Backpropagation-Algorithmus skizziert:
      \Delta (B_l)_j = -\eta_b \cdot 1 \cdot \delta_j^{(l)}. \]
     wobei $\eta_w, \eta_b > 0$ die Lernraten sind, die festlegen
     wie schnell die Gewichte und der Bias in Richtung des Minimums
-    der Loss Function wandern sollen und $\delta_{j}^{(l)}$ ist
+    der Loss Function wandern sollen. Dabei ist $\delta_{j}^{(l)}$
     wie folgt definiert:
     \[
       \delta_j^{(l)} = 
@@ -699,37 +700,39 @@ wird der Backpropagation-Algorithmus skizziert:
         \end{cases}
     \]
     Bei mehrfacher Iteration über alle Datensatzpaare,
-    nähern sich die Gewichte und der Bias einen Minimum
+    nähern sich die Gewichte und der Bias einem Minimum
     der Loss Function an.
 \end{definition}
 \hfill
 \\\\
-Der entscheidende Aspekt ist, dass wir das richtige Verhalten unseres Modells 
-kennen und deshalb direkt wissen, wenn es Fehler macht. Beim selbst-überwachten
+Der entscheidende Aspekt ist, dass das richtige Verhalten des Modells 
+bekannt ist und deshalb sofort klar ist, wenn es Fehler macht. Beim selbst-überwachten
 Lernen werden bspw. die richtigen Lösungen aus den gegebenen Daten generiert. 
-Bei vielen anderen Arten ist dieser Aspekt, der sehr natürlich erscheint,
-nicht selbstverständlich.
+Bei vielen anderen Arten ist dieser Aspekt nicht vorhanden.
 \subsubsection{Unüberwachtes Lernen}
 Das unüberwachte Lernen ist ein Spezialfall, da der Lernalgorithmus
 ausschließlich die Input-Werte erhält.
 \[\mathbb{D} = (x_1, x_2, x_3, \dots, x_n) \subset X\]
 Der Lernalgorithmus erhält keine Hinweise darauf, was richtig oder 
-falsch ist. Das unüberwachte Lernen ist eine Methode, um in Daten,
-Strukturen und Muster zu identifizieren. Ein Beispiel ist die
-Cluster-Analyse, hier bekommt der Lernalgorithmus eine Menge von 
-Daten und gruppiert diese in Teilmengen. In der Abbildung 2.3 ist 
-ein Beispiel für das Resultat einer
-möglichen Cluster-Analyse dargestellt.
+falsch ist. Das unüberwachte Lernen ist eine Methode, um in Daten
+Strukturen und Muster zu identifizieren. Ein Beispiel hierfür ist der
+\textit{t-SNE}-Algorithmus, hier bekommt der Lernalgorithmus eine Menge 
+von hochdimensionalen Daten und bildet diese in niedrigerer Dimension
+ab, sodass die Nachbarschaftsbeziehungen möglichst erhalten bleiben.
+In der Abbildung 2.2 ist ein Beispiel für das Resultat einer 
+\textit{t-SNE}-Dimensionsreduktion dargestellt.
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{abb/t-sne-example.png}
-  \caption{Cluster Analyse angewendet auf 2-dimensionale Daten von 
-    Wattenberg et al. \cite{wattenberg2016how}.
+  \caption{Eine Dimensionsreduktion angewendet auf 
+    hochdimensionale Daten,
+    welche auf 2-dimensionale Daten reduziert wurden
+    von Wattenberg et al. \cite{wattenberg2016how}.
   }
 \end{figure}
 
 \subsubsection{Reinforcement Learning}
-Bei diesem Paradigma liegen dem Lernalgorithmus zwar nicht die korrekten 
+Bei dieser Methode liegen dem Lernalgorithmus zwar nicht die korrekten 
 Output-Werte vor, aber der Lernalgorithmus erhält für jeden vorhergesagten Wert 
 eine Rückmeldung, wie erwünscht dieser Wert ist. 
 \[ 
@@ -744,19 +747,22 @@ eine Rückmeldung, wie erwünscht dieser Wert ist.
 Wobei $x_i$ ein Input-Wert ist, $o_i$ der Output-Wert bei der 
 Eingabe von $x_i$ ist und \texttt{score} eine Funktion die 
 den Output $o_i$ bei gegeben $x_i$ bewertet.\\
-Ein Beispiel ist ein Modell,
+Als Beispiel dient ein Modell,
 das mittels eines Lernalgorithmus darauf trainiert wird, ein Videospiel zu 
-gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Umgebung und gibt dem 
-Spiel einen Input, welcher eine Aktion zufolge hat. Falls nun die Aktion dazu 
-beiträgt, den Spieler in eine gute Position zu bringen oder gar das Spiel zu
-gewinnen, bekommt die Aktion eine positive Bewertung, andernfalls eine
-negative.\\\\
+gewinnen. Der Lernalgorithmus bekommt ein Abbild von der Position
+des Spielers
+und gibt dem Spiel einen Input, welche die Position des Spielers
+verändert.
+Falls nun der Input dazu 
+beigetragen hat, dem Spieler in eine gute Position zu bringen
+oder gar das Spiel zu
+gewinnen, bekommt die Aktion eine positive Bewertung, 
+andernfalls eine negative.\\\\
 Die Problemstellung im maschinellen Lernen ist allgemein formuliert und abstrakt.
 Dies ist der Grund, warum maschinelles Lernen in vielen unterschiedlichen 
 Bereichen eingesetzt werden kann. Einer der Bereiche ist die natürliche
-Sprachverarbeitung (engl. natural language processing), was uns zum nächsten 
-Begriff führt. Natürliche Sprachverarbeitung wird im Folgenden 
-mit NLP abgekürzt.
+Sprachverarbeitung (engl. natural language processing),
+welcher im Folgenden mit NLP abgekürzt wird.
 \pagebreak
 \subsection{Semantische Vekorräume}
 Das semantische Codieren von natürlicher Sprache in einem Vektorraum 
@@ -764,13 +770,13 @@ ist ein bedeutsames Problem in NLP
 \cite{word2vec} ,\cite{reimers-2019-sentence-bert}.
 Der resultierende Vektorraum kann
 für verschiedene Problemstellungen (engl. downstream tasks) verwendet
-werden. Ein Beispiel ist die Klassifizierung von Spam Nachrichten 
+werden. Ein Beispiel wäre die Klassifizierung von Spam Nachrichten 
 \cite{Ball2019}. Folgende Definitionen werden in dieser Arbeit 
 für semantische Vektorräume verwendet.
 \begin{definition}[Semantischer Vektorraum]
   \hfill\\
   Ein semantischer Vektorraum stellt Objekte als reelle Vektoren 
-  dar, in einer Weise, dass ähnliche Objekte im projizierten 
+  dar, sodass ähnliche Objekte im projizierten 
   Vektorraum einen geringen Abstand zueinander haben.
 \end{definition}
 Hierfür ist es erforderlich vorher zu definieren, inwiefern zwei
@@ -813,7 +819,7 @@ Ein natürlicher Ansatz ist es, jedem Wort im vorliegenden Text eine Zahl
 zuzuordnen. Dadurch können sowohl die Häufigkeit eines Wortes als auch
 die Sätze, in denen ein bestimmtes Wort vorkommt, effizient gefunden 
 werden. Die Bedeutung eines Wortes ist hier komplett unabhängig von 
-der Wahl der zugewiesenen Zahl. Das führt dazu, dass sogar Synonyme einen
+der zugewiesenen Zahl. Das führt dazu, dass sogar Synonyme einen
 hohen Abstand haben können.
 \pagebreak
 \begin{example}
@@ -905,7 +911,7 @@ genannt haben.
 In beiden Architekturen besteht das neuronale Netzwerk aus einem 
 Hidden Layer, der nach dem Training die reellwertigen 
 Vektorrepräsentationen enthält.
-Der Aufbau bei beiden Modellen ist in Figur 2.4 dargestellt.
+Der Aufbau bei beiden Modellen ist in Abbildung 2.4 dargestellt.
 Es ist zu beachten, dass der Hidden Layer keine Aktivierungsfunktion 
 besitzt, da er nur als lineare Transformation von einer 
 One-Hot-Codierung zu einem reellwertigen Vektor dient.
@@ -915,10 +921,11 @@ und sonst überall mit einer Null versehen. Jede Position, an der eine
 Eins ist, gibt es nur einmal und codiert so durch die Position ein Wort.
 Der Output-Layer hat als Aktivierungsfunktion einen Softmax, der 
 Softmax gibt Werte zwischen 0 und 1 zurück. Der Output ist also ein 
-Vektor $v \in (0,1)^n$, daraus kann dann entweder je nach Anwendung 
+Vektor $v \in (0,1)^n$, daraus können dann entweder, je nach Anwendung,
 durch One-Hot-Codierung ein oder mehrere Wörter abgeleitet werden.\\
 Es gibt nun zwei unterschiedliche Strategien, das neuronale Netzwerk
-zu trainieren. Die erste ist Skip-Gram, gegeben ein Wort, soll das
+zu trainieren. Die erste ist Skip-Gram, nachdem man dem Modell ein 
+Wort gegeben hat, soll das
 Modell die naheliegenden Wörter vorhersagen. Das heißt, es soll einem
 Wort einen richtigen Kontext zuordnen. Das Modell wird dadurch die
 Fähigkeit entwickeln, Wörter mit ähnlichen Kontexten ähnlichen 
@@ -926,19 +933,17 @@ Embeddings zuzuordnen.\\
 Die zweite Methode ist Continous Bag-of-Words (CBOW),
 bei der das Modell den Kontext eines Wortes erhält,
 dass heißt es erhält die Wörter die links und rechts von dem Wort
-sind als Input. Die Aufgabe besteht nun darin das Wort vorherzusagen
+sind als Input. Die Aufgabe besteht nun darin das Wort vorherzusagen,
 welches zum gegebenen Kontext passt.
-Folglich soll das Wort, das zu dem gegebenen Kontext passt,
-vorhergesagt werden.
 Da ähnliche Wörter ähnliche Kontexte haben, neigt das Modell dazu,
 ähnliche Outputs für ähnliche Kontexte zu lernen.\\
 Die Word2Vec-Embeddings sind dann ähnlich, wenn ihre Kontexte,
 in denen sie verwendet werden, ähnlich sind.  
-Die Kontexte haben eine feste Größe, die am Anfang ausgewählt wird.
+Die Kontexte haben eine feste Größe, die zu Beginn ausgewählt wird.
 Wenn die Kontextgröße zu klein gewählt wird, kann es passieren, dass 
 das Wort mit inhaltslosen Wörtern assoziiert wird, wie z.B. Artikel 
 oder Präpositionen. Wenn die Kontextgröße zu groß ist, können 
-unterschiedliche Kontexte verschwimmen und ungenaue Ergebnisse entstehen.
+Kontexte verschwimmen und ungenaue Ergebnisse entstehen.
 Folglich hat die Kontextgröße einen entscheidenden Einfluss auf den Erfolg 
 des Modells. Vaswani et al. lösen das Kontextproblem 
 durch die Transformer-Modellarchitektur \cite{transformer}.
@@ -1531,7 +1536,7 @@ Vektorraum abgebildet werden.\\
 % Funktion zu beschreiben
 Das Parsen der Kommentare wurden mit \textit{Tree-sitter} realisiert,
 wie im Abschnitt zur Datenpipeline erwähnt. Die Extraktion ist in 
-Figur 3.2 dargestellt.\\
+der Abbildung 3.2 dargestellt.\\
 Dabei gab es eine große
 Designentscheidung zu treffen, welche Kommentare in einer Funktion
 berücksichtigt werden sollen.
@@ -1760,7 +1765,7 @@ Code Llama generiert Quellcodeerklärungen, indem Code Llama eine
 präzise  Fragestellung und den gesamten Quellcode einer 
 Funktion erhält.
 Die Fragestellung (engl. prompt) ist in Abbildung 3.5
-und die Extraktion ist in Figur 3.6 dargestellt.\\
+und die Extraktion ist in der Abbildung 3.6 dargestellt.\\
 Damit der Code-Llama-Output deterministisch ist,
 ist es erforderlich, den Temperaturparameter auf null zu setzten. 
 Der Parameter ist Teil einer Zufallskomponente bei der
@@ -1784,6 +1789,9 @@ Eingabe oftmals einfach die Prompt zurück gab.
 
 \pagebreak
 
+
+\section{Ergebnisse}
+
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.3]{abb/survey-example-positive.png}
@@ -1795,8 +1803,6 @@ Eingabe oftmals einfach die Prompt zurück gab.
     beantwortet wurde.
   }
 \end{figure}
-
-\section{Ergebnisse}
 Im letzten Kapitel wurden vier verschiedene Strategien vorgestellt,
 eine C-Quellcode-Funktion in einen Vektorraum abzubilden, indem 
 die Vektoren den Inhalt der C-Quellcode-Funktion codieren.
@@ -1844,7 +1850,7 @@ Funktionskommentare und Code-Llama-Erklärungen) Embeddings zu
 erzeugen. Die Fragestellung ist nun, ob die vier nächsten Nachbarn 
 der gegebenen Funktion semantisch ähnlich sind oder nicht.\\
 Diese Fragen wurden dann Experten aus dem Bereich Reverse Engineering
-vorgelegt. In der Abbildung 3.6 ist ein Auszug aus dem Fragebogen dargestellt.\\
+vorgelegt. In der Abbildung 4.1 ist ein Auszug aus dem Fragebogen dargestellt.\\
 Die Auswertung des Fragebogens geschah wie folgt: Jede Frage,
 die positiv beantwortet wurde, gibt einen Punkt, um daraus nun 
 einen Score zu berechnen werden die Punkte
@@ -2035,7 +2041,7 @@ $N:= 487 = \min(1507, 487, 1507, 896, 1507) $. Da die Wahl von $k$ nicht
 offensichtlich ist, werden die Ergebnisse für alle 
 $k = 2, 3, \dots, N$ berechnet und in einem 
 Graphen abgebildet. Der daraus resultierende ist Graph
-ist in Abbildung 4.1 dargestellt. In dem Graphen ist folgende 
+ist in Abbildung 4.2 dargestellt. In dem Graphen ist folgende 
 Ordnung zu erkennen: 
 \[ 
   \forall k=2,3,\dots,487: CMP(\mathbf{G}, \mathbf{D}_3,k) \leq 
@@ -2140,7 +2146,7 @@ Da nun mehrere Werte für den Perplexity-Parameter ausprobiert wurden,
 ohne große Unterschiede in den Gruppierungen zu erkennen, werden im 
 Folgenden die vier verschiedenen Strategien, Embeddings zu erzeugen,
 mit $P = 30$ abgebildet, um sie qualitativ zu vergleichen. Die 
-vier Streudiagramme sind in Abbildung 4.2 dargestellt.\\
+vier Streudiagramme sind in Abbildung 4.3 dargestellt.\\
 Die vier durch \textit{t-SNE} generierten Datenmengen liefern ein Indiz,
 dass die Anzahl der Gruppierungen zunehmen, in der Reihenfolge: 
 \textit{Cod2Vec}, Kommentare, Namen und Code-Llama-Erklärungen.
@@ -2166,16 +2172,16 @@ angeordnet ist.
 Das zentrale Thema dieser Arbeit, ist die semantische Ähnlichkeit
 von zwei gegeben Quellcode Auszügen. Dabei ist es gar nicht so klar 
 was eine gute Definition für semantische Ähnlichkeit ist.
-Anhand eines Auszugs aus dem Fragebogen der in Abbildung 4.3 
+Anhand eines Auszugs aus dem Fragebogen der in Abbildung 4.4
 dargestellt ist, ist gut zu erkennen,
 was in diesen Kontext mit semantischer Ähnlichkeit gemeint ist.\\
-In dem positiven Beispiel in der Abbildung 4.3, ist eine Funktion
+In dem positiven Beispiel in der Abbildung 4.4, ist eine Funktion
 gegeben die das Maximum von zwei Fließkommazahlen berechnet und die
 vier
 nächsten Nachbarn sind jeweils Variationen von Funktionen die das
 Minimum von zwei Fließkommazahlen berechnen. Diese Funktionen sind
 semantisch ähnlich, da sie fast äquivalente Funktionen aus dem
-Mathematikmodul sind. Im negativ Beispiel der Abbildung 4.3 kreiert
+Mathematikmodul sind. Im negativ Beispiel der Abbildung 4.4 kreiert
 die gegebene Funktionen einen neuen Prozess, dagegen haben aber die 
 nächsten Nachbarn zwar einen sehr ähnlichen Namen, aber es sind 
 wieder Funktionen aus dem Mathematikmodul.\\
