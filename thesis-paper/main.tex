@@ -1725,12 +1725,12 @@ Datensatz der ursprüngliche Funktionsname zugeordnet werden kann. \\
 % \textit{Code2Vec} erklären
 Das Ziel beim Training war es, dieselbe Qualität wie Alon et al. zu erzielen. 
 Das heißt, dieselben Ergebnisse für Java auch für C-Quellcode zu 
-replizieren. Bei der Erstellung eines Datensatzes, der aus dem 
-Modell resultiert, können bestimmte Gütekriterien beim Trainieren 
+replizieren. Bei der Erstellung eines Datensatzes, der sich aus dem 
+Modell ergibt, können bestimmte Gütekriterien beim Trainieren 
 von Modellen vernachlässigt werden. Eine Problemstellung beim 
-Trainieren von Modellen ist es, inwiefern das Modell generalisiert, 
-also wie leistungsfähig das Modell auf neuen Daten im Gegensatz zu 
-den Trainingsdaten ist.
+Trainieren von Modellen ist, inwiefern das Modell generalisiert, 
+also wie leistungsfähig das Modell auf neuen Daten, im Gegensatz zu 
+den Trainingsdaten, ist.
 Es ist nicht notwendig diese Problemstellung zu berücksichtigen,
 da das 
 Ergebnis kein fähiges Modell ist, sondern Vektoren, die den 
@@ -1743,31 +1743,36 @@ Vektoren, die gewisse Informationen des Namens widerspiegeln.\\
 Nachdem das Trainingsszenario 
 genau dasselbe wie bei Alon et al. ist, wurden alle
 Trainingsparameter gleich 
-gelassen. Die Ergebnisse nach der 84 Epoche sind: 
-{\bf Precision: $65.6$, $F_1$: $65.1$,  Recall: $64.7$}. Diese Werte sind 
-etwas über den Werten von den \textit{Code2Vec} Autoren, sie kamen beim 
+gelassen. Die Ergebnisse nach der 84. Epoche sind: 
+{\bf Precision: $65.6$, $F_1$: $65.1$,  Recall: $64.7$}. Diese Werte 
+liegen etwas über den Werten von den \textit{Code2Vec} Autoren,
+sie kamen beim 
 Full Test-Set auf: {\bf Precision: $63.1$, $F1$: $58.4$,  Recall: $54.4$}. 
-Dabei ist hervorzuheben, dass unser Test- und Trainings-Datensatz derselbe ist
-und der Test-Datensatz von \textit{Code2Vec} verschieden ist von dem 
-Trainings-Datensatz. Die Vorgehensweise ist normalerweise grob fahrlässig,
-da wir nicht die Generalisierung des Modells messen. In diesem speziellen 
-Anwendungszweck ist jedoch die Güte des Modells nicht von Bedeutung,
-sondern nur die Güte der erzeugten Vektoren.
+Dabei muss man hervorzuheben, dass unser Test- und 
+Trainings-Datensatz gleich
+und der Test-Datensatz von \textit{Code2Vec} verschieden zu dem 
+Trainings-Datensatz ist. Diese Vorgehensweise ist normalerweise grob 
+fahrlässig,
+da wir nicht die Generalisierung des Modells messen. 
+Für diesen speziellen 
+Anwendungsfall ist jedoch die Güte des Modells nicht von Bedeutung,
+sondern nur die Qualität der erzeugten Vektoren.
 Damit haben wir ähnliche Ergebnisse wie im Modell von Alon et al.
 und können diese mit den anderen vorgestellten Ansätzen vergleichen
 \cite{code2vec}.
 %Parameterwahl und Ergebnisse
 % Ganzes engeneering und pain hinter code2vec
 \subsection{Funktionsnamen}
-Eine andere Quellinformation, die in jedem Quellcode enthalten ist,
+Andere Quellinformation, die in jedem Quellcode enthalten ist,
 sind die Funktionsnamen. Funktionsnamen sollen in wenigen Wörtern 
-den Kerninhalt der Funktion widerspiegeln. Dadurch eignen sich 
+den Kerninhalt der Funktion wiedergeben. Dadurch eignen sich 
 Funktionsnamen, um den Inhalt einer Funktion zu beschreiben. 
 Die Extraktion von Funktionsnamen ist keine schwierige Aufgabe, 
 wie in Abbildung 3.4 zu sehen ist.
-Hierfür wäre \textit{Tree-sitter} nicht unbedingt nötig gewesen, 
+Hierfür wäre \textit{Tree-sitter} nicht unbedingt nötig, 
 aber falls ein 
-Datensatz für eine andere Sprache wie Rust erstellt werden sollte,
+Datensatz für eine andere Sprache wie, beispielsweise Rust
+erstellt werden sollte,
 müsste der Parser immer wieder angepasst werden.
 Deswegen wurde hier für die einfache Erweiterung des Programms,
 \textit{Tree-sitter} verwendet. 
@@ -1828,12 +1833,12 @@ Deswegen wurde hier für die einfache Erweiterung des Programms,
 }
 \end{figure}
 \subsection{Code-Llama-Erklärungen}
-Large Language-Models werden immer besser, Quellcode selbst
+Large Language-Models werden immer besser darin, Quellcode selbst
 zuschreiben, zu verstehen und zusammenzufassen. Eine Zusammenfassung des Quellcodes
 in natürlicher Sprache spiegelt den Inhalt des Quellcodes wider.
 So ist auch \textit{Code Llama} fähig, Quellcode zu erklären und
 somit einen Text zu generieren, der den Inhalt der Funktion 
-beschreibt. Dieser Ansatz verwendet wie \textit{Code2Vec} 
+beschreibt. Dieser Ansatz verwendet, wie \textit{Code2Vec},
 jede Quellcode-Information, da der 
 gesamte Quellcode als Eingabe genutzt wird.\\
 % Warum LLM's gute Embeddings produzieren könnten.
@@ -1846,11 +1851,12 @@ Funktion erhält.
 Die Fragestellung (engl. prompt) ist in Abbildung 3.5
 und die Extraktion ist in der Abbildung 3.6 dargestellt.\\
 Damit der Code-Llama-Output deterministisch ist,
-ist es erforderlich, den Temperaturparameter auf null zu setzten. 
+ist es erforderlich, den {\bf Temperaturparameter} auf
+null zu setzten. 
 Der Parameter ist Teil einer Zufallskomponente bei der
 Auswahl des nächsten Tokens, ist dieser auf null,
 wird der Token mit dem höchsten Score gewählt, dieser 
-bleibt bei gleicher Eingabe immer derselbe. Leider ist der
+bleibt bei gleicher Eingabe immer gleich. Leider ist der
 Determinismus trotzdem nicht garantiert, 
 wie die Studie von Astekin et al. heraus fand
 \cite{llmstable}. Laut Astekin et al. könnte ein Grund dafür sein,
@@ -1883,57 +1889,56 @@ Eingabe oftmals einfach die Prompt zurück gab.
   }
 \end{figure}
 Im letzten Kapitel wurden vier verschiedene Strategien vorgestellt,
-eine C-Quellcode-Funktion in einen Vektorraum abzubilden, indem 
+einem C-Quellcode-Funktion in einen Vektorraum abzubilden, indem 
 die Vektoren den Inhalt der C-Quellcode-Funktion codieren.
-Zum einen die Verwendung von Funktionsnamen und Funktionskommentaren 
+Zum einen die Verwendung von Funktionsnamen und Funktionskommentaren,
 die direkt aus dem C-Quellcode entnommen wurden, um diese mittels
 \textit{SentenceTransformer} in Vektoren umzuwandeln. Zum anderen
 aus dem gesamten C-Quellcode einer
 Funktion eine Erklärung von Code Llama zu generieren, um diese 
 Erklärung wieder mittels \textit{SentenceTransformer} in Embeddings
-umzuwandeln. Schließlich das \textit{Code2Vec}-Modell darauf zu
-trainieren,
-bei gegebenem C-Quellcode einen Funktionsnamen vorherzusagen, dann 
+umzuwandeln. Schließlich wurde das \textit{Code2Vec}-Modell darauf 
+trainiert,
+bei gegebenem C-Quellcode einen Funktionsnamen vorherzusagen und dann
 daraus die Vektoren zu extrahieren, die für die Inferenz des Namens
 bei gegebenem C-Quellcode verwendet werden.\\
 Nun soll in diesem Kapitel untersucht werden, welche der vier 
 Strategien
 die besten Embeddings erzeugt und wie ähnlich die anderen 
-Vektorräume zu dem Vektorraum der besten Strategie
+Vektorräume dem Vektorraum der besten Strategie
 sind.\\
-Um diese Frage zu beantworten, welche der vorgestellten Strategien
-die besten Embeddings liefern, wurde eine Expertenbefragung 
-durchgeführt. Anschließend werden die erzeugten Vektorräume quantitativ
+Um diese Frage zu beantworten wurde eine Expertenbefragung 
+durchgeführt. Anschließend werden die erzeugten Vektorräume 
+quantitativ
 mittels einer Formel, die die Nachbarschaftsverhältnisse vergleicht, 
 ausgewertet.
-Zum Schluss wird qualitativ die durch \textit{t-SNE} erzeugten
-zwei dimensionalen Streudiagramme verglichen.
+Zum Schluss wird qualitativ, die durch \textit{t-SNE} erzeugten
+zwei dimensionalen Streudiagramme, verglichen.
 % Vorgehensweise
 % Von Chatbot zu relativ deterministischen Modell
 % Ergebnisse der Standardabweichung mit Temperatur 0 \section{Ergebnisse} \subsection{Evaluierung durch Experten}
 % Aufbau des Fragebogens und
 % Stichproben Größe, vlt. Vorstellung der Experten
-\subsection{Befragung von Experten}
-Um die Befragung von Experten durchzuführen, wurde zunächst ein
-Fragebogen erstellt, dafür wurde die von der 
-Ludwig-Maximilians-Universität bereitgestellte Internetseite
+\subsection{Expertenbefragung}
+Um die Expertenbefragung durchzuführen, wurde zunächst ein
+Fragebogen erstellt. Dafür wurde die, durch die 
+Ludwig-Maximilians-Universität bereitgestellte, Internetseite
 verwendet\footnote{\url{https://survey.ifkw.lmu.de/}}. Der 
 Fragebogen besteht aus $n=564 $ Fragen, wobei jede Frage aus
 einer Funktion und den vier nächsten Nachbarn der Funktion im
 Embedding-Raum besteht. Davon sind jeweils $k = 141$ Fragen, um
-einen Embedding-Raum zu untersuchen. Also wurden, um einen
-Embedding-Raum zu untersuchen, $k$ zufällige Funktionen und ihre
-vier nächsten Nachbarn verwendet. Die vier Embedding-Räume
-stammen aus den vier Strategien (\textit{Code2Vec}, Funktionsnamen,
-Funktionskommentare und Code-Llama-Erklärungen) Embeddings zu 
+einen Embedding-Raum zu untersuchen. Die vier Embedding-Räume
+sind die Ergebnisse der vier Strategien (\textit{Code2Vec}, Funktionsnamen,
+Funktionskommentare und Code-Llama-Erklärungen) um Embeddings
 erzeugen. Die Fragestellung ist nun, ob die vier nächsten Nachbarn 
 der gegebenen Funktion semantisch ähnlich sind oder nicht.\\
-Diese Fragen wurden dann Experten aus dem Bereich Reverse Engineering
-vorgelegt. In der Abbildung 4.1 ist ein Auszug aus dem Fragebogen dargestellt.\\
+Diese Fragen wurden dann Experten aus dem Bereich Reverse 
+Engineering vorgelegt. In der Abbildung 4.1 ist ein Auszug aus 
+dem Fragebogen dargestellt.\\
 Die Auswertung des Fragebogens geschah wie folgt: Jede Frage,
-die positiv beantwortet wurde, gibt einen Punkt, um daraus nun 
+die positiv beantwortet wurde, gibt einen Punkt. Um daraus 
 einen Score zu berechnen werden die Punkte
-summiert und dann anschließend durch die  maximal zu
+summiert und dann durch die  maximal zu
 erreichenden Punkte $k$ geteilt. Das Resultat ist ein normalisierter 
 Score, der bei $\verb|score| = 1$ impliziert, dass alle Fragen 
 positiv beantwortet wurden und bei $\verb|score| = 0$ impliziert, 
@@ -1959,7 +1964,7 @@ Laut den Ergebnissen können die Methoden absteigend
 nach Qualität der erzeugten Embeddings folgendermaßen
 angeordnet werden: \textit{Code-Llama}-Erklärungen, 
 Funktionsnamen, Funktionskommentare und \textit{Code2Vec}.
-Die Strategie mit dem höchsten Score ist demnach die,
+Die Strategie mit dem höchsten Score ist also die,
 die Code-Llama-Erklärungen
 verwendet hat. Da nun die beste Strategie identifiziert ist, 
 werden im Folgenden die anderen Strategien mit dieser quantitativ verglichen.
@@ -1969,7 +1974,8 @@ werden im Folgenden die anderen Strategien mit dieser quantitativ verglichen.
 \subsection{Quantitative Evaluierung} 
 Im Folgenden wird eine Formel vorgestellt, die zwei Datenmengen
 auf Ähnlichkeit untersuchen soll. Dabei ist Ähnlichkeit hier,
-ähnliche Nachbarschaftsbeziehungen zu besitzen. Im Folgenden wird
+ähnliche Nachbarschaftsbeziehungen zu besitzen. Im weiteren Verlauf
+wird
 eine Datenmenge als Matrix  $\mathbf{D} \in \mathbb{R}^{N\times l}$
 beschrieben. Dabei ist $l \in \mathbb{N}$ die Dimension eines
 Datenpunkts und $N \in \mathbb{N}$ die Anzahl der Datenpunkte. 
@@ -1983,13 +1989,14 @@ Punkt zu erlangen, dafür wird hier der
 gegebenem Punkt die $k$ nächsten Nachbarn zurück. Also eine Funktion
 mit der Signatur:
 $NN_k: \mathbb{R}^{N\times l} \times \mathbb{R}^{l} \to \mathbb{N}^k$. 
-Die gesamte Datenmenge und ein Datenpunkt wird eingeben und der 
+Die gesamte Datenmenge und ein Datenpunkt wird eingegeben und der 
 Output ist ein Vektor aus Indizes, wobei jeder Index ein Nachbar 
 bzw. ein Datenpunkt ist.
-Diese sind aufsteigend sortiert, nach dem euklidischen Abstand 
+Die Nachbarn im Output sind aufsteigend sortiert, nach dem 
+euklidischen Abstand 
 von dem eingegebenen Punkt. Dadurch erhält man ein 
 Nachbarschaftsverhältnis von einem Punkt
-und seinen $k$ Nachbarn, in der Form eines Vektors
+und seinen $k$ Nachbarn, in Form eines Vektors
 $v \in \mathbb{N}^k$.
 Als Nächstes wird eine Methode benötigt, zwei 
 Nachbarschaftsverhältnisse in der Form von zwei Vektoren
@@ -2021,7 +2028,7 @@ geringen Abstand. Aus diesem Grund ist der Score von einem
 Nachbarn mit großem Abstand zum Bezugspunkt weniger bedeutsam als 
 ein Nachbar mit geringem Abstand. Da die Nachbarn aufsteigend nach
 Abstand zu einem gegebenen Bezugspunkt sortiert sind, wird der 
-Score durch einen Wert geteilt, mit wachsenden Index größer.
+Score durch einen Wert, der mit wachsenden Index größer wird, geteilt.
 Dadurch haben Nachbarn, die weiter entfernt sind, weniger Einfluss
 auf die Summe. Schließlich wird noch
 normalisiert, indem die höchste zu erreichende Summe an Scores
@@ -2077,12 +2084,12 @@ im Nachbarschaftsverhältnis von $v$ enthalten ist.\\
   }
 \end{figure}\\
 Um nun zwei Datenmengen zu vergleichen, müssen alle möglichen 
-Nachbarschaftsverhältnisse betrachtet werden. Das motiviert folgende
+Nachbarschaftsverhältnisse betrachtet werden. Das führt zu folgende
 Funktion mit Signatur:
 $CMP: \mathbb{R}^{N\times l} \times  \mathbb{R}^{N\times l} \times \mathbb{N} \to [0,1]$.
 Dabei wird angenommen, dass $A,B \in \mathbb{R}^{N\times l}$ Datenmengen
 sind, die aus unterschiedlichen Embedding-Prozessen entstanden sind,
-aber aus der gleichen Grundmenge sind. Bei einer Grundmenge $H \in F^N$,
+aber aus der gleichen Grundmenge stammen. Bei einer Grundmenge $H \in F^N$,
 wobei $F$ eine beliebige Menge ist und   
 $E_1,E_2: F \to \mathbb{R}^{l}$ Embedding-Prozesse sind, gilt dann:
 \[
@@ -2090,7 +2097,7 @@ $E_1,E_2: F \to \mathbb{R}^{l}$ Embedding-Prozesse sind, gilt dann:
   \hspace{0.5cm } B_j = E_2(H_j).
 \]
 Dadurch können Nachbarschaftsverhältnisse der Datenmengen $A,B$ 
-verglichen werden, indem die Nachbarschaftsverhältnisse desselben 
+verglichen werden, indem die Nachbarschaftsverhältnisse derselben 
 Grundmenge in unterschiedlichen Embedding-Räumen verglichen werden:
 \[
   \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
@@ -2098,11 +2105,11 @@ Grundmenge in unterschiedlichen Embedding-Räumen verglichen werden:
 \]
 Um die Ergebnisse der $\verb|compare|_k$ Funktion zu aggregieren,
 wird hier das arithmetische Mittel verwendet.
-Bei den verwendeten Embedding-Prozessen in dieser Arbeit sind
+Bei den verwendeten Embedding-Prozessen dieser Arbeit sind
 Elemente der Grundmenge verloren gegangen. Die Grundmenge besteht 
 hier aus den Funktionen aus der GNU-C-Standard-Bibliothek.
-Die Anzahl der Vektoren in den resultierenden Datenmengen sind
-deswegen verschieden: 
+Die Anzahl der Vektoren sind deswegen in den resultierenden 
+Datenmengen verschieden: 
 \[
   \verb|Funktionsnamen| \leftrightarrow \mathbf{D}_1=\mathbb{R}^{1507\times 384},
   \verb|Funktionskommentare| \leftrightarrow \mathbf{D}_2=\mathbb{R}^{487\times 384},
@@ -2114,8 +2121,8 @@ deswegen verschieden:
 \[
   \hspace{0.3cm} \verb|Code-Llama-Erklärungen| \leftrightarrow \mathbf{G}=\mathbb{R}^{1507\times 384}.
 \]
-Um die Datenmengen vergleichen zu können, wurde das Minimum der 
-Anzahl der Vektoren der verschiedenen Datenmengen genommen:
+Um die Datenmengen vergleichen zu können, wurde die minimale Anzahl
+der Vektoren der verschiedenen Datenmengen genommen:
 $N:= 487 = \min(1507, 487, 1507, 896, 1507) $. Da die Wahl von $k$ nicht 
 offensichtlich ist, werden die Ergebnisse für alle 
 $k = 2, 3, \dots, N$ berechnet und in einem 
@@ -2128,7 +2135,7 @@ Ordnung zu erkennen:
     CMP(\mathbf{G}, \mathbf{D}_2, k) \leq 
     CMP(\mathbf{G}, \mathbf{D}_1, k)
 \]
-Das heißt, laut vorgestellter Formel ist der Embedding-Prozess
+Das heißt, laut der vorgestellter Formel ist der Embedding-Prozess
 Funktionsnamen am ähnlichsten zu den Code-Llama-Erklärungen, 
 danach Funktionskommentare, \textit{Code2Vec}-Vektoren und 
 schließlich zufällige Vektoren.
@@ -2179,10 +2186,10 @@ schließlich zufällige Vektoren.
           \nextgroupplot[title={\textit{Code2Vec}}]
           \addplot[scatter, only marks, scatter src=explicit symbolic]
             table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
-          \nextgroupplot[title={Kommentare}]
+          \nextgroupplot[title={Funktionskommentare}]
           \addplot[scatter, only marks, scatter src=explicit symbolic]
             table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
-          \nextgroupplot[title={Namen}]
+          \nextgroupplot[title={Funktionsnamen}]
           \addplot[scatter, only marks, scatter src=explicit symbolic]
             table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
           \nextgroupplot[title={Code-Llama-Erklärungen}]
@@ -2205,7 +2212,7 @@ Die qualitative Evaluierung wird in dieser Arbeit mittels
 \textit{t-SNE} durchgeführt. Dabei wird \textit{t-SNE} verwendet,
 um die hochdimensionalen Vektoren $x \in \mathbb{R}^{384}$ in einen
 zweidimensionalen Vektorraum zu projizieren. Bei der Verwendung und 
-Interpretation von \textit{t-SNE} gibt es einiges zu beachten. \\
+Interpretation von \textit{t-SNE} sind einige Dinge zu beachten.\\
 Zum einen sollten bei der Verwendung mehrere Werte für den
 Perplexity-Parameter $P \in \{2,3,\dots ,50\}$ ausprobiert werden. 
 Zum anderen kann aus den zweidimensionalen Datenmengen nur eine Aussage
@@ -2214,7 +2221,7 @@ Position und Größe einer Gruppierung. Sogar die Existenz eines Clusters
 in der zweidimensionalen Datenmenge ist zwar ein starkes Indiz,
 dass ein Cluster in den hochdimensionalen Daten existiert, 
 aber kein Beweis.\\
-Es wurden die Werte $P \in \{20, 30, 40\}$, als Perplexity-Parameter 
+Es wurden die Werte $P \in \{20, 30, 40\}$ als Perplexity-Parameter 
 verwendet, um verschiedene Werte auszuprobieren, die jeweils nicht 
 am Rand der empfohlenen Menge $\{2,3, \dots, 50\}$ liegen.
 Um aussagekräftige Graphen zu erhalten, wurden $1182$ Funktionen aus
@@ -2227,8 +2234,8 @@ Folgenden die vier verschiedenen Strategien, Embeddings zu erzeugen,
 mit $P = 30$ abgebildet, um sie qualitativ zu vergleichen. Die 
 vier Streudiagramme sind in Abbildung 4.3 dargestellt.\\
 Die vier durch \textit{t-SNE} generierten Datenmengen liefern ein Indiz,
-dass die Anzahl der Gruppierungen zunehmen, in der Reihenfolge: 
-\textit{Cod2Vec}, Kommentare, Namen und Code-Llama-Erklärungen.
+dass die Anzahl der Gruppierungen in der Reihenfolge 
+\textit{Cod2Vec}, Kommentare, Namen und Code-Llama-Erklärungen zunehmen.
 Das heißt, auch die qualitative Evaluierung scheint dem Trend zu 
 folgen, dass die Qualität der Embeddings gleichermaßen aufsteigend
 angeordnet ist.
@@ -2236,32 +2243,38 @@ angeordnet ist.
 % Funktionserklärung, und \textit{Code2Vec} Vektoren
 % Probleme des jeweiligen Ansatzes mit drei Vektoren
 %
-\begin{figure}
+%
+%
+\begin{figure*}
   \begin{center}
     \includegraphics[scale=0.3]{abb/survey-example-positive.png}
     \includegraphics[scale=0.3]{abb/survey-example-negative.png}
   \end{center}
+  \captionsetup{labelformat=empty}
   \caption{
+    Abbildung 4.1:
     Auf der linken Seite eine Frage aus dem Fragebogen die positiv
     beantwortet wurde und rechts eine Frage die negativ
     beantwortet wurde.
   }
-\end{figure}
+\end{figure*}
 \section{Diskussion}
-Das zentrale Thema dieser Arbeit, ist die semantische Ähnlichkeit
-von zwei gegeben Quellcode Auszügen. Dabei ist es gar nicht so klar 
+Das zentrale Thema dieser Arbeit ist die semantische Ähnlichkeit
+von zwei gegebenen Quellcode Auszügen. Dabei ist es gar nicht 
+so klar,
 was eine gute Definition für semantische Ähnlichkeit ist.
-Anhand eines Auszugs aus dem Fragebogen der in Abbildung 4.4
-dargestellt ist, ist gut zu erkennen,
+Anhand eines Auszugs aus dem Fragebogen der in Abbildung 4.1
+dargestellt ist, ist erkennbar,
 was in diesen Kontext mit semantischer Ähnlichkeit gemeint ist.\\
-In dem positiven Beispiel in der Abbildung 4.4, ist eine Funktion
-gegeben die das Maximum von zwei Fließkommazahlen berechnet und die
+In dem positiven Beispiel, in der Abbildung 4.1, ist eine Funktion
+gegeben, die das Maximum von zwei Fließkommazahlen berechnet und die
 vier
-nächsten Nachbarn sind jeweils Variationen von Funktionen die das
-Minimum von zwei Fließkommazahlen berechnen. Diese Funktionen sind
+nächsten Nachbarn sind jeweils Variationen von Funktionen, die das
+Minimum von zwei Fließkommazahlen berechnen. Die 
+gegebene Funktionen und ihre Nachbarn, im positiv Beispiel, sind 
 semantisch ähnlich, da sie fast äquivalente Funktionen aus dem
-Mathematikmodul sind. Im negativ Beispiel der Abbildung 4.4 kreiert
-die gegebene Funktionen einen neuen Prozess, dagegen haben aber die 
+Mathematikmodul sind. Im negativ Beispiel der Abbildung 4.1 kreiert
+die gegebene Funktion einen neuen Prozess, dagegen haben aber die 
 nächsten Nachbarn zwar einen sehr ähnlichen Namen, aber es sind 
 wieder Funktionen aus dem Mathematikmodul.\\
 Daher bevorzuge ich die Definition, dass zwei Funktionen semantisch
@@ -2270,7 +2283,7 @@ Ein Beispiel hierzu wären verschiedene Sortieralgorithmen, die in
 den meisten fällen in den selben Kontexten verwendet werden können 
 und damit semantisch sehr Ähnlich sind. Natürlich ist diese 
 Definition nicht gerade präzise sondern sehr vage.\\
-In dieser Arbeit wurden vier unterschiedliche Strategien
+In dieser Arbeit werden vier unterschiedliche Strategien
 vorgestellt, aus C-Quellcode-Funktionen Embeddings zu erzeugen.
 Die Strategien \textit{Cod2Vec}, Funktionskommentare, 
 Funktionsnamen, Code-Llama-Erklärungen haben alle ihre 
@@ -2290,7 +2303,7 @@ ganze Bibliothek durch. In der GNU-C-Standard-Bibliothek
 werden konsequent 
 Abkürzungen benutzt, wodurch die Bedeutung zwar für den Mensch 
 aus dem Kontext klar wird, aber wenn die Funktionsnamen 
-die einzige Information ist, sind die Abkürzungen mehrdeutig.
+die einzigen Informationen sind, sind die Abkürzungen mehrdeutig.
 \begin{example}
   Ein Beispiel ist die Funktion
   \verb|lchmod|. Die Funktion \verb|lchmod| passt die
