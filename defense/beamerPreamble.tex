@@ -1,0 +1,95 @@
+\usepackage{comment}
+%\usepackage[utf8]{inputenx} % For æ, ø, å
+%\usepackage[T1]{fontenc}
+\usepackage[english]{babel}          % Automatic translations
+%\usepackage{fancyvrb}
+\usepackage{minted}
+\usepackage{csquotes}       % Quotation marks
+\usepackage{microtype}      % Improved typography
+\usepackage{amssymb}        % Mathematical symbols
+\usepackage{mathtools}      % Mathematical symbols
+%\usepackage{anyfontsize}
+\usepackage{tikz}
+%\usepackage{svg}
+
+\usepackage{booktabs}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\graphicspath{{./pictures/}}
+
+\usetheme{Dresden}
+\usecolortheme{spruce}
+
+%links
+\usepackage{hyperref}
+
+%seitennummer
+\setbeamertemplate{page number in head/foot}[totalframenumber]
+
+%Ausblenden der zweiten Kopfzeile
+\usepackage{soul}
+\makeatletter
+\let\HL\hl
+\renewcommand\hl{%
+  \let\set@color\beamerorig@set@color%
+  \let\reset@color\beamerorig@reset@color%
+  \HL}
+\makeatother
+
+\defbeamertemplate*{headline}{miniframes theme no subsection}
+{%beamer template
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}{section in head/foot}
+    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=3.2ex,dp=1.8ex,left]{author in head/foot}% Adjusted height and depth for margin
+      \usebeamerfont{author in head/foot}\hspace*{2ex}\insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=3.2ex,dp=1.8ex,right]{title in head/foot}% Adjusted height and depth for margin
+      \usebeamerfont{title in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\setbeamertemplate{footline}[miniframes no subsection]
+
+%sources
+\usepackage[absolute,overlay]{textpos}
+\setbeamercolor{framesource}{fg=gray}
+\setbeamerfont{framesource}{size=\tiny}
+\newcommand{\source}[1]{\begin{textblock*}{15cm}(0.4cm,8.8cm)
+    \begin{beamercolorbox}[ht=0.5cm,left]{framesource}
+      \usebeamerfont{framesource}\usebeamercolor[fg]{framesource} {#1}
+    \end{beamercolorbox}
+  \end{textblock*}}
+
+\definecolor{UBCblue}{rgb}{0.04706, 0.13725, 0.26667} % UBC Blue (primary)
+\definecolor{UBCgrey}{rgb}{0.3686, 0.5255, 0.6235} % UBC Grey (secondary)
+% define color with hex #00883A
+\definecolor{LMUmain}{HTML}{00883A}
+\definecolor{LMUsec}{HTML}{00F56A}
+\definecolor{LMUacc}{HTML}{8C4091}
+
+\setbeamercolor{palette primary}{bg=white,fg=LMUmain}
+\setbeamercolor{palette secondary}{bg=LMUmain,fg=white}
+\setbeamercolor{palette tertiary}{bg=LMUmain,fg=white}
+\setbeamercolor{palette quaternary}{bg=LMUmain,fg=white}
+\setbeamercolor{structure}{fg=LMUmain} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=LMUmain} % TOC sections
+
+\setbeamercolor{block body alerted}{bg=alerted text.fg!10}
+\setbeamercolor{block title alerted}{bg=alerted text.fg!20}
+%\setbeamercolor{block body}{bg=structure!10}
+%\setbeamercolor{block title}{bg=structure!20}
+\setbeamercolor{block body example}{bg=LMUacc!10}
+\setbeamercolor{block title example}{bg=LMUacc!20}

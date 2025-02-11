@@ -1,0 +1,183 @@
+\documentclass[aspectratio=1610,12pt]{beamer}
+
+\input{beamerPreamble.tex}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{qrcode}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+%\usepackage[sfmath]{kpfonts}
+
+\beamertemplatenavigationsymbolsempty
+
+\author{Ruben Triwari}
+\title{Comparing Natural Language Embeddings for Libc Functions as Rich Labels}
+\subtitle{Bachelor defense}
+\institute{Ludwig Maximilian University Munich}
+\date{19, February 2025}
+
+\newcommand*{\qt}[1]{'#1'}
+\newcommand*{\p}{^\prime}
+\newcommand*{\as}{\;}% "apply-space" for λ-calc
+\newcommand*{\la}{\lambda}
+\newcommand*{\N}{\mathbb{N}}
+
+\newcommand*{\sps}{\mathcal}
+\newcommand*{\tsc}{\textsc}
+\newcommand*{\opn}{\operatorname}
+
+\newcommand{\cn}[2]{\textcolor{#1}{#2}}%color next (element)
+\newcommand*{\C}{\mathbf{C}}
+\definecolor{c1}{RGB}{189, 57, 57}
+\definecolor{c2}{RGB}{57, 155, 163}
+\definecolor{c3}{RGB}{16, 14, 77}
+
+\definecolor{SkyBlue}{RGB}{135, 206, 235}
+\definecolor{CrimsonRed}{RGB}{220, 20, 60}
+\definecolor{ForestGreen}{RGB}{34, 139, 34}
+\definecolor{Goldenrod}{RGB}{218, 165, 32}
+\definecolor{DeepPurple}{RGB}{75, 0, 130}
+\definecolor{Coral}{RGB}{255, 127, 80}
+\definecolor{Teal}{RGB}{0, 128, 128}
+\definecolor{Lavender}{RGB}{230, 230, 250}
+\definecolor{Amber}{RGB}{255, 191, 0}
+\definecolor{SlateGray}{RGB}{112, 128, 144}
+
+\definecolor{ContrastRed}{RGB}{230, 25, 75}   % Red
+\definecolor{ContrastGreen}{RGB}{60, 180, 75}   % Green 
+\definecolor{ContrastBlue}{RGB}{0, 130, 200}   % Blue
+\definecolor{ContrastOrange}{RGB}{245, 130, 48}  % Orange
+\definecolor{ContrastPurple}{RGB}{145, 30, 180}  % Purple
+\definecolor{ContrastCyan}{RGB}{70, 240, 240}  % Cyan
+\definecolor{ContrastMagenta}{RGB}{240, 50, 230}  % Magenta
+\definecolor{ContrastLime}{RGB}{210, 245, 60}  % Lime
+\definecolor{ContrastPink}{RGB}{250, 190, 190} % Pink
+%\definecolor{c3}{cmyk}{0, 0.7808, 0.4429, 0.1412}
+%\definecolor{c4}{gray}{0.6}
+
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+%\usepackage{newcomputermodern} % Loads unicode-math
+
+\newcommand{\codetosource}[2]{%
+  \begin{center}
+    \qrcode[height=2cm]{#1}\\
+    \vspace{.1cm}
+    {#2}
+  \end{center}
+}
+\DeclarePairedDelimiter\catmap{\llbracket}{\rrbracket}
+%\DeclarePairedDelimiter\Parens{\lParen}{\rParen}
+
+\makeatletter
+\patchcmd{\beamer@sectionintoc}
+  {\vfill}
+  {\vskip\itemsep\vspace{1cm}}
+  {}
+  {}
+\makeatother  
+
+
+\usepackage{ellipsis} 
+\renewcommand{\ellipsisgap}{0.01em}
+\usepackage{xparse}
+
+\newminted{haskell}{mathescape, beameroverlays, escapeinside=||}
+
+\begin{document}
+\begin{frame}[plain, noframenumbering]{}
+  % this is shown in the beginning of the presentation to keep it exciting
+\end{frame}
+
+\begin{frame}
+  \vspace{0.4cm}
+  \centering
+  \includegraphics[scale=0.12]{lmu-logo.png}
+  \titlepage
+\end{frame}
+
+\begin{frame}[t]{Outline}
+  \begin{columns}[c]
+    \begin{column}{0.46\textwidth}
+      \tableofcontents[hideallsubsections]
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.7]
+          \begin{axis}[
+                title={},
+                xlabel={},
+                ylabel={},
+                width=10cm,
+                height=7cm,
+                xtick=\empty,
+                ytick=\empty,
+                legend pos=north west,
+                scatter/classes={
+                  0={mark=*,ContrastBlue},
+                  1={mark=*,ContrastRed},
+                  2={mark=*,ContrastGreen},
+                  3={mark=*,ContrastOrange},
+                  4={mark=*,ContrastPurple},
+                  5={mark=*,ContrastPink},
+                  6={mark=*,ContrastLime},
+                  7={mark=*,ContrastCyan},
+                  8={mark=*,Teal},
+                  9={mark=*,SlateGray}
+                }
+              ]
+              \addplot[
+                  scatter,
+                  only marks,
+                  mark=*,
+                  scatter src=explicit symbolic
+              ] table [meta index=2] {../data/tsne-plots/prev-data-tsne-summary-tsne-30.dat};
+          \end{axis}
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+%-------------------------------------------------------------------------
+\section{Motivation \& Research Objective}
+\begin{frame}[t]{Lambda Calculus}
+\end{frame}
+
+\section{State Of The Art}
+\begin{frame}[t, fragile]{Simply Typed Lambda Calculus -- Motivation}
+\end{frame}
+
+\section{Methodology}
+
+\begin{frame}[t, fragile]{Curry-Howard Correspondance}
+\end{frame}
+
+\section{Results}
+\begin{frame}[t]{Denotational Semantics}
+\end{frame}
+
+\section{Limitations}
+\begin{frame}
+  HALLO
+\end{frame}
+
+\section{Conclusion \& Future Work}
+\begin{frame}
+  HALLO
+\end{frame}
+
+\appendix
+
+\begin{frame}{Discussion}
+\end{frame}
+
+\end{document}
+
+\begin{frame}
+  \vspace{0.4cm}
+  \centering
+  \includegraphics[scale=0.12]{lmu-logo.png}
+  \titlepage
+\end{frame}

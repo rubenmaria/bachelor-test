@@ -1,5 +1,10 @@
-\documentclass[12pt,letterpaper,ngerman]{article}
+\documentclass[12pt,a4paper,ngerman]{article}
 \input{settings}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={210mm,297mm},
+}
 \usepackage{enumitem}
 \usepackage{babel}
 \usepackage{pgfplots}
@@ -509,7 +514,7 @@ Zunächst einmal müssen neuronale Netzwerke definiert werden:
   $L_i$, mit $i \in \{2, \dots, n-1\}$, als Hidden Layer.
 \end{definition}
 \pagebreak
-Nun mit definierten Neuronalen Netzwerken, kann Deep Learning 
+Nun mit definierten neuronalen Netzwerken, kann Deep Learning 
 definiert werden:
 \begin{definition}{Deep Learning}
   \\
@@ -840,7 +845,7 @@ Der Begriff semantischer Vektorraum für natürliche Sprache heißt
 hier, dass ähnliche Wörter, also Wörter mit ähnlicher Bedeutung 
 im projizierten Vektorraum, einen geringen Abstand zueinander haben.  
 In einem idealen semantischen Vektorraum würden
-die Beziehung gelten, die in der Figur 2.3 dargestellt sind.
+die Beziehung gelten, die in der Abbildung 2.3 dargestellt sind.
 Wir werden die Vektoren im Folgenden als Embeddings bezeichnen.
 \begin{figure}
   \begin{center}
@@ -984,6 +989,8 @@ Modell die naheliegenden Wörter vorhersagen. Das heißt, es soll einem
 Wort einen richtigen Kontext zuordnen. Das Modell wird dadurch die
 Fähigkeit entwickeln, Wörter mit ähnlichen Kontexten ähnlichen 
 Embeddings zuzuordnen.\\
+\pagebreak
+\hfill\\
 Die zweite Methode ist Continous Bag-of-Words (CBOW),
 bei der das Modell den Kontext eines Wortes erhält,
 dass heißt es erhält die Wörter die links und rechts von dem Wort
@@ -1057,7 +1064,9 @@ Kontextgröße aus dem vorherigen Abschnitt gelöst.
 Der Encoder bestimmt, welche Wörter wichtig sind und welche eher 
 unwichtig sind in Bezug auf ein gegebenes Wort.
 Der Decoder erhält den von ihm selbst produzierten Output, sowie 
-das Ergebnis des Encoders, um das nächste Wort zu generieren. 
+das Ergebnis des Encoders, um das nächste Wort zu generieren.\\
+\pagebreak
+\hfill\\
 Außerdem beginnt dieser mit einem konstanten Start-Embedding und 
 um die Generierung zu stoppen, gibt er selbst ein konstantes 
 Stopp-Embedding aus. Wichtig ist, dass es möglich ist mehrere
@@ -1092,7 +1101,10 @@ zwischen einem Wort und allen
 übrigen im Input aus. Der gesamte Input wird als Kontext 
 betrachtet, aber das Modell lernt, welchen Wörtern es im 
 Kontext viel oder wenig
-Aufmerksamkeit schenken soll. Das {\bf Masked Multi Head-Attention}
+Aufmerksamkeit schenken soll. \\
+\pagebreak
+\hfill\\
+Das {\bf Masked Multi Head-Attention}
 Modul ist nur beim Trainieren anders als das Multi 
 Head-Attention-Modul.
 Beim Trainieren ist der Input des Decoders bereits der Satz,
@@ -1154,6 +1166,8 @@ Dabei bleiben $10 \%$ der Token, die maskiert werden,
 unverändert. Weitere $10 \%$ der Token, die maskiert werden sollten,
 werden durch ein zufälliges anderes Token ersetzt, während die
 restlichen $80 \%$ durch das \verb|[Mask]| Token ersetzt werden.\\
+\pagebreak
+\hfill\\
 Die zweite Trainingsaufgabe ist {\bf Next Sentence-Prediction} (NSP),
 bei dieser Aufgabe soll das BERT Modell bei der Eingabe von zwei Sätzen 
 entscheiden, ob diese sequenziell nacheinander kommen oder nicht.
@@ -1204,17 +1218,6 @@ bezeichnet, da zwei unterschiedliche BERT-Modelle verwendet werden,
 um beide Sätze in einen Vektor umzuwandeln, aber beide Modelle
 teilen sich die Gewichte. In der Abbildung 2.8 ist das Siamese 
 Neural Network zusehen.\\
-\begin{figure}
-  \begin{center}
-    \includegraphics[scale=0.3]{abb/SBERT.png}
-  \end{center}
-  \caption{
-    Die SBERT-Architektur entnommen aus der Veröffentlichung
-    von Reimers et al.
-    \cite{reimers-2019-sentence-bert}. 
-    Beide BERT-Modelle teilen sich dieselben Gewichte. 
-  }
-\end{figure}
 Die Output-Vektoren der beiden BERT-Modelle werden schließlich 
 in ein Pooling-Modul eingegeben. 
 {\bf Pooling} ist das Zusammenfassen vieler Vektoren 
@@ -1235,6 +1238,8 @@ SBERT soll für zwei Sätze vorhersagen, ob sie sich inhaltlich
 widersprechen, neutral zueinander sind oder ob der eine Satz
 eine Fortsetzung des anderen ist. Daraus lernt das Modell,
 ein semantisches Verständnis für Sätze zu erlangen.\\
+\pagebreak
+\hfill\\
 Beim Training wird zur Ermittlung der Label-Vorhersage ein 
 neuer Output-Vektor kreiert, indem die beiden 
 Pooling-Output-Vektoren und ihre Differenz miteinander 
@@ -1259,6 +1264,17 @@ Nach dem Training gibt das SBERT-Modell den Vektor aus,  der aus dem
 Pooling-Modul resultiert.
 SBERT liefert also ein Tool, um Sätze semantisch in einem Vektorraum abzubilden,
 was sich in den späteren Kapiteln als sehr hilfreich herausstellt.
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.3]{abb/SBERT.png}
+  \end{center}
+  \caption{
+    Die SBERT-Architektur entnommen aus der Veröffentlichung
+    von Reimers et al.
+    \cite{reimers-2019-sentence-bert}. 
+    Beide BERT-Modelle teilen sich dieselben Gewichte. 
+  }
+\end{figure}
 \subsection{Code Llama}
 Die \textit{Code-Llama}-Familie aus Large Language-Models wurde von 
 Rozière et al. im Jahre 2024 entwickelt
@@ -1279,7 +1295,10 @@ mit $85 \%$, wurde zufällig aus einen $859$ GB großen Datensatz,
 aus Aufgaben speziell für Programmiersprachen entnommen.
 Das Modell wird darauf trainiert, fehlende Programmzeilen in 
 einer vergebenen Lücke zu füllen. Dabei kann es sich um Programmcode,
-aber auch um Kommentare handeln. Der zweitgrößte Teil im Datensatz,
+aber auch um Kommentare handeln.\\
+\pagebreak
+\hfill\\
+Der zweitgrößte Teil im Datensatz,
 mit $8 \%$, wurde zufällig aus einem $78$ GB großen Datensatz entnommen,
 welcher aus natürlicher Sprache besteht, die von
 Programmcode handelt. Dieser Teil beinhaltet Diskussionen über 
@@ -1320,7 +1339,9 @@ Code Llama ist eine Open Source-Software, die unter allen
 verfügbaren Modellen am besten in multilingualen Benchmarks 
 abschneidet. Multilingual bedeutet die Verwendung mehrerer 
 Programmiersprachen. Diese Eigenschaften machen es sehr geeignet
-für diese Arbeit.
+für diese Arbeit.\\
+\pagebreak
+\hfill\\
 \subsection{Code2Vec}
 \begin{figure}
   \begin{center}
@@ -1358,9 +1379,6 @@ und $\alpha \in \mathbb{R}^n$ der Attention-Weights Vektor.
 \[
   \verb| code vector | v = \sum_{i = 1}^n \alpha_i \cdot h_i
 \]
-\\
-\pagebreak
-\hfill\\
 Mit dem \verb|Code-Vector| kann dann das gewünschte Label vorhergesagt 
 werden. Das Modell kann demnach darauf trainiert werden, bei gegebenem 
 \verb|Code-Vector| bzw. Quellcodeauszug ein bestimmtes Label in
@@ -1369,7 +1387,9 @@ ist, kann es ein Label für einen Quellcode vorhersagen, welches nicht
 im Trainingssatz enthalten ist. 
 Die Trainingsart ist demnach überwachtes Lernen, was eine Aufbereitung der
 Daten benötigt. Das Modell kann lediglich die Labels vorhersagen, die es 
-vorher im Training gesehen hat.
+vorher im Training gesehen hat.\\
+\pagebreak
+\hfill\\
 \subsection{ T-Distributed Stochastic Nieigbor Embedding}
 Der Algorithmus {\bf  t-SNE}
 ({\bf T}-Distributed {\bf S}tochastic {\bf N}eigbor {\bf E}mbedding)
@@ -1463,7 +1483,6 @@ Anordnung der Datenpunkte zu erlangen.
 % Self supervised learning (JTrans, PalmTree)
 % Same Source policy (Safe)
 %  Clap
-\pagebreak
 \section{Methodik}
 \subsection{Datensatz}
 Im maschinellen Lernen hat der Datensatz bzw. haben die
@@ -1492,6 +1511,7 @@ als sehr ähnlich klassifiziert.
 % Warum ist die Auswahl des Datensatzes wichtig
 % Warum Glibc? 
 % Gleicher Standard mit gleicher Semantik unterschiedlich Implementierung
+\pagebreak
 \subsection{Datenpipeline}
 Der große praktische Teil der Arbeit bestand darin, eine große 
 Menge an Daten in unterschiedliche Darstellungen umzuwandeln. 
@@ -1536,6 +1556,8 @@ Die Quellinformationen beziehen sich immer auf eine Funktion,
 deswegen bestehen die Daten aus einem geordneten Paar,
 das aus je einer
 Funktion und den gewünschten Quellinformationen besteht.\\
+\pagebreak
+\hfill\\
 Nachdem die Quellcode-Informationen extrahiert wurden, 
 gibt es eine Abzweigung in der Datenpipeline. Entweder 
 werden die Quellinformationen von Code Llama nochmal in natürlicher 
@@ -1578,7 +1600,6 @@ für die Anwendung in dieser Arbeit ausreichend stabil.
 % kann keine aussage über die Güte der Labels getätig werden
 % Tabelle mit Ergebnissen der standardabweichungen
 %
-\pagebreak
 
 \begin{figure}
   \begin{center}
@@ -1611,6 +1632,8 @@ Vektorraum abgebildet werden.\\
 Das Parsen der Kommentare wurden mit \textit{Tree-sitter} realisiert,
 wie im Abschnitt zur Datenpipeline erwähnt. Die Extraktion ist in 
 der Abbildung 3.2 dargestellt.\\
+\pagebreak
+\hfill\\
 Dabei gab es eine große
 Designentscheidung zu treffen, nämlich welche Kommentare in einer 
 Funktion berücksichtigt werden sollen.
@@ -1677,7 +1700,10 @@ einzigartige Zahl zu und verwendet dann im Datensatz nur noch die Zahl.
 Dieses Format reduziert zwar den Speicheraufwand, aber es wird von 
 \textit{Code2Vec} nicht als valide Eingabe akzeptiert. Demnach
 wurden schließlich noch die Nummern wieder zu den passenden
-Token umgewandelt. In Abbildung 3.3 ist der Prozess abgebildet 
+Token umgewandelt.\\
+\pagebreak
+\hfill\\
+In Abbildung 3.3 ist der Prozess abgebildet 
 von wie der anfänglich Quellcode zu dem 
 \textit{code2vec}-Input-Format
 umgewandelt wurde.
@@ -1798,11 +1824,7 @@ Deswegen wurde hier für die einfache Erweiterung des Programms,
   \end{center}
   \caption{Links ein Quellcode-Beispiel und rechts der extrahierte Funktionsname}
 \end{figure}
-
-\hfill\\
 \pagebreak
-\hfill\\
-
 \begin{figure}
   \begin{center}
     \begin{minipage}[c]{6cm}
@@ -1812,8 +1834,6 @@ Deswegen wurde hier für die einfache Erweiterung des Programms,
   \end{center}
   \caption{Die verwendete Prompt für das Code-Llama-Modell }
 \end{figure}
-
-
 \begin{figure}
   \begin{center}
     \begin{minipage}[c]{6cm}
@@ -1935,6 +1955,8 @@ der gegebenen Funktion semantisch ähnlich sind oder nicht.\\
 Diese Fragen wurden dann Experten aus dem Bereich Reverse 
 Engineering vorgelegt. In der Abbildung 4.1 ist ein Auszug aus 
 dem Fragebogen dargestellt.\\
+\pagebreak
+\hfill\\
 Die Auswertung des Fragebogens geschah wie folgt: Jede Frage,
 die positiv beantwortet wurde, gibt einen Punkt. Um daraus 
 einen Score zu berechnen werden die Punkte
@@ -1970,7 +1992,6 @@ verwendet hat. Da nun die beste Strategie identifiziert ist,
 werden im Folgenden die anderen Strategien mit dieser quantitativ verglichen.
 % Diskussion der Ergebnisse
 % Folgerungen das CodeLlamma "gute" Embeddings produziert 
-\pagebreak
 \subsection{Quantitative Evaluierung} 
 Im Folgenden wird eine Formel vorgestellt, die zwei Datenmengen
 auf Ähnlichkeit untersuchen soll. Dabei ist Ähnlichkeit hier,
@@ -1997,7 +2018,9 @@ euklidischen Abstand
 von dem eingegebenen Punkt. Dadurch erhält man ein 
 Nachbarschaftsverhältnis von einem Punkt
 und seinen $k$ Nachbarn, in Form eines Vektors
-$v \in \mathbb{N}^k$.
+$v \in \mathbb{N}^k$.\\
+\pagebreak
+\hfill\\
 Als Nächstes wird eine Methode benötigt, zwei 
 Nachbarschaftsverhältnisse in der Form von zwei Vektoren
 $u, v \in \mathbb{N}^k$ zu vergleichen.
@@ -2045,44 +2068,6 @@ $l = u_i$ der im Nachbarschaftsverhältnis $v$ enthalten ist, aber nicht auf
 derselben Position im Abstands-Ranking von $v$ ist. Schließlich erhält ein 
 Nachbar $l = u_i$ den Score $\text{score}_k(l, i, v) = 0$, falls er gar nicht
 im Nachbarschaftsverhältnis von $v$ enthalten ist.\\
-\hfill\\
-\pagebreak
-\hfill\\
-\begin{figure}
-  \begin{center}
-    \begin{tikzpicture}
-      \begin{axis}[
-          xlabel=$k$,
-          ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
-          width=0.6\textwidth, 
-          height=0.4\textwidth,
-          legend style={nodes={scale=0.7, transform shape}}
-      ]
-
-      \addplot[ForestGreen, thick] table
-        {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
-      \addplot[black, thick]
-        table {abb/random-compare-plot-487x384.dat};
-      \addplot[SkyBlue, thick] 
-        table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
-      \addplot[CrimsonRed, thick] 
-        table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
-
-      \legend{
-        Funktionskommentare und Code-Llama-Erklärungen,
-        Zufällige Punkte und Code-Llama-Erklärungen,
-        Funktionsnamen und Code-Llama-Erklärungen,
-        \textit{Code2Vec} und Code-Llama-Erklärungen
-      }
-      \end{axis}
-    \end{tikzpicture}
-  \end{center}
-  \caption{
-    Der Graph bildet ab, wie ähnlich verschiedene Embedding-Prozesse
-    zu den Code-Llama-Erklärungen sind, für $k=2,3, \dots ,487 $, wobei
-    k die Anzahl der betrachteten Nachbarn ist.
-  }
-\end{figure}\\
 Um nun zwei Datenmengen zu vergleichen, müssen alle möglichen 
 Nachbarschaftsverhältnisse betrachtet werden. Das führt zu folgende
 Funktion mit Signatur:
@@ -2103,6 +2088,9 @@ Grundmenge in unterschiedlichen Embedding-Räumen verglichen werden:
   \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
     \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
 \]
+\\
+\pagebreak
+\hfill\\
 Um die Ergebnisse der $\verb|compare|_k$ Funktion zu aggregieren,
 wird hier das arithmetische Mittel verwendet.
 Bei den verwendeten Embedding-Prozessen dieser Arbeit sind
@@ -2139,10 +2127,46 @@ Das heißt, laut der vorgestellter Formel ist der Embedding-Prozess
 Funktionsnamen am ähnlichsten zu den Code-Llama-Erklärungen, 
 danach Funktionskommentare, \textit{Code2Vec}-Vektoren und 
 schließlich zufällige Vektoren.
+\begin{figure}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[
+          xlabel=$k$,
+          ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
+          width=0.6\textwidth, 
+          height=0.4\textwidth,
+          legend style={nodes={scale=0.7, transform shape}}
+      ]
+
+      \addplot[ForestGreen, thick] table
+        {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
+      \addplot[black, thick]
+        table {abb/random-compare-plot-487x384.dat};
+      \addplot[SkyBlue, thick] 
+        table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
+      \addplot[CrimsonRed, thick] 
+        table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
+
+      \legend{
+        Funktionskommentare und Code-Llama-Erklärungen,
+        Zufällige Punkte und Code-Llama-Erklärungen,
+        Funktionsnamen und Code-Llama-Erklärungen,
+        \textit{Code2Vec} und Code-Llama-Erklärungen
+      }
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  \caption{
+    Der Graph bildet ab, wie ähnlich verschiedene Embedding-Prozesse
+    zu den Code-Llama-Erklärungen sind, für $k=2,3, \dots ,487 $, wobei
+    k die Anzahl der betrachteten Nachbarn ist.
+  }
+\end{figure}
 % Formel um zwei Embedding spaces zu vergleichen
 % Formel erklären und rechtfertigen
 % Aus Umfrage rechtfertigen Codellama Summaries als gute
 % embeddings zu verwenden
+\pagebreak
 \begin{figure}
   \begin{center}
     \begin{tikzpicture}
@@ -2258,6 +2282,7 @@ angeordnet ist.
     beantwortet wurde.
   }
 \end{figure*}
+\pagebreak
 \section{Diskussion}
 Das zentrale Thema dieser Arbeit ist die semantische Ähnlichkeit
 von zwei gegebenen Quellcode Auszügen. Dabei ist es gar nicht 
@@ -2315,36 +2340,36 @@ die einzigen Informationen sind, sind die Abkürzungen mehrdeutig.
     \text{mod} \leftrightarrow \text{file mode}.
   \end{align*}
 \end{example}
-Da diese Abkürzungen nicht offensichtlich sind,
+Da diese Abkürzungen nicht eindeutig zugeordnet werden können,
 haben die durch den \textit{SentenceTransfomer} 
 erzeugten Embeddings Nachbarn, welche nicht aus 
-der Kategorie Dateiverwaltung sind. Die Nachbarn 
+der Kategorie "Dateiverwaltung" sind. Die Nachbarn 
 der \texttt{lchmod} Funktion im Funktionsnamen-Raum
-sind: \texttt{lchmod}, \texttt{lcong48}, 
+sind: \texttt{lcong48}, 
 \texttt{fchmodat}, \texttt{coshl} und \texttt{cacoshl}. 
 Dabei ist nur \texttt{fchmodat} aus der Kategorie 
-Dateiverwaltung, diese liegt wahrscheinlich nur 
+"Dateiverwaltung". Diese liegt wahrscheinlich nur 
 nahe an \texttt{lchmod},
-da die Namen fast identisch sind. Dagegen sind die 
-nächsten Nachbarn von \texttt{lchmod} im 
-Code-Llama-Erklärungen-Raum alle aus der 
-Kategorie Dateiverwaltung: 
-\texttt{lchmod}, \texttt{fchmodat}, \texttt{fchownat},
+da die Namen fast identisch sind. Im 
+Code-Llama-Erklärungen-Raum sind dagegen die 
+nächsten Nachbarn von \texttt{lchmod} alle aus der 
+Kategorie "Dateiverwaltung":
+\texttt{fchmodat}, \texttt{fchownat},
 \texttt{euidaccess} und
 \texttt{\_\_file\_change\_detection\_for\_stat}.\\\\
 \textit{Funktionskommentare}. 
 Die Methodik der 
-Funktionskommentare zu verwenden, um Embddings zu erzeugen,
-ist genau wie bei den Funktionsnamen sehr abhängig von dem
+Funktionskommentare, um Embddings zu erzeugen,
+ist, genau wie bei den Funktionsnamen, sehr abhängig vom
 Quellcode. Auch die Entscheidung, welche Kommentare man 
-einbezieht, könnte Auswirkungen auf die Embeddings haben.
+einbezieht, kann Auswirkungen auf die Embeddings haben.
 In dieser Arbeit wurde nur der Kommentar direkt über der 
-Funktion verwendet. In zukünftiger Forschung könnte untersucht 
-werden, ob die Kommentare innerhalb der Funktion auch verwendet 
-werden könnten, um qualitativ hochwertigere Embeddings zu 
+Funktion verwendet. In künftiger Forschung könnte untersucht 
+werden, ob man auch die Kommentare innerhalb der Funktion 
+verwenden kann, um qualitativ hochwertigere Embeddings zu 
 produzieren.\\
-Auch bei den Funktionskommentaren ist das Problem, dass der 
-Inhalt der Funktion sich nicht immer in dem Kommentar
+Bei den Funktionskommentaren ist ebenfalls das Problem, dass der 
+Inhalt der Funktion sich nicht immer im Kommentar
 widerspiegelt.
 \begin{example}
   Die Funktion \verb|rand| und die Funktion \verb|rand_r| sind 
@@ -2361,8 +2386,8 @@ widerspiegelt.
   \end{center}
 \end{example}
 Dieses Beispiel zeigt gut, wie unterschiedlich die Qualität 
-der Kommentare sein kann. Der Kommentar der Funktion \texttt{rand}
-beschreibt die Funktion präzise und knapp. Dagegen verweist der 
+der Kommentare sein kann. Der Kommentar, der Funktion \texttt{rand},
+beschreibt diese knapp und präzise. Dagegen verweist der 
 Kommentar von der Funktion \texttt{rand\_r} nur auf einen 
 ISO-C-Standard. Dadurch liefert der \textit{SentenceTransfomer}
 ungenaue Ergebnisse, denn der Kosinus-Abstand zwischen
@@ -2373,41 +2398,41 @@ der beiden Funktionen $d = 0.2216$.\\
 \pagebreak
 \hfill\\
 \textit{Code-Llama-Erklärungen.}
-In dieser Arbeit wurde das größte Modell der Code-LLama-Famillie 
-mit 70 Milliarden Parametern verwendet, um die 
+In dieser Arbeit wurde das größte Modell der Code-LLama-Famillie,
+mit 70 Milliarden Parametern, verwendet, um die 
 Code-Llama-Erklärungen zu erzeugen. Aus diesem Grund ist das
-gewählte Modell auch das rechenaufwendigste. In zukünftiger 
-Forschung könnten kleinere Modelle mit weniger Rechenaufwand 
-verwendet werden, um die Frage zu beantworten, ob der Rechenaufwand 
-des Code-Llama-Modells mit 70 Milliarden Parametern nötig ist. \\
+gewählte Modell auch das rechenaufwendigste. In weiterführenden 
+Untersuchungen könnten kleinere Modelle mit weniger Rechenaufwand 
+verwendet werden, um auf die Frage einzugehen, ob der Rechenaufwand 
+eines Code-Llama-Modells mit 70 Milliarden Parametern nötig ist. \\
 Eine weitere Problematik ist die Stabilität von Code Llama.
 Bei Schwankungen von Code-Llama-Erklärungen kann nicht garantiert 
 werden, dass die Erklärungen in der Praxis bei tatsächlicher 
 Anwendung von gleicher Qualität sind. Deswegen sollte in
-einer zukünftigen Forschung eine Untersuchung über die 
+einer künftigen Forschung eine Untersuchung über die 
 Stabilität von Large Language-Models durchgeführt werden.\\ 
-Schließlich könnte in zukünftiger Forschung eine andere 
-Prompt ausprobiert werden, hier könnte bspw. die 
+Schließlich könnte bei weiteren Untersuchungen ein anderer
+Prompt ausprobiert werden. Hier kann bspw. der
 Prompt von Wang et al. verwendet werden 
 \cite{clap}. Dadurch könnten sich die Erklärungen 
-verbessern und damit wieder die Qualität der 
+verbessern und damit in Folge die Qualität der 
 Embeddings.\\\\
 \textit{Code2Vec}. 
-Diese Methodik, Embeddings zu erzeugen,
+Embeddings mit dieser Methode zu erzeugen,
 ist abhängig von der Programmiersprache des Datensatzes.  
 Das \textit{Code2Vec}-Modell wurde ursprünglich für Java entwickelt,
 trotzdem ist es möglich, das Modell mit anderen Programmiersprachen
 zu verwenden. Für jede neue Sprache ist es erforderlich ein
 Tool zu schreiben, das die besagte Sprache in das passende 
 \textit{Code2Vec} Input-Format umwandelt. Außerdem ist es 
-notwendig das Modell noch zu trainieren, um danach bei 
-gegebener Funktion einen Vektor zu produzieren. Deswegen 
-kann je nach Datensatz der Aufwand,
-um die Embeddings zu generieren, hoch sein. \\
+notwendig, das Modell noch zu trainieren, um danach, bei 
+gegebener Funktion, einen Vektor zu produzieren. Deswegen 
+kann, je nach Datensatz, der Aufwand,
+um die Embeddings zu generieren, groß sein. \\
 Eine weitere Schwäche ist die Abhängigkeit von der Namensgebung 
-der Funktionen im Datensatz, da das \textit{Code2Vec} Modell 
-darauf trainiert wird, Funktionsnamen vorherzusagen, dadurch 
-enstehen dieselben Probleme wie bei der Diskussion zu 
+der Funktionen im Datensatz. Da das \textit{Code2Vec} Modell 
+darauf trainiert wird, Funktionsnamen vorherzusagen, 
+enstehen dadurch dieselben Probleme wie bei der Diskussion zu 
 den Funktionsnamen.\\
 Des Weiteren könnten die bescheidenen Ergebnisse des 
 \textit{Code2Vec}-Modells anhand der Sprache des Datensatzes,
@@ -2425,15 +2450,15 @@ die verglichen werden sollen. Analog zum Perplexity-Parameter
 bei \textit{t-SNE}, sollte $k$ nach der Größe der Gruppierungen 
 in den Datenmengen gewählt werden. Dabei reagiert die Formel 
 wesentlich empfindlicher auf Änderungen von $k$, als der 
-Perplexity-Parameter in \textit{t-SNE}. In zukünftiger Forschung 
+Perplexity-Parameter in \textit{t-SNE}. In künftiger Forschung 
 könnte ein Intervall herausgearbeitet werden $a \le k \le b $ mit
 $ a,b \in \mathbb{N}$ oder sogar einen  optimalen Wert 
 $k := C\in \mathbb{N}$ für alle Datenmengen.
-Das ist auch wünschenswert, da die Formel für 
+Das wäre auch wünschenswert, da die Formel für 
 alle $k = 2,3,\dots, N$ auszurechnen einen hohen Rechenaufwand 
 darstellt. Das liegt primär an dem K-Nearest-Neighbor-Algorithmus 
-bzw. an einer Funktion, die Nachbarn aufsteigend sortiert nach 
-dem Abstand zu eingegebenen Punkt berechnet. Die restlichen 
+bzw. an einer Funktion, die Nachbarn berechnet und aufsteigend 
+nach dem Abstand zum eingegebenen Punkt sortiert. Die restlichen 
 Operationen sind elementare Rechenoperationen. Zunächst könnte 
 man also verschiedene Funktionen ausprobieren, die die Nachbarn 
 aufsteigend nach dem Abstand zum eingegebenen Punkt sortiert.
@@ -2495,23 +2520,24 @@ Deswegen wäre hier eine sinnvolle Verallgemeinerung:
     \end{cases*}  \text{  und  }
     G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
 \]
-All diese Verallgemeinerungen motivieren das
+All diese Verallgemeinerungen regen das
 Ausprobieren verschiedener Instanzen der verallgemeinerten 
-Objekte. In zukünftiger Forschung könnte herausgefunden  
-werden, welche Vorteile und Nachteile, die verschiedene 
+Objekte an. In künftiger Forschung könnte herausgefunden  
+werden, welche Vorteile und Nachteile die verschiedene 
 Instanzen haben.\\\\
 \textit{Code2Vec und BERT als Inspiration für ein neues Modell.} 
-Nach meiner Meinung ist das größte Problem von \textit{Code2Vec} 
-die Abhängigkeit von den Funktionsnamen der Trainingsdaten und 
-das überwachte Lernen. Anstatt das Modell darauf zu trainieren,
-Funktionsnamen vorherzusagen, könnte man mit unüberwachten Lernen,
-wie in dem BERT-Modell, Trainingsaufgaben geben, welche das 
+Meiner Meinung nach sind die größten Probleme von Code2Vec zum
+einen die Abhängigkeit von den Funktionsnamen und zum anderen 
+das überwachte Lernen, das eine Aufbereitung der Daten erfordert.
+Anstatt das Modell darauf zu trainieren,
+Funktionsnamen vorherzusagen, könnte man mit unüberwachtem Lernen,
+wie in dem BERT-Modell, Trainingsaufgaben erteilen, welche das 
 Verständnis von Quellcode stärken. Da der Input von 
-\textit{Code2Vec} ein abstrakter Syntaxbaum ist, könnte hier eine 
-Aufgabe sein, ein fehlenden Knoten im Baum vorherzusagen. Eine 
-weitere Trainingsaufgabe könnte sein, ob zwei Zweige in 
+\textit{Code2Vec} ein abstrakter Syntaxbaum ist, kann hier eine 
+Aufgabe sein, einen fehlenden Knoten im Baum vorherzusagen. Eine 
+weitere Trainingsaufgabe kann sein, ob zwei Zweige in 
 einem abstrakten Syntaxbaum sequenziell hintereinander kommen oder 
-nicht. Dazu könnte man entweder noch das Prinzip von Aufmerksamkeit
+nicht. Dazu könnte man noch entweder das Prinzip von Aufmerksamkeit
 aus der Transformer-Architektur oder \textit{Code2Vec} übernehmen.
 %copy Evaluation
 % Zusammenfassung der jeweiligen Resultate
@@ -2524,13 +2550,13 @@ aus der Transformer-Architektur oder \textit{Code2Vec} übernehmen.
 \section{Fazit}
 In dieser Arbeit wurden vier verschiedene Arten vorgestellt,
 aus C Quellcode reellwertige Vektoren zu produzieren, die den 
-Inhalt der Funktion codieren. Zum einen wurden aus Funktionsnamen, 
+Inhalt einer Funktion codieren. Zum einen wurden aus Funktionsnamen, 
 Funktionskommentaren und Code-Llama-Erklärrungen, mittels 
 \textit{SentenceTransfomer}, Vektoren produziert.
 Zum anderen wurden aus dem \textit{Code2Vec} Modell, welches
 auf C adaptiert wurde, die Inferenz-Vektoren entnommen.\\
-Durch eine Expertenbefragung konnte die besten Embeddings
-identifiziert werden, diese sind aus den Code-Llama-Erklärungen
+Anhand einer Expertenbefragung konnten die besten Embeddings
+identifiziert werden. Diese sind aus den Code-Llama-Erklärungen
 entstanden. Des Weiteren wurde eine quantitative Auswertung 
 durchgeführt, mittels einer Funktion, die eine Datenmengen
 mit den Code-Llama-Vektoren anhand ihrer 
@@ -2540,18 +2566,18 @@ indem die verschiedenen Embedding-Prozesse durch \textit{t-SNE}
 in die 2-dimensionalen Ebene projiziert wurde, um diese
 auf Gruppierungen zu untersuchen. 
 Dabei resultierte, dass die Code-Llama-Erklärungen die 
-Embeddings mit der höchsten Qualität produzieren.
-Diese sind gefolgt von Funktionsnamen, danach Funktionskommentare 
+Embeddings mit der höchsten Qualität produzieren,
+gefolgt von Funktionsnamen, danach Funktionskommentare 
 und schließlich \textit{Code2Vec}.
 Wobei im Allgemeinen nicht offensichtlich ist, was ein 
 hochqualitatives Embedding ist, da wiederum nicht klar ist,
 wie man die semantische Ähnlichkeit zwischen zwei 
 Quellcodeabschnitten Formal definiert.\\
 Die von den Code-Llama-Erklärungen erzeugten Vektoren
-könnten direkt eingesetzt werden, um viele verschiedene
+können direkt eingesetzt werden, um viele verschiedene
 Problemstellungen für die C-Programmiersprache zu lösen.\\
-Die Motivation dieser Arbeit war es aber Vektoren für 
-Neuronales Netzwerk zu generieren, um dieses neuronale Netzwerk,
+Die Motivation dieser Arbeit war es aber, Vektoren für 
+ein neuronales Netzwerk zu generieren, um dieses neuronale Netzwerk,
 mittels überwachten Lernens darauf zu trainieren, bei gegebener
 Funktion in Maschinensprache einen Vektor vorherzusagen, der den
 Inhalt der Funktion codiert.
@@ -2564,8 +2590,8 @@ Anwendungen zu trainieren, wie Beispielsweise
 \textit{Binary Code-Search} \cite{9345532},
 Reverse Engineering \cite{reverse-engeneering},
 oder das Klassifizieren von 
-Maleware in der Maschinensprache\cite{maleware-detection}. 
-Dieses Neuronales Netzwerk könnte nun mit den Vektoren,
+Maleware in Maschinensprache\cite{maleware-detection}. 
+Dieses neuronales Netzwerk kann nun mit den Vektoren,
 welche aus den Code-Llama-Erklärungen erzeugt wurden,
 trainiert werden.
 
