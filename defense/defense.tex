@@ -7,7 +7,9 @@
 \usepackage{qrcode}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
-
+\usepackage{svg}
+\usepackage{minted}
+\usetikzlibrary{positioning}
 %\usepackage[sfmath]{kpfonts}
 
 \beamertemplatenavigationsymbolsempty
@@ -142,7 +144,59 @@
 \end{frame}
 %-------------------------------------------------------------------------
 \section{Motivation \& Research Objective}
-\begin{frame}[t]{Lambda Calculus}
+
+\begin{frame}[t]{Motivation}
+  \begin{center}
+    \begin{tikzpicture}
+        \node (doc) [draw, rectangle, fill=gray!10, 
+            text width=4cm] {
+              \mintinline[breaklines]{python}{
+              "I had a lot of fun writing my bachelor thesis!"
+              }
+        };
+        \node (model) [
+          draw, rectangle, right= 2cm of doc,
+          minimum width= 2.5cm,
+          minimum height= 1.5cm,
+        ] {NLP-Model};
+        \node (vec) [right= 2cm of model] {
+          $\begin{pmatrix}
+            0.23\\
+            0.58\\
+            \vdots\\
+            0.94
+          \end{pmatrix} \in \mathbb{R}^N$
+        };
+        \draw[->, thick] (doc) -- (model);
+        \draw[->, thick] (model) -- (vec);
+    \end{tikzpicture}
+  \end{center}
+  $\rightsquigarrow$  Encoding natural language was a huge 
+    factor in recent nlp advancements\\
+  $\rightsquigarrow$ Information described as a vector 
+  can be used in many downstream task\\
+  $\rightsquigarrow$ That motivates 
+  encoding binary code and describing them as a vector\\
+\end{frame}
+
+\begin{frame}[t]{Motivation}
+ % Kompelieren entfernt wichtige Informatiion in 
+ % natülicher Sprache die genutz werden könnten
+ % -> Aus C Code können Embeddings produziert
+\end{frame}
+
+\begin{frame}[t]{Motivation}
+  % Mit diesen Vektoren aus C-Code
+  % kann ein Modell mittels überwachten lernen
+  % trainiert werden, welches lernt binary 
+  % code in Vektoren umzuwandeln
+\end{frame}
+
+\begin{frame}[t]{Research Objective}
+  % Verschiedene Methoden zu vergleichen aus C-Quellcode,
+  % mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung,
+  % Vektoren zu generieren die den Inhalt 
+  % des Quellcodes widerspiegeln.
 \end{frame}
 
 \section{State Of The Art}
