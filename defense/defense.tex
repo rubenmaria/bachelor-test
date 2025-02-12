@@ -11,8 +11,10 @@
 \usepackage{minted}
 \usetikzlibrary{positioning}
 %\usepackage[sfmath]{kpfonts}
-
+%\usetikzlibrary{external}
+%\tikzexternalize[prefix=tikz/]
 \beamertemplatenavigationsymbolsempty
+
 
 \author{Ruben Triwari}
 \title{Comparing Natural Language Embeddings for Libc Functions as Rich Labels}
@@ -177,15 +179,107 @@
   can be used in many downstream task\\
   $\rightsquigarrow$ That motivates 
   encoding binary code and describing them as a vector\\
+  $\rightsquigarrow$ That motivates using NLP tools to 
+  encode binary code
 \end{frame}
 
 \begin{frame}[t]{Motivation}
+  \begin{center}
+    \begin{tikzpicture}
+        \node (doc) [draw, rectangle, fill=gray!10, 
+            text width=4.2cm] {
+              \begin{minipage}[c]{4.2cm}
+                \inputminted[fontsize=\tiny]{C}{summary.c}
+              \end{minipage}
+        };
+        \node (compiler) [
+          draw, rectangle, right= 1cm of doc,
+          minimum width= 2.5cm,
+          minimum height= 1.5cm,
+        ] {Compiler};
+        \node (asm) [
+            draw,
+            rectangle,
+            right= 1cm of compiler,
+            fill=gray!10, 
+            text width=4cm] {
+              \begin{minipage}[c]{4cm}
+                \inputminted[fontsize=\tiny]{asm}{factorial.asm}
+              \end{minipage}
+        };
+        \draw[->, thick] (doc) -- (compiler);
+        \draw[->, thick] (compiler) -- (asm);
+    \end{tikzpicture}
+  \end{center}
+  $\rightsquigarrow$ Compiler removes important inforamtion 
+    in natural language
  % Kompelieren entfernt wichtige Informatiion in 
  % natülicher Sprache die genutz werden könnten
  % -> Aus C Code können Embeddings produziert
 \end{frame}
 
 \begin{frame}[t]{Motivation}
+  Idea:
+  \begin{center}
+    \begin{tikzpicture}
+        \node (doc) [draw, rectangle, fill=gray!10, 
+            text width=4.2cm] {
+              \begin{minipage}[c]{4.2cm}
+                \inputminted[fontsize=\tiny]{C}{example.c}
+              \end{minipage}
+        };
+        \node (model) [
+          draw, rectangle, right= 1cm of doc,
+          minimum width= 2cm,
+          minimum height= 1cm,
+        ] {NLP-Model};
+        \node (vec) [
+            right= 1cm of compiler,
+            text width=4cm] {
+              $ t = \begin{pmatrix}
+                t_1 \\ 
+                t_2 \\ 
+                \vdots \\
+                t_N
+              \end{pmatrix} \in \mathbb{R}^N
+                $
+        };
+        \draw[->, thick] (doc) -- (model);
+        \draw[->, thick] (model) -- (vec);
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \begin{tikzpicture}
+            
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \begin{tikzpicture}
+        \node (doc) [draw, rectangle, fill=gray!10, 
+            text width=2.5cm] {
+              \begin{minipage}[c]{2.5cm}
+                \inputminted[fontsize=\tiny]{asm}{example.asm}
+              \end{minipage}
+        };
+        \node (model) [
+          draw, rectangle, right= 1cm of doc,
+          minimum width= 2cm,
+          minimum height= 1cm,
+        ] {Model};
+        \node (vec) [
+            right= 1cm of model
+            ] {
+              $\begin{pmatrix}
+                  x_1 \\
+                  x_2 \\
+                  \vdots \\
+                  x_N
+                \end{pmatrix} \in \mathbb{R}^N$
+        };
+        \draw[->, thick] (doc) -- (model);
+        \draw[->, thick] (model) -- (vec);
+    \end{tikzpicture}
+  \end{center}
   % Mit diesen Vektoren aus C-Code
   % kann ein Modell mittels überwachten lernen
   % trainiert werden, welches lernt binary 
