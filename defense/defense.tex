@@ -10,6 +10,8 @@
 \usepackage{svg}
 \usepackage{minted}
 \usetikzlibrary{positioning}
+\usetikzlibrary{shapes.symbols}
+\usetikzlibrary{shapes.multipart}
 %\usepackage[sfmath]{kpfonts}
 %\usetikzlibrary{external}
 %\tikzexternalize[prefix=tikz/]
@@ -150,9 +152,9 @@
 \begin{frame}[t]{Motivation}
   \begin{center}
     \begin{tikzpicture}
-        \node (doc) [draw, rectangle, fill=gray!10, 
+        \node (doc) [draw, tape, tape bend top=none,fill=gray!10, 
             text width=4cm] {
-              \mintinline[breaklines]{python}{
+              \mintinline[breaklines, fontsize=\footnotesize]{python}{
               "I had a lot of fun writing my bachelor thesis!"
               }
         };
@@ -186,7 +188,7 @@
 \begin{frame}[t]{Motivation}
   \begin{center}
     \begin{tikzpicture}
-        \node (doc) [draw, rectangle, fill=gray!10, 
+        \node (doc) [draw, tape, tape bend top=none, fill=gray!10, 
             text width=4.2cm] {
               \begin{minipage}[c]{4.2cm}
                 \inputminted[fontsize=\tiny]{C}{summary.c}
@@ -199,7 +201,8 @@
         ] {Compiler};
         \node (asm) [
             draw,
-            rectangle,
+            tape,
+            tape bend top=none,
             right= 1cm of compiler,
             fill=gray!10, 
             text width=4cm] {
@@ -219,65 +222,59 @@
 \end{frame}
 
 \begin{frame}[t]{Motivation}
-  Idea:
   \begin{center}
     \begin{tikzpicture}
-        \node (doc) [draw, rectangle, fill=gray!10, 
+        \node (doc) at (0,0) [draw, tape, tape bend top=none, fill=gray!10, 
             text width=4.2cm] {
               \begin{minipage}[c]{4.2cm}
                 \inputminted[fontsize=\tiny]{C}{example.c}
               \end{minipage}
         };
-        \node (model) [
-          draw, rectangle, right= 1cm of doc,
+        \node (model) at (4.5,0)[
+          draw, rectangle,
           minimum width= 2cm,
           minimum height= 1cm,
         ] {NLP-Model};
-        \node (vec) [
-            right= 1cm of compiler,
-            text width=4cm] {
-              $ t = \begin{pmatrix}
-                t_1 \\ 
-                t_2 \\ 
+        \node (vec) at (9,0)[text width=4cm] {
+              $ l = \begin{pmatrix}
+                l_1 \\ 
+                l_2 \\ 
                 \vdots \\
-                t_N
+                l_N
               \end{pmatrix} \in \mathbb{R}^N
                 $
         };
         \draw[->, thick] (doc) -- (model);
         \draw[->, thick] (model) -- (vec);
     \end{tikzpicture}
-  \end{center}
-  \begin{center}
     \begin{tikzpicture}
-            
-    \end{tikzpicture}
-  \end{center}
-  \begin{center}
-    \begin{tikzpicture}
-        \node (doc) [draw, rectangle, fill=gray!10, 
+        \node (doc) at (0,0) [draw, tape, tape bend top=none, fill=gray!10, 
             text width=2.5cm] {
               \begin{minipage}[c]{2.5cm}
                 \inputminted[fontsize=\tiny]{asm}{example.asm}
               \end{minipage}
         };
-        \node (model) [
-          draw, rectangle, right= 1cm of doc,
+        \node (model) at (4.5, 0)[
+          draw, rectangle,
           minimum width= 2cm,
           minimum height= 1cm,
         ] {Model};
-        \node (vec) [
-            right= 1cm of model
-            ] {
-              $\begin{pmatrix}
-                  x_1 \\
-                  x_2 \\
+        \node (vec) at (9, 0) {
+              $ o = \begin{pmatrix}
+                  o_1 \\
+                  o_2 \\
                   \vdots \\
-                  x_N
+                  0_N
                 \end{pmatrix} \in \mathbb{R}^N$
+        };
+
+      \node (loss) at (7, -2.2) [draw, rectangle] {
+            $\mathcal{L}(o,l) \in \mathbb{R}$
         };
         \draw[->, thick] (doc) -- (model);
         \draw[->, thick] (model) -- (vec);
+        \draw[->, thick] (vec) to[out=270,in=0] (loss);
+        \draw[->, thick] (loss) to[out=180,in=270] (model);
     \end{tikzpicture}
   \end{center}
   % Mit diesen Vektoren aus C-Code
@@ -286,20 +283,88 @@
   % code in Vektoren umzuwandeln
 \end{frame}
 
-\begin{frame}[t]{Research Objective}
+\begin{frame}[t]{Research Objectives}
+  \begin{itemize}
+    \item Compare diffrent approaches generating an Embedding with NLP tools
+    \begin{enumerate}
+      \item Embed function names with SentenceTransformer
+      \item Embed function comments with SentenceTransformer
+      \item Embed Code-Llama code summaries with SentenceTransformer
+    \end{enumerate}
+    \item Compare NLP approach to the existig Code2Vec Model
+    \item Propose a new way comparing embedding spaces
+  \end{itemize}
   % Verschiedene Methoden zu vergleichen aus C-Quellcode,
   % mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung,
   % Vektoren zu generieren die den Inhalt 
   % des Quellcodes widerspiegeln.
 \end{frame}
 
-\section{State Of The Art}
-\begin{frame}[t, fragile]{Simply Typed Lambda Calculus -- Motivation}
-\end{frame}
-
 \section{Methodology}
 
-\begin{frame}[t, fragile]{Curry-Howard Correspondance}
+\begin{frame}[t, fragile]{Architecture}
+  \begin{center}
+    \begin{tikzpicture}
+        \node (doc) at (-1,0) [draw, rectangle split, 
+            rectangle split parts=2,
+            fill=gray!10, 
+            text width=4.2cm] {
+              {\centering \small Source code}
+              \nodepart{two} {
+                \begin{minipage}[c]{4.2cm}
+                  \inputminted[fontsize=\tiny]{C}{example.c}
+                \end{minipage}
+              }
+        };
+        \node (parser) at (4.5,0)[
+          draw, rectangle,
+          minimum width= 2cm,
+          minimum height= 1cm,
+        ] {Treesitter Parser};
+        \node (name) at (9.5,0) [
+            draw, rectangle split, rectangle split parts=2,
+            fill=gray!10] {
+            Source inforamtion
+            \nodepart{two}{
+              \begin{minipage}[c]{2.2cm}
+                \mintinline{json}{"factorial"}
+              \end{minipage}
+            }
+        };
+        \node (llama) at (9.2,-3.2) [
+            draw, rectangle split, rectangle split parts=2] {
+            Code Llama
+            \nodepart{two}{
+              \begin{minipage}[c]{4.2cm}
+
+                \inputminted[fontsize=\tiny]{Python}{prompt.py}
+                %\inputminted[breaklines, fontsize=\tiny]{pyhton}{prompt.py}
+              \end{minipage}
+            }
+        };
+
+        \node (st) at (4,-3)[
+          draw, rectangle,
+          minimum width= 2cm,
+          minimum height= 1cm,
+        ] {SentenceTransformer};
+        
+        \node (vec) at (-1, -3){
+            $ l = \begin{pmatrix}
+              l_1 \\
+              l_2 \\
+              \vdots \\
+              l_N
+            \end{pmatrix}
+            \in \mathbb{R}^N$
+
+          };
+        
+        \draw[->, thick] (doc) -- (parser);
+        \draw[->, thick] (parser) -- (name);
+        \draw[->, thick] (st) -- (vec);
+    \end{tikzpicture}
+  \end{center}
 \end{frame}
 
 \section{Results}
