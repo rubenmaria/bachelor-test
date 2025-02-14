@@ -12,6 +12,7 @@
 \usetikzlibrary{positioning}
 \usetikzlibrary{shapes.symbols}
 \usetikzlibrary{shapes.multipart}
+\usetikzlibrary{pgfplots.groupplots}
 %\usepackage[sfmath]{kpfonts}
 %\usetikzlibrary{external}
 %\tikzexternalize[prefix=tikz/]
@@ -400,21 +401,281 @@
       \end{table}
     \end{figure}
 \end{frame}
+
 \begin{frame}[t]{Embeddings space comparison}
+  \[
+    \texttt{compare}(u,v)_k = 
+      \frac{1}{G_k} \sum^{k}_{i=1} 
+      \frac{ \texttt{score}_{k}(u_i,i,v)}{log_2(i+1)} 
+      \in [0,1]
+  \]
+  where
+  \[ u,v \in \mathbb{N}^k: \text{Neighbor ranking of the same vector in diffrent spaces},\]
+  \[
+    \texttt{score}_k(l,i,v) = \begin{cases*} 
+        1 & , $\exists j \in \mathbb{N}: l = v_j \land i = j$   \\
+        \frac{1}{2} & , $\exists j \in \mathbb{N}: l = v_j \land i \neq j$\\
+        0   & , \text{otherwise}
+      \end{cases*}  \text{  , }
+      G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
+  \]
+\end{frame}
+
+\begin{frame}[t]{Embeddings space comparison}
+  \[
+    \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
+      \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
+  \]
+  where 
+  \[
+    A,B \in \mathbb{R}^{N\times l}: \text{Embedding space with }
+    N \text{ vectors of length} l
+  \]
+  \[
+    \texttt{NN}_k(A_i, A): \text{k nearest neighbors from vector with index i in A}
+  \]
+  \[
+    k \in \mathbb{N}: \text{Amount of vectors we include in one neighborhood relation}
+  \]
 \end{frame}
 \begin{frame}[t]{Embeddings space comparison}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[
+          xlabel=$k$,
+          ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
+          width=0.8\textwidth, 
+          height=0.6\textwidth,
+          legend style={nodes={scale=0.8, transform shape}}
+      ]
+      \addplot[ForestGreen, thick] table
+        {abb/summary-embeddings-high-comment-embeddings-high-non-empty-compare.dat};
+      \addplot[black, thick]
+        table {abb/random-compare-plot-487x384.dat};
+      \addplot[SkyBlue, thick] 
+        table {abb/summary-embeddings-high-name-embeddings-high-compare487.dat};
+      \addplot[CrimsonRed, thick] 
+        table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
+      \legend{
+        Funktionskommentare und Code-Llama-Erklärungen,
+        Zufällige Punkte und Code-Llama-Erklärungen,
+        Funktionsnamen und Code-Llama-Erklärungen,
+        \textit{Code2Vec} und Code-Llama-Erklärungen
+      }
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
 \end{frame}
 \begin{frame}[t]{Evaluation with T-SNE}
+  \begin{figure}
+    \begin{center}
+      \begin{tikzpicture}
+        \begin{groupplot}[
+              group style={
+                  group size=4 by 1, % 3 plots in 4 row
+                  horizontal sep=0.6cm, % Space between plots
+                  vertical sep=1cm % Space if there are multiple rows
+              },
+              width=0.33\textwidth, % Width of each plot
+              height=0.33\textwidth, % Height of each plot 
+              scatter/classes={
+                  0={mark=*,ContrastBlue},
+                  1={mark=*,ContrastRed},
+                  2={mark=*,ContrastGreen},
+                  3={mark=*,ContrastOrange},
+                  4={mark=*,ContrastPurple},
+                  5={mark=*,ContrastPink},
+                  6={mark=*,ContrastLime},
+                  7={mark=*,ContrastCyan},
+                  8={mark=*,Teal},
+                  9={mark=*,SlateGray}
+              },
+              scatter,
+              xlabel={},
+              ylabel={},
+              xtick=\empty,
+              ytick=\empty,
+              legend style={
+                at={(-1.2,-0.1)},
+                legend columns=5,
+                fill=none,
+                draw=black,
+                anchor=north,
+                align=center,
+                row sep=0.1cm,
+                column sep=0.3cm,
+                legend cell align=left
+              },
+          ]
+            \nextgroupplot[title={\textit{Code2Vec}}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
+            \nextgroupplot[title={Comments}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
+            \nextgroupplot[title={Names}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
+            \nextgroupplot[title={Code Llama summaries}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-30.dat};
+            \legend{
+              IO, Network, Memory, Threads, Files,
+              Processes, Signals, String, Math, 
+              Miscellaneous
+            }
+          \end{groupplot}
+      \end{tikzpicture}
+    \end{center}
+    \caption{
+      Depicted are the \textit{t-SNE} output vectors with perplexity $P = 30$.
+    }
+  \end{figure}
 \end{frame}
 
 \section{Limitations}
-\begin{frame}
-  HALLO
+\begin{frame}{Function names}
+  Abbreviations can potentially confuse the SentenceTransformer: \\
+  Example function \texttt{lchmod}:
+  \begin{align*}
+    \text{l} \leftrightarrow \text{link}, \hspace{0.5cm}
+    \text{ch} \leftrightarrow \text{change},\hspace{0.5cm}
+    \text{mod} \leftrightarrow \text{file mode}.
+  \end{align*}
+  Nearest neigbors in function space: 
+    \[  
+      \texttt{lchmod} \leftrightarrow 
+      \begin{pmatrix}
+        \texttt{lcong48},& \texttt{fchmodat}, &
+        \texttt{coshl}, & \texttt{cacoshl} 
+      \end{pmatrix}
+    \]
+  $\rightsquigarrow$ In categories:
+    \[  
+      \texttt{files} \leftrightarrow 
+      \begin{pmatrix}
+        \texttt{math},& \texttt{files}, &
+        \texttt{math}, & \texttt{math} 
+      \end{pmatrix}
+    \]
+\end{frame}
+
+\begin{frame}{function names}
+  Example function \texttt{lchmod}:
+  \begin{align*}
+    \text{l} \leftrightarrow \text{link}, \hspace{0.5cm}
+    \text{ch} \leftrightarrow \text{change},\hspace{0.5cm}
+    \text{mod} \leftrightarrow \text{file mode}.
+  \end{align*}
+  Nearest neigbors in code llama summary space: 
+  %fchmodat, fchownat, euidaccess und __file_change_detection_for_stat
+  \[
+    \texttt{lchmod}
+  \]
+    \[  
+       \leftrightarrow 
+      \begin{pmatrix}
+        \texttt{fchmodat},& \texttt{fchownat}, &
+        \texttt{euidaccess}, & \texttt{\_\_file\_change\_detection\_for\_stat} 
+      \end{pmatrix}
+    \]
+  $\rightsquigarrow$ In categories:
+    \[  
+      \texttt{files} \leftrightarrow 
+      \begin{pmatrix}
+        \texttt{files},& \texttt{files}, &
+        \texttt{files}, & \texttt{files} 
+      \end{pmatrix}
+    \]
+\end{frame}
+
+\begin{frame}{function comments}
+  Comments are not always directly about the code:\\
+  Example functions \texttt{rand} and \texttt{rand\_r}:
+  \begin{center}
+    rand $\leftrightarrow$ Return a random integer between 0
+      and RAND\_MAX.\\
+    rand\_r  $\leftrightarrow$ This algorithm is mentioned in 
+    the ISO C standard, here extended for 32 bits.
+  \end{center}
+  $\rightsquigarrow$ Cosine distance in comment and 
+  llama summary space
+    \[
+      d_\text{comment}(\texttt{rand}, \texttt{rand\_r}) = 0.8544
+      \hspace{0.5cm}
+      d_\text{llama}(\texttt{rand}, \texttt{rand\_r}) = 0.2216.
+    \]
+\end{frame}
+
+\begin{frame}{Code2Vec}
+  \begin{itemize}
+    \item Also dpendend on the function names in the data set
+    \item Bad results could be Explained by:
+      \begin{enumerate}
+        \item Small data set
+        \item C instead of Java
+        \item Quality of names in the data set
+      \end{enumerate}
+  \end{itemize}
 \end{frame}
 
 \section{Conclusion \& Future Work}
-\begin{frame}
-  HALLO
+\begin{frame}{Future Work}
+  \begin{itemize}
+    \item Code Llama
+      \begin{enumerate}
+        \item Is it necessary to use a 
+          large Model with 70B parameters?
+        \item Can Large Language Models 
+        produce deterministic Ouput for this application?
+        \item Is there a better Prompt?
+      \end{enumerate}
+    \item Comments
+      \begin{enumerate}
+        \item Use inline Comments
+      \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Future Work}
+    \[
+    \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
+      \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
+    \]
+    \[
+    \texttt{compare}(u,v)_k = 
+      \frac{1}{G_k} \sum^{k}_{i=1} 
+      \frac{ \texttt{score}_{k}(u_i,i,v)}{log_2(i+1)} 
+      \in [0,1]
+    \]
+  \begin{itemize}
+  \item $\texttt{CMP}(A,B,k) \in [0,1] $ function
+    \begin{enumerate}
+      \item Is there an optimal value for k?
+      \item Is there a better way to generate a neigborhood?\\
+        (instead of K-Nearest-Neighbor)
+      \item Is there a better way to aggregate the compare functions?
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion}
+  \begin{itemize}
+    \item Best strategies ranked: 
+    \begin{enumerate}
+      \item Code Llama summaries
+      \item Function names
+      \item Function comments
+      \item Code2Vec
+    \end{enumerate}
+    \item Code Llama summary vectors for 
+      C source code downstream tasks
+    \item Code Llama summary vectors can now 
+      be used to train a Model
+  \item $\texttt{CMP}(A,B,k)$ function
+    can be used to compare two embedding 
+    spaces from the same features Space
+  \end{itemize}
 \end{frame}
 
 \appendix
