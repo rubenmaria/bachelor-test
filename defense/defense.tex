@@ -22,9 +22,9 @@
 
 \author{Ruben Triwari}
 \title{Comparing Natural Language Embeddings for Libc Functions as Rich Labels}
-\subtitle{Bachelor defense}
+\subtitle{Bachelor's Thesis Defense}
 \institute{Ludwig Maximilian University Munich}
-\date{19, February 2025}
+\date{\today}
 
 \newcommand*{\qt}[1]{'#1'}
 \newcommand*{\p}{^\prime}
@@ -161,11 +161,16 @@
               }
         };
         \node (model) [
-          draw, rectangle, right= 2cm of doc,
-          minimum width= 2.5cm,
-          minimum height= 1.5cm,
-        ] {NLP Model};
-        \node (vec) [right= 2cm of model] {
+          draw, rectangle, right= 1.5cm of doc,
+          minimum width= 2cm,
+          minimum height= 1cm,
+        ] {SentenceTransformer
+          \footnote{\scriptsize Reimers and Gurevych: 
+              Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks,
+              EMNLP'19
+          }
+        };
+        \node (vec) [right= 1.5cm of model] {
           $\begin{pmatrix}
             0.23\\
             0.58\\
@@ -216,8 +221,8 @@
         \draw[->, thick] (compiler) -- (asm);
     \end{tikzpicture}
   \end{center}
-  $\rightsquigarrow$ Compiler removes important information 
-    in natural language
+  $\rightsquigarrow$ Compiler removes all information 
+    that is in natural language
  % Kompelieren entfernt wichtige Informatiion in 
  % natülicher Sprache die genutz werden könnten
  % -> Aus C Code können Embeddings produziert
@@ -236,7 +241,8 @@
           draw, rectangle,
           minimum width= 2cm,
           minimum height= 1cm,
-        ] {NLP-Model};
+        ] {NLP Model
+        };
         \node (vec) at (9,0)[text width=4cm] {
               $ l = \begin{pmatrix}
                 l_1 \\ 
@@ -287,14 +293,11 @@
 
 \begin{frame}[t]{Research Objectives}
   \begin{itemize}
-    \item Compare different approaches generating an embedding with NLP
-      tools
+    \item Compare different approaches encoding 
+      additional information in the source code 
+      into machine readable format
     \begin{enumerate}
       \item Embed function names with SentenceTransformer
-        \footnote{\scriptsize Reimers and Gurevych: 
-            Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks,
-            EMNLP'19
-        }
       \item Embed function comments with SentenceTransformer
       \item Embed Code Llama 
         \footnote{\scriptsize Rozière et al.: 
@@ -303,13 +306,16 @@
         }
         code summaries with SentenceTransformer
     \end{enumerate}
+    $\rightsquigarrow$ Intuition is that Code Llama 
+    explanation will yield "good" embeddings
     \item Compare NLP approach to the existing Code2Vec
         \footnote{\scriptsize Alon et al.: 
             code2vec: Learning Distributed Representations of Code,
-            ACM'19
+            POPL'19
         }
       Model
-    \item Propose a new way comparing embedding spaces
+    \item Propose a new way comparing embedding spaces.\\
+    $\rightsquigarrow$ To prove intuition
   \end{itemize}
   % Verschiedene Methoden zu vergleichen aus C-Quellcode,
   % mithilfe von Werkzeugen aus der natürlichen Sprachverarbeitung,
@@ -318,7 +324,6 @@
 \end{frame}
 
 \section{Methodology}
-
 \begin{frame}[t, fragile]{Architecture}
   \begin{center}
     \begin{tikzpicture}
@@ -390,6 +395,72 @@
 \end{frame}
 
 \section{Results}
+\begin{frame}[t]{Evaluation with t-SNE}
+  \begin{figure}
+    \begin{center}
+      \begin{tikzpicture}
+        \begin{groupplot}[
+              group style={
+                  group size=4 by 1, % 3 plots in 4 row
+                  horizontal sep=0.6cm, % Space between plots
+                  vertical sep=1cm % Space if there are multiple rows
+              },
+              width=0.33\textwidth, % Width of each plot
+              height=0.33\textwidth, % Height of each plot 
+              scatter/classes={
+                  0={mark=*,ContrastBlue},
+                  1={mark=*,ContrastRed},
+                  2={mark=*,ContrastGreen},
+                  3={mark=*,ContrastOrange},
+                  4={mark=*,ContrastPurple},
+                  5={mark=*,ContrastPink},
+                  6={mark=*,ContrastLime},
+                  7={mark=*,ContrastCyan},
+                  8={mark=*,Teal},
+                  9={mark=*,SlateGray}
+              },
+              scatter,
+              xlabel={},
+              ylabel={},
+              xtick=\empty,
+              ytick=\empty,
+              legend style={
+                at={(-1.2,-0.1)},
+                legend columns=5,
+                fill=none,
+                draw=black,
+                anchor=north,
+                align=center,
+                row sep=0.1cm,
+                column sep=0.3cm,
+                legend cell align=left
+              },
+          ]
+            \nextgroupplot[title={\textit{Code2Vec}}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
+            \nextgroupplot[title={Comments}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
+            \nextgroupplot[title={Names}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
+            \nextgroupplot[title={Code Llama summaries}]
+            \addplot[scatter, only marks, scatter src=explicit symbolic]
+              table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-30.dat};
+            \legend{
+              IO, Network, Memory, Threads, Files,
+              Processes, Signals, String, Math, 
+              Miscellaneous
+            }
+          \end{groupplot}
+      \end{tikzpicture}
+    \end{center}
+    \caption{
+      Depicted are the \textit{t-SNE} output vectors with perplexity $P = 30$.
+    }
+  \end{figure}
+\end{frame}
 \begin{frame}[t]{Expert Survey}
     \begin{figure}
       \centering
@@ -465,7 +536,7 @@
           xlabel=$k$,
           ylabel=$\text{CMP}(\mathbf{G}{,}\mathbf{D}_i{,}k)$,
           width=0.8\textwidth, 
-          height=0.6\textwidth,
+          height=0.55\textwidth,
           legend style={nodes={scale=0.8, transform shape}}
       ]
       \addplot[ForestGreen, thick] table
@@ -485,72 +556,6 @@
       \end{axis}
     \end{tikzpicture}
   \end{center}
-\end{frame}
-\begin{frame}[t]{Evaluation with t-SNE}
-  \begin{figure}
-    \begin{center}
-      \begin{tikzpicture}
-        \begin{groupplot}[
-              group style={
-                  group size=4 by 1, % 3 plots in 4 row
-                  horizontal sep=0.6cm, % Space between plots
-                  vertical sep=1cm % Space if there are multiple rows
-              },
-              width=0.33\textwidth, % Width of each plot
-              height=0.33\textwidth, % Height of each plot 
-              scatter/classes={
-                  0={mark=*,ContrastBlue},
-                  1={mark=*,ContrastRed},
-                  2={mark=*,ContrastGreen},
-                  3={mark=*,ContrastOrange},
-                  4={mark=*,ContrastPurple},
-                  5={mark=*,ContrastPink},
-                  6={mark=*,ContrastLime},
-                  7={mark=*,ContrastCyan},
-                  8={mark=*,Teal},
-                  9={mark=*,SlateGray}
-              },
-              scatter,
-              xlabel={},
-              ylabel={},
-              xtick=\empty,
-              ytick=\empty,
-              legend style={
-                at={(-1.2,-0.1)},
-                legend columns=5,
-                fill=none,
-                draw=black,
-                anchor=north,
-                align=center,
-                row sep=0.1cm,
-                column sep=0.3cm,
-                legend cell align=left
-              },
-          ]
-            \nextgroupplot[title={\textit{Code2Vec}}]
-            \addplot[scatter, only marks, scatter src=explicit symbolic]
-              table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
-            \nextgroupplot[title={Comments}]
-            \addplot[scatter, only marks, scatter src=explicit symbolic]
-              table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
-            \nextgroupplot[title={Names}]
-            \addplot[scatter, only marks, scatter src=explicit symbolic]
-              table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
-            \nextgroupplot[title={Code Llama summaries}]
-            \addplot[scatter, only marks, scatter src=explicit symbolic]
-              table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-30.dat};
-            \legend{
-              IO, Network, Memory, Threads, Files,
-              Processes, Signals, String, Math, 
-              Miscellaneous
-            }
-          \end{groupplot}
-      \end{tikzpicture}
-    \end{center}
-    \caption{
-      Depicted are the \textit{t-SNE} output vectors with perplexity $P = 30$.
-    }
-  \end{figure}
 \end{frame}
 
 \section{Limitations}
@@ -626,17 +631,6 @@
     \]
 \end{frame}
 
-\begin{frame}{Code2Vec}
-  \begin{itemize}
-    \item Also dependent on the function names in the data set
-    \item Bad results could be Explained by:
-      \begin{enumerate}
-        \item Small data set
-        \item C instead of Java $\rightsquigarrow$ potential engineering mistakes
-        \item Quality of names in the data set
-      \end{enumerate}
-  \end{itemize}
-\end{frame}
 
 \section{Conclusion \& Future Work}
 \begin{frame}{Future Work}
@@ -694,6 +688,8 @@
   \item $\texttt{CMP}(A,B,k)$ function
     can be used to compare two embedding 
     spaces from the same features Space
+  \item Evaluation methods can be used to 
+    compare different Large Language Models to each other
   \end{itemize}
 \end{frame}
 
@@ -701,6 +697,18 @@
 \section{Discussion}
 \begin{frame}{Discussion}
 
+\end{frame}
+
+\begin{frame}{Code2Vec}
+  \begin{itemize}
+    \item Also dependent on the function names in the data set
+    \item Bad results could be Explained by:
+      \begin{enumerate}
+        \item Small data set
+        \item C instead of Java $\rightsquigarrow$ potential engineering mistakes
+        \item Quality of names in the data set
+      \end{enumerate}
+  \end{itemize}
 \end{frame}
 
 \section{t-SNE Graphs}

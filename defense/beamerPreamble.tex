@@ -28,9 +28,6 @@
 %links
 \usepackage{hyperref}
 
-%seitennummer
-\setbeamertemplate{page number in head/foot}[totalframenumber]
-
 %Ausblenden der zweiten Kopfzeile
 \usepackage{soul}
 \makeatletter
@@ -59,7 +56,7 @@
       \usebeamerfont{author in head/foot}\hspace*{2ex}\insertshortauthor
     \end{beamercolorbox}%
     \begin{beamercolorbox}[wd=.5\paperwidth,ht=3.2ex,dp=1.8ex,right]{title in head/foot}% Adjusted height and depth for margin
-      \usebeamerfont{title in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+      \usebeamerfont{title in head/foot}\insertframenumber{} \hspace{0.5cm}
     \end{beamercolorbox}}%
   \vskip0pt%
 }
