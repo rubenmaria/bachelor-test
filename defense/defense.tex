@@ -2,6 +2,7 @@
 
 \input{beamerPreamble.tex}
 
+\usepackage{footmisc}
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{qrcode}
@@ -17,7 +18,7 @@
 %\usetikzlibrary{external}
 %\tikzexternalize[prefix=tikz/]
 \beamertemplatenavigationsymbolsempty
-
+\renewcommand{\thefootnote}{[\arabic{footnote}]}
 
 \author{Ruben Triwari}
 \title{Comparing Natural Language Embeddings for Libc Functions as Rich Labels}
@@ -163,7 +164,7 @@
           draw, rectangle, right= 2cm of doc,
           minimum width= 2.5cm,
           minimum height= 1.5cm,
-        ] {NLP-Model};
+        ] {NLP Model};
         \node (vec) [right= 2cm of model] {
           $\begin{pmatrix}
             0.23\\
@@ -176,12 +177,12 @@
         \draw[->, thick] (model) -- (vec);
     \end{tikzpicture}
   \end{center}
-  $\rightsquigarrow$  Encoding natural language was a huge 
-    factor in recent nlp advancements\\
+  $\rightsquigarrow$  Encoding natural language had an important
+    role in recent NLP advancements\\
   $\rightsquigarrow$ Information described as a vector 
-  can be used in many downstream task\\
-  $\rightsquigarrow$ That motivates 
-  encoding binary code and describing them as a vector\\
+  can be used in many downstream tasks\\
+  $\rightsquigarrow$ That serves as an  motivation for
+  encoding binary code as vector\\
   $\rightsquigarrow$ That motivates using NLP tools to 
   encode binary code
 \end{frame}
@@ -215,7 +216,7 @@
         \draw[->, thick] (compiler) -- (asm);
     \end{tikzpicture}
   \end{center}
-  $\rightsquigarrow$ Compiler removes important inforamtion 
+  $\rightsquigarrow$ Compiler removes important information 
     in natural language
  % Kompelieren entfernt wichtige Informatiion in 
  % natülicher Sprache die genutz werden könnten
@@ -286,13 +287,28 @@
 
 \begin{frame}[t]{Research Objectives}
   \begin{itemize}
-    \item Compare diffrent approaches generating an Embedding with NLP tools
+    \item Compare different approaches generating an embedding with NLP
+      tools
     \begin{enumerate}
       \item Embed function names with SentenceTransformer
+        \footnote{\scriptsize Reimers and Gurevych: 
+            Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks,
+            EMNLP'19
+        }
       \item Embed function comments with SentenceTransformer
-      \item Embed Code-Llama code summaries with SentenceTransformer
+      \item Embed Code Llama 
+        \footnote{\scriptsize Rozière et al.: 
+            Code Llama: Open Foundation Models for Code,
+            24
+        }
+        code summaries with SentenceTransformer
     \end{enumerate}
-    \item Compare NLP approach to the existig Code2Vec Model
+    \item Compare NLP approach to the existing Code2Vec
+        \footnote{\scriptsize Alon et al.: 
+            code2vec: Learning Distributed Representations of Code,
+            ACM'19
+        }
+      Model
     \item Propose a new way comparing embedding spaces
   \end{itemize}
   % Verschiedene Methoden zu vergleichen aus C-Quellcode,
@@ -321,7 +337,10 @@
           draw, rectangle,
           minimum width= 2cm,
           minimum height= 1cm,
-        ] {Treesitter Parser};
+          ] {Treesitter Parser\footnote{
+              Official website: 
+              \url{https://tree-sitter.github.io/tree-sitter/}
+          }};
         \node (name) at (9.2,0) [
             draw, rectangle split, rectangle split parts=2,
             fill=gray!10] {
@@ -377,21 +396,22 @@
       \begin{minipage}{0.45\textwidth}
           \centering
           \includegraphics[scale=0.2]{pictures/survey-example-negative.png}
-          \caption{Positve exmaple}
+          \caption{Positive example}
       \end{minipage}
       \begin{minipage}{0.45\textwidth}
           \centering
           \includegraphics[scale=0.2]{survey-example-positive.png}
-          \caption{Negative exmaple}
+          \caption{Negative example}
       \end{minipage}
       \begin{table}
         \begin{center}
           \scalebox{0.8} {
             \begin{tabular}{ |p{1.5cm}||p{4.5cm}|p{3.2cm}|p{4cm}|p{1.8cm}|  }
             \hline
-            \multicolumn{5}{|c|}{Ergebnisse der Expertenbefragung} \\
+            \multicolumn{5}{|c|}{Expert survey results} \\
             \hline
-            Strategie & Code-Llama-Erklärungen & Funktionsnamen & Funktionskommentare & \textit{Code2Vec} \\
+            Method & Code Llama summaries & Function names & Function comments
+                   & Code2Vec \\
             \hline
             Score   & 0.596 & 0.532 & 0.433 & 0.321   \\
             \hline
@@ -402,7 +422,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}[t]{Embeddings space comparison}
+\begin{frame}[t]{Embedding space comparison}
   \[
     \texttt{compare}(u,v)_k = 
       \frac{1}{G_k} \sum^{k}_{i=1} 
@@ -421,7 +441,7 @@
   \]
 \end{frame}
 
-\begin{frame}[t]{Embeddings space comparison}
+\begin{frame}[t]{Embedding space comparison}
   \[
     \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
       \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
@@ -438,7 +458,7 @@
     k \in \mathbb{N}: \text{Amount of vectors we include in one neighborhood relation}
   \]
 \end{frame}
-\begin{frame}[t]{Embeddings space comparison}
+\begin{frame}[t]{Embedding space comparison}
   \begin{center}
     \begin{tikzpicture}
       \begin{axis}[
@@ -457,16 +477,16 @@
       \addplot[CrimsonRed, thick] 
         table {abb/summary-embeddings-high-glibc-code2vec-high-compare487.dat};
       \legend{
-        Funktionskommentare und Code-Llama-Erklärungen,
-        Zufällige Punkte und Code-Llama-Erklärungen,
-        Funktionsnamen und Code-Llama-Erklärungen,
-        \textit{Code2Vec} und Code-Llama-Erklärungen
+        Function comments with Code Llama summaries,
+        Random vectors with Code Llama summaries,
+        Function names with Code Llama summaries,
+        Code2Vec with Code Llama summaries
       }
       \end{axis}
     \end{tikzpicture}
   \end{center}
 \end{frame}
-\begin{frame}[t]{Evaluation with T-SNE}
+\begin{frame}[t]{Evaluation with t-SNE}
   \begin{figure}
     \begin{center}
       \begin{tikzpicture}
@@ -542,7 +562,7 @@
     \text{ch} \leftrightarrow \text{change},\hspace{0.5cm}
     \text{mod} \leftrightarrow \text{file mode}.
   \end{align*}
-  Nearest neigbors in function space: 
+  Nearest neighbors in function space: 
     \[  
       \texttt{lchmod} \leftrightarrow 
       \begin{pmatrix}
@@ -567,8 +587,7 @@
     \text{ch} \leftrightarrow \text{change},\hspace{0.5cm}
     \text{mod} \leftrightarrow \text{file mode}.
   \end{align*}
-  Nearest neigbors in code llama summary space: 
-  %fchmodat, fchownat, euidaccess und __file_change_detection_for_stat
+  Nearest neighbors in code llama summary space: 
   \[
     \texttt{lchmod}
   \]
@@ -609,11 +628,11 @@
 
 \begin{frame}{Code2Vec}
   \begin{itemize}
-    \item Also dpendend on the function names in the data set
+    \item Also dependent on the function names in the data set
     \item Bad results could be Explained by:
       \begin{enumerate}
         \item Small data set
-        \item C instead of Java
+        \item C instead of Java $\rightsquigarrow$ potential engineering mistakes
         \item Quality of names in the data set
       \end{enumerate}
   \end{itemize}
@@ -627,7 +646,7 @@
         \item Is it necessary to use a 
           large Model with 70B parameters?
         \item Can Large Language Models 
-        produce deterministic Ouput for this application?
+        produce deterministic output for this application?
         \item Is there a better Prompt?
       \end{enumerate}
     \item Comments
@@ -652,7 +671,7 @@
   \item $\texttt{CMP}(A,B,k) \in [0,1] $ function
     \begin{enumerate}
       \item Is there an optimal value for k?
-      \item Is there a better way to generate a neigborhood?\\
+      \item Is there a better way to generate a neighborhood?\\
         (instead of K-Nearest-Neighbor)
       \item Is there a better way to aggregate the compare functions?
     \end{enumerate}
@@ -679,10 +698,249 @@
 \end{frame}
 
 \appendix
-
+\section{Discussion}
 \begin{frame}{Discussion}
+
 \end{frame}
 
+\section{t-SNE Graphs}
+\begin{frame}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{groupplot}[
+            group style={
+                group size=3 by 1,
+                horizontal sep=0.5cm, % Space between plots
+                vertical sep=1cm % Space if there are multiple rows
+            },
+            width=0.33\textwidth, % Width of each plot
+            height=0.33\textwidth, % Height of each plot 
+            scatter/classes={
+                0={mark=*,ContrastBlue},
+                1={mark=*,ContrastRed},
+                2={mark=*,ContrastGreen},
+                3={mark=*,ContrastOrange},
+                4={mark=*,ContrastPurple},
+                5={mark=*,ContrastPink},
+                6={mark=*,ContrastLime},
+                7={mark=*,ContrastCyan},
+                8={mark=*,Teal},
+                9={mark=*,SlateGray}
+            },
+            scatter,
+            xlabel={},
+            ylabel={},
+            xtick=\empty,
+            ytick=\empty,
+            legend style={
+              at={(-0.6,-0.1)},
+              legend columns=5,
+              fill=none,
+              draw=black,
+              anchor=north,
+              align=center,
+              row sep=0.1cm,
+              column sep=0.3cm,
+              legend cell align=left
+            },
+        ]
+          \nextgroupplot[title={Code2Vec $P=20$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-20.dat};
+          \nextgroupplot[title={Code2Vec $P=30$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-30.dat};
+          \nextgroupplot[title={Code2Vec $P=40$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-code2vec-tsne-40.dat};
+
+            \legend{
+              IO, Network, Memory, Threads, Files,
+              Processes, Signals, String, Math, 
+              Miscellaneous
+            }
+        \end{groupplot}
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{groupplot}[
+            group style={
+                group size=3 by 1,
+                horizontal sep=0.5cm, % Space between plots
+                vertical sep=1cm % Space if there are multiple rows
+            },
+            width=0.33\textwidth, % Width of each plot
+            height=0.33\textwidth, % Height of each plot 
+            scatter/classes={
+                0={mark=*,ContrastBlue},
+                1={mark=*,ContrastRed},
+                2={mark=*,ContrastGreen},
+                3={mark=*,ContrastOrange},
+                4={mark=*,ContrastPurple},
+                5={mark=*,ContrastPink},
+                6={mark=*,ContrastLime},
+                7={mark=*,ContrastCyan},
+                8={mark=*,Teal},
+                9={mark=*,SlateGray}
+            },
+            scatter,
+            xlabel={},
+            ylabel={},
+            xtick=\empty,
+            ytick=\empty,
+            legend style={
+              at={(-0.6,-0.1)},
+              legend columns=5,
+              fill=none,
+              draw=black,
+              anchor=north,
+              align=center,
+              row sep=0.1cm,
+              column sep=0.3cm,
+              legend cell align=left
+            },
+        ]
+          \nextgroupplot[title={Comments $P=20$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-20.dat};
+          \nextgroupplot[title={Comments $P=30$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-30.dat};
+          \nextgroupplot[title={Comments $P=40$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-40.dat};
+
+            \legend{
+              IO, Network, Memory, Threads, Files,
+              Processes, Signals, String, Math, 
+              Miscellaneous
+            }
+
+        \end{groupplot}
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{groupplot}[
+            group style={
+                group size=3 by 1,
+                horizontal sep=0.5cm, % Space between plots
+                vertical sep=1cm % Space if there are multiple rows
+            },
+            width=0.33\textwidth, % Width of each plot
+            height=0.33\textwidth, % Height of each plot 
+            scatter/classes={
+                0={mark=*,ContrastBlue},
+                1={mark=*,ContrastRed},
+                2={mark=*,ContrastGreen},
+                3={mark=*,ContrastOrange},
+                4={mark=*,ContrastPurple},
+                5={mark=*,ContrastPink},
+                6={mark=*,ContrastLime},
+                7={mark=*,ContrastCyan},
+                8={mark=*,Teal},
+                9={mark=*,SlateGray}
+            },
+            scatter,
+            xlabel={},
+            ylabel={},
+            xtick=\empty,
+            ytick=\empty,
+            legend style={
+              at={(-0.6,-0.1)},
+              legend columns=5,
+              fill=none,
+              draw=black,
+              anchor=north,
+              align=center,
+              row sep=0.1cm,
+              column sep=0.3cm,
+              legend cell align=left
+            },
+        ]
+          \nextgroupplot[title={Names $P=20$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-20.dat};
+          \nextgroupplot[title={Names $P=30$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-30.dat};
+          \nextgroupplot[title={Names $P=40$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-name-tsne-40.dat};
+
+            \legend{
+              IO, Network, Memory, Threads, Files,
+              Processes, Signals, String, Math, 
+              Miscellaneous
+            }
+        \end{groupplot}
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+\begin{frame}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{groupplot}[
+            group style={
+                group size=3 by 1,
+                horizontal sep=0.5cm, % Space between plots
+                vertical sep=1cm % Space if there are multiple rows
+            },
+            width=0.33\textwidth, % Width of each plot
+            height=0.33\textwidth, % Height of each plot 
+            scatter/classes={
+                0={mark=*,ContrastBlue},
+                1={mark=*,ContrastRed},
+                2={mark=*,ContrastGreen},
+                3={mark=*,ContrastOrange},
+                4={mark=*,ContrastPurple},
+                5={mark=*,ContrastPink},
+                6={mark=*,ContrastLime},
+                7={mark=*,ContrastCyan},
+                8={mark=*,Teal},
+                9={mark=*,SlateGray}
+            },
+            scatter,
+            xlabel={},
+            ylabel={},
+            xtick=\empty,
+            ytick=\empty,
+            legend style={
+              at={(-0.6,-0.1)},
+              legend columns=5,
+              fill=none,
+              draw=black,
+              anchor=north,
+              align=center,
+              row sep=0.1cm,
+              column sep=0.3cm,
+              legend cell align=left
+            },
+        ]
+          \nextgroupplot[title={\small Code Llama $P=20$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-20.dat};
+          \nextgroupplot[title={\small Code Llama  $P=30$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-30.dat};
+          \nextgroupplot[title={\small Code Llama $P=40$}]
+          \addplot[scatter, only marks, scatter src=explicit symbolic]
+            table[x=x, y=y, meta=label] {abb/prev-data-tsne-summary-tsne-40.dat};
+
+            \legend{
+              IO, Network, Memory, Threads, Files,
+              Processes, Signals, String, Math, 
+              Miscellaneous
+            }
+        \end{groupplot}
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
 \end{document}
 
 \begin{frame}
