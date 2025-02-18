@@ -466,12 +466,12 @@
       \centering
       \begin{minipage}{0.45\textwidth}
           \centering
-          \includegraphics[scale=0.2]{pictures/survey-example-negative.png}
+          \includegraphics[scale=0.2]{survey-example-positive.png}
           \caption{Positive example}
       \end{minipage}
       \begin{minipage}{0.45\textwidth}
           \centering
-          \includegraphics[scale=0.2]{survey-example-positive.png}
+          \includegraphics[scale=0.2]{pictures/survey-example-negative.png}
           \caption{Negative example}
       \end{minipage}
       \begin{table}
@@ -493,42 +493,6 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}[t]{Embedding space comparison}
-  \[
-    \texttt{compare}(u,v)_k = 
-      \frac{1}{G_k} \sum^{k}_{i=1} 
-      \frac{ \texttt{score}_{k}(u_i,i,v)}{log_2(i+1)} 
-      \in [0,1]
-  \]
-  where
-  \[ u,v \in \mathbb{N}^k: \text{Neighbor ranking of the same vector in diffrent spaces},\]
-  \[
-    \texttt{score}_k(l,i,v) = \begin{cases*} 
-        1 & , $\exists j \in \mathbb{N}: l = v_j \land i = j$   \\
-        \frac{1}{2} & , $\exists j \in \mathbb{N}: l = v_j \land i \neq j$\\
-        0   & , \text{otherwise}
-      \end{cases*}  \text{  , }
-      G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
-  \]
-\end{frame}
-
-\begin{frame}[t]{Embedding space comparison}
-  \[
-    \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
-      \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
-  \]
-  where 
-  \[
-    A,B \in \mathbb{R}^{N\times l}: \text{Embedding space with }
-    N \text{ vectors of length} l
-  \]
-  \[
-    \texttt{NN}_k(A_i, A): \text{k nearest neighbors from vector with index i in A}
-  \]
-  \[
-    k \in \mathbb{N}: \text{Amount of vectors we include in one neighborhood relation}
-  \]
-\end{frame}
 \begin{frame}[t]{Embedding space comparison}
   \begin{center}
     \begin{tikzpicture}
@@ -650,27 +614,6 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Future Work}
-    \[
-    \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
-      \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
-    \]
-    \[
-    \texttt{compare}(u,v)_k = 
-      \frac{1}{G_k} \sum^{k}_{i=1} 
-      \frac{ \texttt{score}_{k}(u_i,i,v)}{log_2(i+1)} 
-      \in [0,1]
-    \]
-  \begin{itemize}
-  \item $\texttt{CMP}(A,B,k) \in [0,1] $ function
-    \begin{enumerate}
-      \item Is there an optimal value for k?
-      \item Is there a better way to generate a neighborhood?\\
-        (instead of K-Nearest-Neighbor)
-      \item Is there a better way to aggregate the compare functions?
-    \end{enumerate}
-  \end{itemize}
-\end{frame}
 
 \begin{frame}{Conclusion}
   \begin{itemize}
@@ -694,11 +637,66 @@
 \end{frame}
 
 \appendix
-\section{Discussion}
-\begin{frame}{Discussion}
-
+\section{Compare Function}
+\begin{frame}[t]{Embedding space comparison}
+  \[
+    \texttt{compare}(u,v)_k = 
+      \frac{1}{G_k} \sum^{k}_{i=1} 
+      \frac{ \texttt{score}_{k}(u_i,i,v)}{log_2(i+1)} 
+      \in [0,1]
+  \]
+  where
+  \[ u,v \in \mathbb{N}^k: \text{Neighbor ranking of the same vector in diffrent spaces},\]
+  \[
+    \texttt{score}_k(l,i,v) = \begin{cases*} 
+        1 & , $\exists j \in \mathbb{N}: l = v_j \land i = j$   \\
+        \frac{1}{2} & , $\exists j \in \mathbb{N}: l = v_j \land i \neq j$\\
+        0   & , \text{otherwise}
+      \end{cases*}  \text{  , }
+      G_k := \sum_{i=1}^{k} \frac{1}{log_2(i+1)}.
+  \]
 \end{frame}
 
+\begin{frame}[t]{Embedding space comparison}
+  \[
+    \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
+      \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
+  \]
+  where 
+  \[
+    A,B \in \mathbb{R}^{N\times l}: \text{Embedding space with }
+    N \text{ vectors of length} l
+  \]
+  \[
+    \texttt{NN}_k(A_i, A): \text{k nearest neighbors from vector with index i in A}
+  \]
+  \[
+    k \in \mathbb{N}: \text{Amount of vectors we include in one neighborhood relation}
+  \]
+\end{frame}
+
+\begin{frame}{Future Work}
+    \[
+    \texttt{CMP}(A,B,k) = \frac{1}{N}\sum_{i = 1}^{N}
+      \texttt{compare}_k(NN_k(A_i,A),NN_k(B_i, B))
+    \]
+    \[
+    \texttt{compare}(u,v)_k = 
+      \frac{1}{G_k} \sum^{k}_{i=1} 
+      \frac{ \texttt{score}_{k}(u_i,i,v)}{log_2(i+1)} 
+      \in [0,1]
+    \]
+  \begin{itemize}
+  \item $\texttt{CMP}(A,B,k) \in [0,1] $ function
+    \begin{enumerate}
+      \item Is there an optimal value for k?
+      \item Is there a better way to generate a neighborhood?\\
+        (instead of K-Nearest-Neighbor)
+      \item Is there a better way to aggregate the compare functions?
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+\section{Code2Vec}
 \begin{frame}{Code2Vec}
   \begin{itemize}
     \item Also dependent on the function names in the data set
@@ -820,13 +818,11 @@
           \nextgroupplot[title={Comments $P=40$}]
           \addplot[scatter, only marks, scatter src=explicit symbolic]
             table[x=x, y=y, meta=label] {abb/prev-data-tsne-comment-tsne-40.dat};
-
             \legend{
               IO, Network, Memory, Threads, Files,
               Processes, Signals, String, Math, 
               Miscellaneous
             }
-
         \end{groupplot}
     \end{tikzpicture}
   \end{center}
